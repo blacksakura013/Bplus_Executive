@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import { StyleSheet, View, Text, Alert, TouchableOpacity } from 'react-native';
 
+import { RNCamera } from 'react-native-camera';
+
+
+import { decode } from 'jpeg-js';
+import jsQR from 'jsqr';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import * as ImagePicker from "react-native-image-picker"
+import * as ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -11,10 +16,8 @@ import { FontSize } from '../components/FontSizeHelper';
 import { Language } from '../translations/I18n';
 import { QRreader } from 'react-native-qr-decode-image-camera';
 
-import { useSelector, useDispatch } from 'react-redux';
 const ScanScreen = ({ navigation, route }) => {
 
-  const loginReducer = useSelector(({ loginReducer }) => loginReducer);
   const onSuccess = (e) => {
 
     if (e && e.type != 'QR_CODE' && e.type != 'org.iso.QRCode') {
@@ -30,6 +33,7 @@ const ScanScreen = ({ navigation, route }) => {
       }
     }
   };
+
   const chooseFile = () => {
     let options = {
       title: Language.t('selectBase.SelectImg'),
@@ -48,17 +52,18 @@ const ScanScreen = ({ navigation, route }) => {
         if (!path) {
           path = response.uri;
         }
+        console.log(path)
         QRreader(path)
           .then((data) => {
-            let result = data.split('name:');
-            let newObj = { label: result[0], value: result[1] };
-            navigation.navigate('SelectBase', { post: newObj });
+            console.log(data)
+            // let result = data.split('name:');
+            // let newObj = {label: result[0], value: result[1]};
+            // navigation.navigate('SelectScreen', {post: newObj});
           })
           .catch((error) => {
             console.log(error);
-            Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'),[{text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed')}]);
           });
-       
       }
     });
   };
@@ -101,9 +106,7 @@ const ScanScreen = ({ navigation, route }) => {
         alignItems: 'flex-start',
         flexDirection: 'row',
       }}
-    // bottomViewStyle={{ backgroundColor: 'black',
-    //   alignItems: 'flex-end',
-    //   flexDirection: 'row'}}
+
     />
   );
 };
@@ -142,13 +145,13 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => {
   return {
-    serviceID: state.loginReducer.serviceID,
+
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    reduxServiceID: (payload) => dispatch(serviceID(payload)),
+
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ScanScreen);
