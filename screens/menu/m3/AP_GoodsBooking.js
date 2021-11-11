@@ -71,12 +71,12 @@ const AP_GoodsBooking = ({ route }) => {
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);
     const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
     const [loading, setLoading] = useStateIfMounted(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    var radio_props = [
+    const radio_props = [
         { label: 'สิ้นเดือนนี้', value: 'nowmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
@@ -376,9 +376,9 @@ const AP_GoodsBooking = ({ route }) => {
                                                                 <DataTable.Row>
                                                                     <DataTable.Cell>{dateFormat(item.date)}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.id_ref}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.ard_A_mt)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.sumamount)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat((item.ard_A_mt + item.sumamount))}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.ard_A_mt)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.sumamount)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat((item.ard_A_mt + item.sumamount))}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>
                                                         </>

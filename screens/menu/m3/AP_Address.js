@@ -71,12 +71,12 @@ const AP_Address = ({ route }) => {
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);
     const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
     const [loading, setLoading] = useStateIfMounted(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    var radio_props = [
+    const radio_props = [
         { label: 'สิ้นเดือนนี้', value: 'nowmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },

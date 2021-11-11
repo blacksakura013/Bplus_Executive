@@ -358,7 +358,7 @@ const testmmodal = () => {
                                                             <DataTable.Row>
                                                                 <DataTable.Cell>{item.year}</DataTable.Cell>
                                                                 <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                <DataTable.Cell >{currencyFormat(item.sellamount)}</DataTable.Cell>
+                                                                <DataTable.Cell numeric>{currencyFormat(item.sellamount)}</DataTable.Cell>
                                                             </DataTable.Row>
                                                         </View>
                                                     </>

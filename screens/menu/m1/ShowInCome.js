@@ -72,7 +72,7 @@ const ShowInCome = ({ route }) => {
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);
     const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
     const [loading, setLoading] = useStateIfMounted(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
@@ -91,7 +91,7 @@ const ShowInCome = ({ route }) => {
     useEffect(() => {
         setPage(0);
     }, [itemsPerPage])
- 
+
     useEffect(() => {
         var newsum = 0
         for (var i in arrayObj) {
@@ -146,13 +146,13 @@ const ShowInCome = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -317,7 +317,7 @@ const ShowInCome = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -328,184 +328,179 @@ const ShowInCome = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={FontSize.large} />
                         </TouchableOpacity>
                     </View>
 
                 </View>
-                <View>
-                    <View  >
-                        <DataTable
-                            style={styles.table}>
-                            <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title ><Text style={{
+                <View style={container} >
+
+                    <DataTable
+                        style={styles.table}>
+                        <DataTable.Header style={styles.tableHeader}>
+                            <DataTable.Title style={{ flex: 0.2 }} numeric >
+                                <Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}> ปี</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
+                            <DataTable.Title style={{ flex: 0.2 }} numeric>
+                                <Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}>เดือน</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
+                            <DataTable.Title style={{ flex: 0.6 }} numeric>
+                                <Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}> ยอดขาย </Text></DataTable.Title>
-                            </DataTable.Header>
-                            <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
-                                    <TouchableNativeFeedback>
-                                        <View marginBottom={20}>
-                                            {arrayObj.map((item) => {
-                                                return (
-                                                    <>
-                                                        <View>
-                                                            <DataTable.Row>
-                                                                <DataTable.Cell>{item.year}</DataTable.Cell>
-                                                                <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                <DataTable.Cell numeric >{currencyFormat(item.sellAmount)}</DataTable.Cell>
-                                                            </DataTable.Row>
-                                                        </View>
-                                                    </>
-                                                )
-                                            })}
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                </KeyboardAvoidingView>
-                            </ScrollView>
-                        </DataTable>
+                        </DataTable.Header>
+                        <ScrollView>
+                            <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'} >
+                                <TouchableNativeFeedback>
+                                    <View marginBottom={20}>
+                                        {arrayObj.map((item) => {
+                                            return (
+                                                <>
+                                                    <DataTable.Row>
+                                                        <DataTable.Cell style={{ flex: 0.2 }} numeric >{item.year}</DataTable.Cell>
+                                                        <DataTable.Cell style={{ flex: 0.2 }} numeric >{item.month}</DataTable.Cell>
+                                                        <DataTable.Cell style={{ flex: 0.6 }} numeric >{currencyFormat(item.sellAmount)}</DataTable.Cell>
+                                                    </DataTable.Row>
 
-                    </View>
-
-                    <View style={styles.centeredView}>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                setModalVisible(!modalVisible);
-                            }}
-                        >
-
-                            <View style={styles.centeredView}>
-
-                                <View style={styles.modalView}>
-                                    <View style={{ alignItems: 'flex-end' }}>
-                                        <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                                            <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
-                                        </Pressable>
+                                                </>
+                                            )
+                                        })}
                                     </View>
+                                </TouchableNativeFeedback>
+                            </KeyboardAvoidingView>
+                        </ScrollView>
+                    </DataTable>
+                </View>
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
 
-                                    <Text style={styles.modalText}>เลือกการค้นหา</Text>
-                                    <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginBottom: 10,
+                        <View style={styles.centeredView}>
 
-                                        }}>
-                                            <RadioGroup
+                            <View style={styles.modalView}>
+                                <View style={{ alignItems: 'flex-end' }}>
+                                    <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                                        <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
+                                    </Pressable>
+                                </View>
 
-                                                onSelect={(index, value) => setRadio_menu(value)}
-                                            >
-                                                <RadioButton value={radio_props[0].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
-                                                </RadioButton>
-                                                <RadioButton value={radio_props[1].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
-                                                </RadioButton>
-                                                <RadioButton value={radio_props[2].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
-                                                </RadioButton>
+                                <Text style={styles.modalText}>เลือกการค้นหา</Text>
+                                <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        marginBottom: 10,
 
-                                                <RadioButton value={radio_props[3].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
-                                                </RadioButton>
-                                                <RadioButton value={radio_props[4].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
-                                                </RadioButton>
-                                                <RadioButton value={radio_props[5].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[5].label}</Text>
-                                                </RadioButton>
+                                    }}>
+                                        <RadioGroup
 
-                                            </RadioGroup>
-                                        </View>
-                                        <View style={{
-                                            flexDirection: 'row', justifyContent: 'space-between',
-                                            alignItems: 'center', marginBottom: 10
-                                        }}>
-                                            <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
-                                            <DatePicker
-                                                style={{ width: 250 }}
-                                                date={start_date} //start date
-                                                mode="date"
-                                                placeholder="select date"
-                                                format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
-                                                confirmBtnText="Confirm"
-                                                cancelBtnText="Cancel"
-                                                customStyles={{
-                                                    dateIcon: {
-                                                        left: 0,
-                                                        top: 4,
-                                                        marginLeft: 0
-                                                    },
-                                                    dateInput: {
-
-
-                                                    }
-                                                    // ... You can check the source to find the other keys.
-                                                }}
-                                                onDateChange={(date) => { setS_date(date) }}
-                                            />
-                                        </View>
-
-                                        <View style={{
-                                            flexDirection: 'row', justifyContent: 'space-between',
-                                            alignItems: 'center', marginBottom: 10
-                                        }}>
-                                            <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>ถึง</Text>
-                                            <DatePicker
-                                                style={{ width: 250, }}
-                                                date={end_date} //start date
-                                                mode="date"
-                                                placeholder="select date"
-                                                format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
-                                                confirmBtnText="Confirm"
-                                                cancelBtnText="Cancel"
-                                                customStyles={{
-                                                    dateIcon: {
-                                                        left: 0,
-                                                        top: 4,
-                                                        marginLeft: 0
-                                                    },
-                                                    dateInput: {
-
-                                                    }
-                                                    // ... You can check the source to find the other keys.
-                                                }}
-                                                onDateChange={(date) => { setE_date(date) }}
-                                            />
-                                        </View>
-                                        <Pressable
-                                            style={[styles.button, styles.buttonClose]}
-                                            onPress={() => InCome()}
+                                            onSelect={(index, value) => setRadio_menu(value)}
                                         >
-                                            <Text style={styles.textStyle}>ตกลง</Text>
-                                        </Pressable>
+                                            <RadioButton value={radio_props[0].value} >
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
+                                            </RadioButton>
+                                            <RadioButton value={radio_props[1].value} >
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
+                                            </RadioButton>
+                                            <RadioButton value={radio_props[2].value} >
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
+                                            </RadioButton>
 
+                                            <RadioButton value={radio_props[3].value} >
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
+                                            </RadioButton>
+                                            <RadioButton value={radio_props[4].value} >
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
+                                            </RadioButton>
+                                            <RadioButton value={radio_props[5].value} >
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[5].label}</Text>
+                                            </RadioButton>
+
+                                        </RadioGroup>
                                     </View>
+                                    <View style={{
+                                        flexDirection: 'row', justifyContent: 'space-between',
+                                        alignItems: 'center', marginBottom: 10
+                                    }}>
+                                        <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
+                                        <DatePicker
+                                            style={{ width: 250 }}
+                                            date={start_date} //start date
+                                            mode="date"
+                                            placeholder="select date"
+                                            format="YYYY-MM-DD"
+                                            minDate={"1900-01-01"}
+                                            maxDate={end_date}
+                                            confirmBtnText="Confirm"
+                                            cancelBtnText="Cancel"
+                                            customStyles={{
+                                                dateIcon: {
+                                                    left: 0,
+                                                    top: 4,
+                                                    marginLeft: 0
+                                                },
+                                                dateInput: {
+
+
+                                                }
+                                                // ... You can check the source to find the other keys.
+                                            }}
+                                            onDateChange={(date) => { setS_date(date) }}
+                                        />
+                                    </View>
+
+                                    <View style={{
+                                        flexDirection: 'row', justifyContent: 'space-between',
+                                        alignItems: 'center', marginBottom: 10
+                                    }}>
+                                        <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>ถึง</Text>
+                                        <DatePicker
+                                            style={{ width: 250, }}
+                                            date={end_date} //start date
+                                            mode="date"
+                                            placeholder="select date"
+                                            format="YYYY-MM-DD"
+                                            minDate={"1900-01-01"}
+                                            maxDate={end_date}
+                                            confirmBtnText="Confirm"
+                                            cancelBtnText="Cancel"
+                                            customStyles={{
+                                                dateIcon: {
+                                                    left: 0,
+                                                    top: 4,
+                                                    marginLeft: 0
+                                                },
+                                                dateInput: {
+
+                                                }
+                                                // ... You can check the source to find the other keys.
+                                            }}
+                                            onDateChange={(date) => { setE_date(date) }}
+                                        />
+                                    </View>
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => InCome()}
+                                    >
+                                        <Text style={styles.textStyle}>ตกลง</Text>
+                                    </Pressable>
+
                                 </View>
                             </View>
-                        </Modal>
-                    </View>
-
+                        </View>
+                    </Modal>
                 </View>
-
-
-
             </SafeAreaView>
             <View style={styles.tabbuttom}>
                 <Text style={{
@@ -571,7 +566,7 @@ const styles = StyleSheet.create({
 
     },
     tableHeader: {
-        justifyContent: 'space-between',
+
         backgroundColor: Colors.buttonColorPrimary,
 
     },

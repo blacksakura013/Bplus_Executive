@@ -71,12 +71,12 @@ const AR_SellAmount = ({ route }) => {
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);
     const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
     const [loading, setLoading] = useStateIfMounted(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    var radio_props = [
+    const radio_props = [
         { label: 'ปีก่อน', value: 'lastyear' },
         { label: 'ปีนี้', value: 'nowyear' },
         { label: 'เดือนนี้', value: 'nowmonth' },
@@ -371,7 +371,7 @@ const AR_SellAmount = ({ route }) => {
                                                                 <DataTable.Row>
                                                                     <DataTable.Cell>{item.year}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.sellAmount)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.sellAmount)}</DataTable.Cell>
 
                                                                 </DataTable.Row>
                                                             </View>

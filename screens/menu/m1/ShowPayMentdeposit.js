@@ -71,12 +71,12 @@ const ShowPayMentdeposit = ({ route }) => {
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);
     const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
     const [loading, setLoading] = useStateIfMounted(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    var radio_props = [
+    const radio_props = [
         { label: 'ปีก่อน', value: 'lastyear' },
         { label: 'ปีนี้', value: 'nowyear' },
         { label: 'เดือนนี้', value: 'nowmonth' },
@@ -373,10 +373,10 @@ const ShowPayMentdeposit = ({ route }) => {
                                                             <View>
                                                                 <DataTable.Row>
                                                                     <DataTable.Cell>{dateFormat(item.date)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.arreceipt)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.appayment)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.ardeposit)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{currencyFormat(item.apdepoit)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.arreceipt)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.appayment)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.ardeposit)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.apdepoit)}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>
                                                         </>
