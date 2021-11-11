@@ -13,7 +13,6 @@ import {
     Platform,
     BackHandler,
     StatusBar,
-
     Modal, Pressable,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
@@ -49,6 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
+import { height } from 'styled-system';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -147,13 +147,13 @@ const ShowSellBook = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -247,11 +247,16 @@ const ShowSellBook = ({ route }) => {
                 let responseData = JSON.parse(json.ResponseData);
 
                 for (var i in responseData.SHOWBANKBALANCE) {
+                    let Bname = responseData.SHOWBANKBALANCE[i].BNKAC_NAME
+                    let Bnamedate = Bname.split(' ')
+                    for (let j in Bnamedate) {
+                        console.log(Bnamedate[j])
+                    }
                     let jsonObj = {
                         id: i,
                         key: responseData.SHOWBANKBALANCE[i].BNKAC_KEY,
                         code: responseData.SHOWBANKBALANCE[i].BNKAC_COD,
-                        name: responseData.SHOWBANKBALANCE[i].BNKAC_NAME,
+                        name: { account: Bnamedate[0], bnk: Bnamedate[1], branch: Bnamedate[2], code: Bnamedate[3] },
                         forward: responseData.SHOWBANKBALANCE[i].FORWARD,
                         thismonth: responseData.SHOWBANKBALANCE[i].THISMONTH,
                         balance: responseData.SHOWBANKBALANCE[i].BALANCE,
@@ -328,7 +333,7 @@ const ShowSellBook = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
                         </TouchableOpacity>
                     </View>
 
@@ -336,24 +341,25 @@ const ShowSellBook = ({ route }) => {
                 <View>
                     <View  >
                         <ScrollView>
+                            
                             <ScrollView horizontal={true}>
                                 <DataTable
                                     style={styles.table}>
                                     <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title   ><Text style={{
+                                        <DataTable.Title style={{alignItems:'center'}} ><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2,
 
                                         }}>ชื่อบัญชี</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>ยอดเงินคงเหลือ</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดเดือนนี้ </Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดยกมา </Text></DataTable.Title>
@@ -366,12 +372,26 @@ const ShowSellBook = ({ route }) => {
                                                     return (
                                                         <>
                                                             <View>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell > {item.name} </DataTable.Cell>
+                                                                <DataTable.Row  style={{borderBottomWidth:0}} >
+                                                                    <DataTable.Cell  style={{alignItems:'flex-end'}} >   {item.name.account}   </DataTable.Cell>
+                                                                    <DataTable.Cell numeric > </DataTable.Cell>
+                                                                    <DataTable.Cell numeric > </DataTable.Cell>
+                                                                    <DataTable.Cell numeric > </DataTable.Cell>
+                                                                </DataTable.Row>
+                                                                
+                                                                <DataTable.Row style={{borderBottomWidth:0}}>
+                                                                    <DataTable.Cell  style={{alignItems:'center'}}>       {item.name.code}  </DataTable.Cell>
                                                                     <DataTable.Cell numeric >{currencyFormat(item.balance)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric >{currencyFormat(item.thismonth)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric >{currencyFormat(item.forward)}</DataTable.Cell>
                                                                 </DataTable.Row>
+                                                                <DataTable.Row  >
+                                                                    <DataTable.Cell style={{alignItems:'flex-start'}}  >   {item.name.bnk} {' '}  {item.name.branch}  </DataTable.Cell>
+                                                                    <DataTable.Cell numeric > </DataTable.Cell>
+                                                                    <DataTable.Cell numeric > </DataTable.Cell>
+                                                                    <DataTable.Cell numeric > </DataTable.Cell>
+                                                                </DataTable.Row>
+
                                                             </View>
                                                         </>
                                                     )
@@ -397,7 +417,6 @@ const ShowSellBook = ({ route }) => {
                         >
 
                             <View style={styles.centeredView}>
-
                                 <View style={styles.modalView}>
                                     <View style={{ alignItems: 'flex-end' }}>
                                         <Pressable onPress={() => setModalVisible(!modalVisible)}>
@@ -449,8 +468,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -479,8 +498,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -579,7 +598,7 @@ const styles = StyleSheet.create({
 
     },
     tableHeader: {
-        justifyContent: 'space-between',
+
         backgroundColor: Colors.buttonColorPrimary,
 
     },

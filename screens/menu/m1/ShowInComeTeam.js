@@ -146,13 +146,13 @@ const ShowSellBook = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -323,7 +323,7 @@ const ShowSellBook = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
                         </TouchableOpacity>
                     </View>
 
@@ -333,18 +333,18 @@ const ShowSellBook = ({ route }) => {
                         <DataTable
                             style={styles.table}>
                             <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title ><Text style={{
+                                <DataTable.Title style={{ flex: 0.3 }}><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}>รหัส</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
+                                <DataTable.Title style={{ flex: 0.3 }}><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}>ชื่อทีมขาย</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
+                                <DataTable.Title style={{ flex: 0.4 }} numeric><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
-                                }}> ยอดขาย </Text></DataTable.Title>
+                                }} > ยอดขาย </Text></DataTable.Title>
                             </DataTable.Header>
                             <ScrollView>
                                 <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
@@ -353,13 +353,13 @@ const ShowSellBook = ({ route }) => {
                                             {arrayObj.map((item) => {
                                                 return (
                                                     <>
-                                                        <View>
-                                                            <DataTable.Row>
-                                                                <DataTable.Cell>{item.code}</DataTable.Cell>
-                                                                <DataTable.Cell >{item.name}</DataTable.Cell>
-                                                                <DataTable.Cell numeric >{currencyFormat(item.sums)}</DataTable.Cell>
-                                                            </DataTable.Row>
-                                                        </View>
+
+                                                        <DataTable.Row>
+                                                            <DataTable.Cell style={{ flex: 0.3 }}>{item.code}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ flex: 0.3 }}>{item.name}</DataTable.Cell>
+                                                            <DataTable.Cell style={{ flex: 0.4 }} numeric >{currencyFormat(item.sums)}</DataTable.Cell>
+                                                        </DataTable.Row>
+
                                                     </>
                                                 )
                                             })}
@@ -434,8 +434,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -465,8 +465,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
 
     },
     tableHeader: {
-        justifyContent: 'space-between',
+
         backgroundColor: Colors.buttonColorPrimary,
 
     },

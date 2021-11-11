@@ -328,7 +328,7 @@ const ChequeIn = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
                         </TouchableOpacity>
                     </View>
 
@@ -340,15 +340,15 @@ const ChequeIn = ({ route }) => {
                                 <DataTable
                                     style={styles.table}>
                                     <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.2 }} numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>ปี</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.2 }} numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>เดือน</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.6 }} numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดขาย </Text></DataTable.Title>
@@ -363,9 +363,9 @@ const ChequeIn = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell>{item.year}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.sumcqinamt)}</DataTable.Cell>
+                                                                <DataTable.Cell style={{ flex: 0.2 }} numeric>{item.year}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.2 }} numeric>{item.month}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.6 }} numeric>{currencyFormat(item.sumcqinamt)}</DataTable.Cell>
 
                                                                 </DataTable.Row>
                                                             </View>
@@ -438,8 +438,8 @@ const ChequeIn = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -469,8 +469,8 @@ const ChequeIn = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

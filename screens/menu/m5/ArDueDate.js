@@ -91,7 +91,7 @@ const ArDueDate = ({ route }) => {
     useEffect(() => {
         var newsum = 0
         for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].sumcqinamt)
+            newsum += Number(arrayObj[i].showsellAmount)
         }
 
         setSum(newsum)
@@ -144,13 +144,13 @@ const ArDueDate = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -233,9 +233,9 @@ const ArDueDate = ({ route }) => {
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWARBALANCEBYARKEY',
+                'BPAPUS-FUNCTION': 'SHOWSALESVALUESBYARKEY',
                 'BPAPUS-PARAM':
-                    '{ "TO_DATE": "' +
+                    '{"FROM_DATE": "20000101","TO_DATE": "' +
                     eDate +
                     '","AR_KEY": ' +
                     route.params.Obj + '}',
@@ -249,12 +249,12 @@ const ArDueDate = ({ route }) => {
             .then((json) => {
                 console.log(json)
                 let responseData = JSON.parse(json.ResponseData);
-                for (var i in responseData.SHOWARBALANCEBYARKEY) {
+                for (var i in responseData.SHOWSALESVALUESBYARKEY) {
                     let jsonObj = {
                         id: i,
-                        year: responseData.SHOWARBALANCEBYARKEY[i].SHOWYEAR,
-                        month: responseData.SHOWARBALANCEBYARKEY[i].SHOWMONTH,
-                        sumcqinamt: responseData.SHOWARBALANCEBYARKEY[i].SUMCQINAMT,
+                        year: responseData.SHOWSALESVALUESBYARKEY[i].SHOWYEAR,
+                        month: responseData.SHOWSALESVALUESBYARKEY[i].SHOWMONTH,
+                        showsellAmount: responseData.SHOWSALESVALUESBYARKEY[i].SHOWSELLAMOUNT,
                     };
                     arrayResult.push(jsonObj)
                 }
@@ -328,7 +328,7 @@ const ArDueDate = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
                         </TouchableOpacity>
                     </View>
 
@@ -340,15 +340,15 @@ const ArDueDate = ({ route }) => {
                                 <DataTable
                                     style={styles.table}>
                                     <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.2 }} numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>ปี</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.2 }} numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>เดือน</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.6 }} numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดขาย </Text></DataTable.Title>
@@ -362,9 +362,9 @@ const ArDueDate = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell>{item.year}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.sumcqinamt)}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.2 }} numeric>{item.year}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.2 }} numeric>{item.month}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.6 }} numeric>{currencyFormat(item.showsellAmount)}</DataTable.Cell>
 
                                                                 </DataTable.Row>
                                                             </View>
@@ -439,8 +439,8 @@ const ArDueDate = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

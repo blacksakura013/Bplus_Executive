@@ -273,7 +273,7 @@ const ShowAP = ({ route }) => {
                             placeholderTextColor={Colors.fontColorSecondary}
                             value={textsearch}
 
-                            placeholder={Language.t('login.username')}
+                            placeholder={'ชื่อลูกหนี้'}
                             onChangeText={(val) => {
                                 setSearch(val)
                             }} />

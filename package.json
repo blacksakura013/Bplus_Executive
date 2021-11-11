@@ -59,6 +59,7 @@
     "react-native-simple-dialogs": "^1.4.0",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-svg": "^12.1.1",
+    "react-native-table-component": "^1.2.1",
     "react-native-textinput-effects": "^0.6.2",
     "react-native-vector-icons": "^8.1.0",
     "react-navigation": "^4.4.4",

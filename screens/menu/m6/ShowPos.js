@@ -179,7 +179,7 @@ const ShowPos = ({ route }) => {
                             placeholderTextColor={Colors.fontColorSecondary}
                             value={textsearch}
 
-                            placeholder={Language.t('login.username')}
+                            placeholder={'ชื่อเครื่อง'}
                             onChangeText={(val) => {
                                 setSearch(val)
                             }} />

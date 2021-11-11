@@ -330,7 +330,7 @@ const ShowSellBook = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
                         </TouchableOpacity>
                     </View>
 
@@ -342,23 +342,23 @@ const ShowSellBook = ({ route }) => {
                                 <DataTable
                                     style={styles.table}>
                                     <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title style={{ flex: 0.6 }}><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>วันที่</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}>ยอดขาย</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดจอง </Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดซื้อ </Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดจองซื้อ </Text></DataTable.Title>
@@ -372,7 +372,7 @@ const ShowSellBook = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell>{dateFormat(item.date)}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.6 }}>{dateFormat(item.date)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat(item.sellamount)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat(item.bookamount)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat(item.purcamount)}</DataTable.Cell>
@@ -453,8 +453,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -484,8 +484,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -581,7 +581,7 @@ const styles = StyleSheet.create({
 
     },
     tableHeader: {
-        justifyContent: 'space-between',
+        
         backgroundColor: Colors.buttonColorPrimary,
 
     },

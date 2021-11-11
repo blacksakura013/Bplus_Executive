@@ -91,7 +91,7 @@ const AP_ShowArdetail = ({ route }) => {
     useEffect(() => {
         var newsum = 0
         for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].ard_A_mt + arrayObj[i].sumpayment)
+            newsum += Number(arrayObj[i].apd_A_mt + arrayObj[i].sumpayment)
         }
 
         setSum(newsum)
@@ -331,7 +331,7 @@ const AP_ShowArdetail = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="search" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
                         </TouchableOpacity>
                     </View>
 
@@ -352,15 +352,15 @@ const AP_ShowArdetail = ({ route }) => {
                                             color: Colors.fontColor2
                                         }}>เอกสาร</Text></DataTable.Title>
 
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ยอดหนี้ </Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> ชำระแล้ว </Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
+                                        <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
                                         }}> คงค้าง </Text></DataTable.Title>
@@ -453,8 +453,8 @@ const AP_ShowArdetail = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                minDate={"1900-01-01"}
-                                                maxDate={end_date}
+                                                
+                                                
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

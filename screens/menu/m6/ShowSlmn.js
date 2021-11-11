@@ -179,7 +179,7 @@ const ShowSlmn = ({ route }) => {
                             placeholderTextColor={Colors.fontColorSecondary}
                             value={textsearch}
 
-                            placeholder={Language.t('login.username')}
+                            placeholder={'ชื่อพนักงาน'}
                             onChangeText={(val) => {
                                 setSearch(val)
                             }} />
@@ -197,7 +197,7 @@ const ShowSlmn = ({ route }) => {
                                 <DataTable.Title ><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2, width: '60%'
-                                }}>ชื่อเครื่อง</Text></DataTable.Title>
+                                }}>ชื่อพนักงาน</Text></DataTable.Title>
                                 <DataTable.Title ><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2

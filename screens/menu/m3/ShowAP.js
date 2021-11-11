@@ -197,7 +197,7 @@ const ShowAP = ({ route }) => {
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ap000130',
-                'BPAPUS-PARAM': 'AND (AP_NAME LIKE %' + textsearch + '%) OR (AP_CODE LIKE %' + textsearch + '%) OR (ADDB_SEARCH LIKE %' + textsearch + '%)',
+                'BPAPUS-PARAM': 'AND (AP_NAME LIKE %' + textsearch + '%)',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -273,7 +273,7 @@ const ShowAP = ({ route }) => {
                             placeholderTextColor={Colors.fontColorSecondary}
                             value={textsearch}
 
-                            placeholder={Language.t('login.username')}
+                            placeholder={'ชื่อลูกหนี้'}
                             onChangeText={(val) => {
                                 setSearch(val)
                             }} />
