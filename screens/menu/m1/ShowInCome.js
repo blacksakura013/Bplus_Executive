@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { fontSize } from 'styled-system';
+import { fontSize, right } from 'styled-system';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -95,7 +95,7 @@ const ShowInCome = ({ route }) => {
     useEffect(() => {
         var newsum = 0
         for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].sellamount)
+            newsum += Number(arrayObj[i].sellAmount)
         }
         setSum(newsum)
     }, [arrayObj])
@@ -362,7 +362,7 @@ const ShowInCome = ({ route }) => {
                                                             <DataTable.Row>
                                                                 <DataTable.Cell>{item.year}</DataTable.Cell>
                                                                 <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                <DataTable.Cell >{currencyFormat(item.sellAmount)}</DataTable.Cell>
+                                                                <DataTable.Cell numeric >{currencyFormat(item.sellAmount)}</DataTable.Cell>
                                                             </DataTable.Row>
                                                         </View>
                                                     </>
