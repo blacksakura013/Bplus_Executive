@@ -402,7 +402,7 @@ const SelectBase = ({ route }) => {
                     fontSize: FontSize.medium,
                     fontWeight: 'bold',
                   }}>
-                  เชื่อต่อ
+                  เชื่อมต่อ
                 </Text>
               </View>
             </TouchableNativeFeedback>
@@ -637,7 +637,7 @@ const SelectBase = ({ route }) => {
                     fontSize: FontSize.medium,
                     fontWeight: 'bold',
                   }}>
-                  เชื่อต่อ
+                  บันทึก และ เชื่อมต่อ
                 </Text>
               </View>
             </TouchableNativeFeedback>

@@ -51,6 +51,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { fontSize, right } from 'styled-system';
 
+import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
+
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -196,23 +198,8 @@ const ShowInCome = ({ route }) => {
 
     };
 
-    const currencyFormat = (num) => {
-        return Number(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
-    const setnewdateF = (date) => {
-        var x = new Date(date);
 
-        var day = x.getDate()
-        if (day < 10)
-            day = '0' + day.toString()
 
-        var month = x.getMonth() + 1
-        if (month < 10)
-            month = '0' + month.toString()
-
-        var year = x.getFullYear()
-        return year + '' + month + '' + day
-    }
     const InCome = async () => {
         setLoading(true)
         setModalVisible(false)
@@ -343,12 +330,12 @@ const ShowInCome = ({ route }) => {
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}> ปี</Text></DataTable.Title>
-                            <DataTable.Title style={{ flex: 0.2 }} numeric>
+                            <DataTable.Title style={{ flex: 0.3, padding: 10 }}  >
                                 <Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
                                 }}>เดือน</Text></DataTable.Title>
-                            <DataTable.Title style={{ flex: 0.6 }} numeric>
+                            <DataTable.Title style={{ flex: 0.5 }} numeric>
                                 <Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
@@ -363,8 +350,8 @@ const ShowInCome = ({ route }) => {
                                                 <>
                                                     <DataTable.Row>
                                                         <DataTable.Cell style={{ flex: 0.2 }} numeric >{item.year}</DataTable.Cell>
-                                                        <DataTable.Cell style={{ flex: 0.2 }} numeric >{item.month}</DataTable.Cell>
-                                                        <DataTable.Cell style={{ flex: 0.6 }} numeric >{currencyFormat(item.sellAmount)}</DataTable.Cell>
+                                                        <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   >{monthFormat(item.month)}</DataTable.Cell>
+                                                        <DataTable.Cell style={{ flex: 0.5 }} numeric >{currencyFormat(item.sellAmount)}</DataTable.Cell>
                                                     </DataTable.Row>
 
                                                 </>
@@ -440,8 +427,7 @@ const ShowInCome = ({ route }) => {
                                             mode="date"
                                             placeholder="select date"
                                             format="YYYY-MM-DD"
-                                            minDate={"1900-01-01"}
-                                            maxDate={end_date}
+
                                             confirmBtnText="Confirm"
                                             cancelBtnText="Cancel"
                                             customStyles={{
@@ -468,11 +454,10 @@ const ShowInCome = ({ route }) => {
                                         <DatePicker
                                             style={{ width: 250, }}
                                             date={end_date} //start date
-                                            mode="date"
+                                            mode="time"
                                             placeholder="select date"
                                             format="YYYY-MM-DD"
-                                            minDate={"1900-01-01"}
-                                            maxDate={end_date}
+
                                             confirmBtnText="Confirm"
                                             cancelBtnText="Cancel"
                                             customStyles={{

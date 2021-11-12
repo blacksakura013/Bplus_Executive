@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-
+import {  monthFormat ,currencyFormat,dateFormat,setnewdateF} from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -77,7 +77,7 @@ const AP_ShowArdetail = ({ route }) => {
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
     const radio_props = [
-        { label: 'สิ้นเดือนนี้', value: 'nowmonth' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' }
@@ -195,26 +195,7 @@ const AP_ShowArdetail = ({ route }) => {
 
     };
 
-    const dateFormat = (date) => {
-        return date.substring(0, 4) + '/' + date.substring(4, 6) + '/' + date.substring(6, 8)
-    }
-    const currencyFormat = (num) => {
-        return Number(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
-    const setnewdateF = (date) => {
-        var x = new Date(date);
-
-        var day = x.getDate()
-        if (day < 10)
-            day = '0' + day.toString()
-
-        var month = x.getMonth() + 1
-        if (month < 10)
-            month = '0' + month.toString()
-
-        var year = x.getFullYear()
-        return year + '' + month + '' + day
-    }
+    
     const InCome = async () => {
 
         setLoading(true)
@@ -453,7 +434,7 @@ const AP_ShowArdetail = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="YYYY-MM-DD"
-                                                
+                                            
                                                 
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"

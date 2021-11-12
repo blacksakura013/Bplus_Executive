@@ -49,6 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { height } from 'styled-system';
+import {  monthFormat ,currencyFormat,setnewdateF} from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -77,10 +78,8 @@ const ShowSellBook = ({ route }) => {
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
     const radio_props = [
-        { label: 'ปีก่อน', value: 'lastyear' },
-        { label: 'ปีนี้', value: 'nowyear' },
-        { label: 'เดือนนี้', value: 'nowmonth' },
-        { label: 'เดือนก่อน', value: 'lastmonth' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
+        { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' }
     ];
@@ -197,23 +196,7 @@ const ShowSellBook = ({ route }) => {
 
     };
 
-    const currencyFormat = (num) => {
-        return Number(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
-    const setnewdateF = (date) => {
-        var x = new Date(date);
-
-        var day = x.getDate()
-        if (day < 10)
-            day = '0' + day.toString()
-
-        var month = x.getMonth() + 1
-        if (month < 10)
-            month = '0' + month.toString()
-
-        var year = x.getFullYear()
-        return year + '' + month + '' + day
-    }
+  
     const InCome = async () => {
         setLoading(true)
         await fetchInCome()
@@ -448,12 +431,7 @@ const ShowSellBook = ({ route }) => {
                                                 <RadioButton value={radio_props[3].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                 </RadioButton>
-                                                <RadioButton value={radio_props[4].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
-                                                </RadioButton>
-                                                <RadioButton value={radio_props[5].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[5].label}</Text>
-                                                </RadioButton>
+                                                 
 
                                             </RadioGroup>
                                         </View>

@@ -13,8 +13,7 @@ import { store, persistor } from './src/store/store';
 import { drawerItemsMain } from './drawerItemsMain';
 import CustomDrawerContent from './CustomDrawerContent';
 
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/LoginScreen'; 
 import SelectBase from './pages/SelectBase';
 import EditBase from './pages/EditBase';
 
@@ -110,11 +109,7 @@ const App = () => {
           name="Login"
           component={LoginScreen}
         />
-        <LoginStack.Screen
-          options={{ headerShown: false }}
-          name="Register"
-          component={RegisterScreen}
-        />
+    
         <LoginStack.Screen
           options={{ headerShown: false }}
           name="SelectScreen"
