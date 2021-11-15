@@ -56,9 +56,9 @@ const ScanScreen = ({ navigation, route }) => {
         QRreader(path)
           .then((data) => {
             console.log(data)
-            // let result = data.split('name:');
-            // let newObj = {label: result[0], value: result[1]};
-            // navigation.navigate('SelectScreen', {post: newObj});
+            let result = data.split('name:');
+            let newObj = {label: result[0], value: result[1]};
+            navigation.navigate('SelectScreen', {post: newObj});
           })
           .catch((error) => {
             console.log(error);

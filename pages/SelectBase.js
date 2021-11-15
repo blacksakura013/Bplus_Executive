@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { Picker, } from '@react-native-picker/picker';
+import { Picker, } from 'native-base';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RNRestart from 'react-native-restart';
@@ -18,8 +18,6 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-
-import DropDownPicker from 'react-native-dropdown-picker';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../src/Colors';
@@ -365,9 +363,7 @@ const SelectBase = ({ route }) => {
                 style={{
                   width: '100%', backgroundColor: '#fff', borderRadius: 10,
                 }}
-                onValueChange={(item) => {
-                  setTitle(item);
-                }}
+                onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
                 enabled={false}
                 mode="dropdown"
                 itemStyle={{}}>

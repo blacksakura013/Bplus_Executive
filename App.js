@@ -323,7 +323,7 @@ const App = () => {
 }
 const styles = StyleSheet.create({
   container1: {
-    backgroundColor: Colors.backgroundLoginColor,
+    backgroundColor: 'black',
     flex: 1,
 
   },
