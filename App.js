@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PersistGate } from 'redux-persist/es/integration/react';
@@ -89,11 +89,17 @@ const App = () => {
             title: 'เกี่ยวกับ',
             headerStyle: {
               backgroundColor: Colors.backgroundLoginColor,
+              shadowColor: 'transparent',
+               
             },
             headerTintColor: Colors.backgroundColor,
             headerTitleStyle: {
               fontWeight: 'bold',
+              
+              fontSize:20
             },
+     
+
             headerTitleAlign: 'center'
           }}
           name="Topmenu" component={Topmenu} />

@@ -386,9 +386,11 @@ const LoginScreen = () => {
             </View>
           </View>
           <View style={styles.checkboxContainer}>
+            <View></View>
             <CheckBox
               value={isSelected}
               onValueChange={(value) => setSelection(value)}
+             
               tintColors={{ true: '#FFFF', false: '#FFFF' }}
               style={styles.checkbox}
             />
@@ -541,13 +543,16 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     flexDirection: "row",
+    marginTop:10,
     marginLeft: 10,
     marginBottom: 20,
   },
   checkbox: {
+    
     alignSelf: "center",
     borderBottomColor: '#ffff',
     color: '#ffff',
+    
   },
   label: {
     margin: 8,

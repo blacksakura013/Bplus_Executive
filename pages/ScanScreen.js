@@ -17,7 +17,10 @@ import { Language } from '../translations/I18n';
 import { QRreader } from 'react-native-qr-decode-image-camera';
 
 const ScanScreen = ({ navigation, route }) => {
-
+  let checkAndroidPermission = true
+  if (Platform.OS === 'android' && Platform.Version < 23) {
+    checkAndroidPermission = false
+  }
   const onSuccess = (e) => {
 
     if (e && e.type != 'QR_CODE' && e.type != 'org.iso.QRCode') {
@@ -70,6 +73,7 @@ const ScanScreen = ({ navigation, route }) => {
 
   return (
     <QRCodeScanner
+    checkAndroid6Permissions={checkAndroidPermission}
       onRead={onSuccess}
       cameraType={'back'}
       fadeIn={true}

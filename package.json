@@ -49,7 +49,7 @@
     "react-native-navigation-drawer-layout": "^0.0.7",
     "react-native-paper": "^4.9.2",
     "react-native-permissions": "^3.1.0",
-    "react-native-qr-decode-image-camera": "1.0.3",
+    "react-native-qr-decode-image-camera": "^1.0.5",
     "react-native-qrcode-scanner": "^1.5.4",
     "react-native-reanimated": "^2.2.3",
     "react-native-responsive-screen": "^1.4.2",

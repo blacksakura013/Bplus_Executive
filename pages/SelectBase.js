@@ -8,6 +8,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
+  KeyboardAvoidingView
 } from 'react-native';
 import { Picker, } from 'native-base';
 import { useStateIfMounted } from 'use-state-if-mounted';
@@ -53,7 +54,8 @@ const SelectBase = ({ route }) => {
   const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
 
   const [selectedValue, setSelectedValue] = useState('');
-  const [selectbaseValue, setSelectbaseValue] = useState(databaseReducer.Data.nameser ? databaseReducer.Data.nameser : null);
+  const [selectbaseValue, setSelectbaseValue] = useState(databaseReducer.Data.nameser ? databaseReducer.Data.nameser : "-1");
+  const [selectlanguage, setlanguage] = useState('thai');
   const [basename, setBasename] = useState('');
   const [baseurl, setBsaeurl] = useState('');
   const [username, setUsername] = useState('');
@@ -326,9 +328,9 @@ const SelectBase = ({ route }) => {
         </View>
         <View>
           <Picker
-            selectedValue={selectedValue}
+            selectedValue={selectlanguage}
             style={{ width: 110 }}
-            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+            onValueChange={(itemValue, itemIndex) => setlanguage(itemValue)}>
             <Picker.Item label="TH" value="thai" />
             <Picker.Item label="EN" value="eng" />
           </Picker>
@@ -337,7 +339,10 @@ const SelectBase = ({ route }) => {
       </View>
 
       <SafeAreaView >
+      <ScrollView>
+      <KeyboardAvoidingView keyboardVerticalOffset={5} behavior={'position'}>
         <View style={styles.body}>
+        
           <View style={styles.body1}>
             <Text style={styles.textTitle}>
               เลือกฐานข้อมูล :
@@ -349,7 +354,8 @@ const SelectBase = ({ route }) => {
                 selectedValue={selectbaseValue}
                 enabled={true}
                 mode="dropdown"
-                style={{ width: '100%', backgroundColor: '#fff', borderRadius: 10, }}
+                style={{ width: deviceWidth*0.95, flexDirection: 'column',
+                justifyContent: 'center',backgroundColor: '#fff', borderRadius: 10, }}
                 onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
                 {loginReducer.ipAddress.map((obj, index) => {
                   return (
@@ -366,7 +372,9 @@ const SelectBase = ({ route }) => {
                 onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
                 enabled={false}
                 mode="dropdown"
-                itemStyle={{}}>
+                style={{ width: deviceWidth*0.95, flexDirection: 'column',
+                justifyContent: 'center',backgroundColor: '#fff', borderRadius: 10, }}
+               >
                 {
                   <Picker.Item
                     value="-1"
@@ -426,11 +434,13 @@ const SelectBase = ({ route }) => {
               </View>
             </TouchableNativeFeedback>
           </View>
+
           <View style={{ marginTop: 10 }}>
             <Text style={styles.textTitle}>
               ชื่อฐานข้อมูล :
             </Text>
           </View>
+         
           <View style={{ marginTop: 10 }}>
             <View
               style={{
@@ -638,7 +648,7 @@ const SelectBase = ({ route }) => {
               </View>
             </TouchableNativeFeedback>
           </View>
-
+         
         </View>
         {loading && (
           <View
@@ -666,6 +676,8 @@ const SelectBase = ({ route }) => {
             />
           </View>
         )}
+         </KeyboardAvoidingView>
+         </ScrollView>
       </SafeAreaView>
     </View>
   )
