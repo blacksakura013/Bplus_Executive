@@ -8,7 +8,7 @@ import { RNCamera } from 'react-native-camera';
 import { decode } from 'jpeg-js';
 import jsQR from 'jsqr';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import  ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
