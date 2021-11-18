@@ -394,7 +394,7 @@ const LoginScreen = () => {
               tintColors={{ true: '#FFFF', false: '#FFFF' }}
               style={styles.checkbox}
             />
-            <Text style={styles.label}>Do you like React Native?</Text>
+            <Text style={styles.label}>จดจำรหัสผ่าน</Text>
           </View>
           <View style={{ marginLeft: 10, marginRight: 10 }}>
             <View

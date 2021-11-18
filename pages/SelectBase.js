@@ -144,7 +144,7 @@ const SelectBase = ({ route }) => {
     if (checkValue() == true) {
       let temp = []
       let check = false;
-      console.log(checkIPAddress())
+    
       temp = loginReducer.ipAddress;
       for (let i in loginReducer.ipAddress) {
         if (
@@ -272,10 +272,7 @@ const SelectBase = ({ route }) => {
   // };
 
   const checkIPAddress = async () => {
-    console.log('baseurl : ', baseurl)
-    console.log('serviceID : ', serviceID)
-    console.log('registerReducer.machineNum : ', registerReducer.machineNum)
-    console.log('username : ', username)
+
     let result = true;
     fetch(baseurl + 'DevUsers', {
       method: 'POST',
@@ -292,7 +289,7 @@ const SelectBase = ({ route }) => {
       .then((response) => response.json())
       .then((json) => {
         if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-          return true;
+          result =  true;
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),
