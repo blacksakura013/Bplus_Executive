@@ -339,346 +339,401 @@ const SelectBase = ({ route }) => {
       </View>
 
       <SafeAreaView >
-      <ScrollView>
-      <KeyboardAvoidingView keyboardVerticalOffset={5} behavior={'position'}>
-        <View style={styles.body}>
-        
-          <View style={styles.body1}>
-            <Text style={styles.textTitle}>
-              เลือกฐานข้อมูล :
-            </Text>
-          </View>
-          <View style={styles.body1}>
-            {loginReducer.ipAddress.length > 0 ? (
-              <Picker
-                selectedValue={selectbaseValue}
-                enabled={true}
-                mode="dropdown"
-                style={{ width: deviceWidth*0.95, flexDirection: 'column',
-                justifyContent: 'center',backgroundColor: '#fff', borderRadius: 10, }}
-                onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
-                {loginReducer.ipAddress.map((obj, index) => {
-                  return (
-                    <Picker.Item label={obj.nameser} value={obj.nameser} />
-                  )
-                })}
-              </Picker>
-            ) : (
-              <Picker
-                selectedValue={selectbaseValue}
-                style={{
-                  width: '100%', backgroundColor: '#fff', borderRadius: 10,
-                }}
-                onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
-                enabled={false}
-                mode="dropdown"
-                style={{ width: deviceWidth*0.95, flexDirection: 'column',
-                justifyContent: 'center',backgroundColor: '#fff', borderRadius: 10, }}
-               >
-                {
-                  <Picker.Item
-                    value="-1"
-                    label={Language.t('selectBase.lebel')}
-                  />
-                }
-              </Picker>
-            )}
-          </View>
+        <ScrollView>
+          <KeyboardAvoidingView keyboardVerticalOffset={5} behavior={'position'}>
+            <View style={styles.body}>
+              {Platform.OS == 'ios' ? (
+                <>
+                  <View style={styles.body1}>
+                    <Text style={styles.textTitle}>
+                      เลือกฐานข้อมูล :
+                    </Text>
+                  </View>
+                  <View style={styles.body1}>
+                    {loginReducer.ipAddress.length > 0 ? (
+                      <Picker
+                        selectedValue={selectbaseValue}
+                        enabled={true}
+                        mode="dropdown"
+                        style={{
+                          width: deviceWidth * 0.95, flexDirection: 'column',
+                          justifyContent: 'center', backgroundColor: '#fff', borderRadius: 10,
+                        }}
+                        onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
+                        {loginReducer.ipAddress.map((obj, index) => {
+                          return (
+                            <Picker.Item label={obj.nameser} value={obj.nameser} />
+                          )
+                        })}
+                      </Picker>
+                    ) : (
+                      <Picker
+                        selectedValue={selectbaseValue}
+                        style={{
+                          width: '100%', backgroundColor: '#fff', borderRadius: 10,
+                        }}
+                        onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
+                        enabled={false}
+                        mode="dropdown"
+                        style={{
+                          width: deviceWidth * 0.95, flexDirection: 'column',
+                          justifyContent: 'center', backgroundColor: '#fff', borderRadius: 10,
+                        }}
+                      >
+                        {
+                          <Picker.Item
+                            value="-1"
+                            label={Language.t('selectBase.lebel')}
+                          />
+                        }
+                      </Picker>
+                    )}
+                  </View>
 
-          <View style={styles.body1e}>
-
-            <TouchableNativeFeedback
-              onPress={() => _onPressSelected()}>
-              <View
-                style={{
-                  borderRadius: 10,
-                  flexDirection: 'column',
-                  marginLeft: 10,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  width: 100,
-                  backgroundColor: Colors.buttonColorPrimary,
-                }}>
-                <Text
-                  style={{
-                    color: Colors.fontColor2,
-                    alignSelf: 'center',
-                    fontSize: FontSize.medium,
-                    fontWeight: 'bold',
+                </>
+              ) : (
+                <>
+                  <View style={styles.body1}>
+                    <Text style={styles.textTitle}>
+                      เลือกฐานข้อมูล :
+                    </Text>
+                  </View>
+                  <View style={{
+                    marginTop: 10, flexDirection: 'row',
+                    justifyContent: 'center', backgroundColor: '#fff', color: 'black', padding: 10, borderRadius: 10,
                   }}>
-                  เชื่อมต่อ
+
+                    <Text style={{ fontSize: FontSize.large }}></Text>
+
+                    {loginReducer.ipAddress.length > 0 ? (
+                      <Picker
+                        selectedValue={selectbaseValue}
+                        enabled={true}
+                        mode="dropdown"
+
+                        onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
+                        {loginReducer.ipAddress.map((obj, index) => {
+                          return (
+                            <Picker.Item label={obj.nameser} value={obj.nameser} />
+                          )
+                        })}
+                      </Picker>
+                    ) : (
+                      <Picker
+                        selectedValue={selectbaseValue}
+
+                        onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
+                        enabled={false}
+                        mode="dropdown"
+
+                      >
+                        {
+                          <Picker.Item
+                            value="-1"
+                            label={Language.t('selectBase.lebel')}
+                          />
+                        }
+                      </Picker>
+                    )}
+                  </View>
+                </>
+              )}
+
+              <View style={styles.body1e}>
+
+                <TouchableNativeFeedback
+                  onPress={() => _onPressSelected()}>
+                  <View
+                    style={{
+                      borderRadius: 10,
+                      flexDirection: 'column',
+                      marginLeft: 10,
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      width: 100,
+                      backgroundColor: Colors.buttonColorPrimary,
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.fontColor2,
+                        alignSelf: 'center',
+                        fontSize: FontSize.medium,
+                        fontWeight: 'bold',
+                      }}>
+                      เชื่อมต่อ
+                    </Text>
+                  </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback
+                  onPress={() => _onPressEdit()}>
+                  <View
+                    style={{
+                      borderRadius: 10,
+                      flexDirection: 'column',
+                      marginLeft: 10,
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      width: 100,
+                      backgroundColor: 'red',
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.fontColor2,
+                        alignSelf: 'center',
+                        fontSize: FontSize.medium,
+                        fontWeight: 'bold',
+                      }}>
+                      แก้ไข
+                    </Text>
+                  </View>
+                </TouchableNativeFeedback>
+              </View>
+
+              <View style={{ marginTop: 10 }}>
+                <Text style={styles.textTitle}>
+                  ชื่อฐานข้อมูล :
                 </Text>
               </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback
-              onPress={() => _onPressEdit()}>
-              <View
-                style={{
-                  borderRadius: 10,
-                  flexDirection: 'column',
-                  marginLeft: 10,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  width: 100,
-                  backgroundColor: 'red',
-                }}>
-                <Text
+
+              <View style={{ marginTop: 10 }}>
+                <View
                   style={{
-                    color: Colors.fontColor2,
-                    alignSelf: 'center',
-                    fontSize: FontSize.medium,
-                    fontWeight: 'bold',
+                    backgroundColor: Colors.backgroundLoginColorSecondary,
+                    flexDirection: 'column',
+                    height: 50,
+                    borderRadius: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    paddingBottom: 10
                   }}>
-                  แก้ไข
+                  <View style={{ height: 30, flexDirection: 'row' }}>
+                    <FontAwesome name="database" size={30} color={Colors.backgroundLoginColor} />
+                    <TextInput
+                      style={{
+                        flex: 8,
+                        marginLeft: 10,
+                        borderBottomColor: Colors.borderColor,
+                        color: Colors.fontColor,
+                        paddingVertical: 3,
+                        fontSize: FontSize.medium,
+                        borderBottomWidth: 0.7,
+                      }}
+
+                      placeholderTextColor={Colors.fontColorSecondary}
+
+                      placeholder={'ชื่อฐานข้อมูล'}
+                      value={basename}
+                      onChangeText={(val) => {
+                        setBasename(val);
+                      }}></TextInput>
+                    <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen')}>
+
+                      <FontAwesome
+                        name="qrcode"
+                        size={25}
+                        color={Colors.buttonColorPrimary}
+                      />
+
+                    </TouchableOpacity>
+
+                  </View>
+                </View>
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <Text style={styles.textTitle}>
+                  ที่อยู่ฐานข้อมูล :
                 </Text>
               </View>
-            </TouchableNativeFeedback>
-          </View>
-
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.textTitle}>
-              ชื่อฐานข้อมูล :
-            </Text>
-          </View>
-         
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                backgroundColor: Colors.backgroundLoginColorSecondary,
-                flexDirection: 'column',
-                height: 50,
-                borderRadius: 10,
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-                paddingBottom: 10
-              }}>
-              <View style={{ height: 30, flexDirection: 'row' }}>
-                <FontAwesome name="database" size={30} color={Colors.backgroundLoginColor} />
-                <TextInput
+              <View style={{ marginTop: 10 }}>
+                <View
                   style={{
-                    flex: 8,
-                    marginLeft: 10,
-                    borderBottomColor: Colors.borderColor,
-                    color: Colors.fontColor,
-                    paddingVertical: 3,
-                    fontSize: FontSize.medium,
-                    borderBottomWidth: 0.7,
-                  }}
+                    backgroundColor: Colors.backgroundLoginColorSecondary,
+                    flexDirection: 'column',
+                    height: 50,
+                    borderRadius: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                  }}>
+                  <View style={{ height: 30, flexDirection: 'row' }}>
+                    <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
+                    <TextInput
+                      style={{
+                        flex: 8,
+                        marginLeft: 10,
+                        borderBottomColor: Colors.borderColor,
+                        color: Colors.fontColor,
+                        paddingVertical: 3,
+                        fontSize: FontSize.medium,
+                        borderBottomWidth: 0.7,
+                      }}
 
-                  placeholderTextColor={Colors.fontColorSecondary}
+                      placeholderTextColor={Colors.fontColorSecondary}
 
-                  placeholder={'ชื่อฐานข้อมูล'}
-                  value={basename}
-                  onChangeText={(val) => {
-                    setBasename(val);
-                  }}></TextInput>
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen')}>
+                      value={baseurl}
+                      placeholder={'ที่อยู่ฐานข้อมูล'}
+                      onChangeText={(val) => {
+                        setBsaeurl(val);
+                      }}></TextInput>
 
-                  <FontAwesome
-                    name="qrcode"
-                    size={25}
-                    color={Colors.buttonColorPrimary}
-                  />
-
-                </TouchableOpacity>
-
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.textTitle}>
-              ที่อยู่ฐานข้อมูล :
-            </Text>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                backgroundColor: Colors.backgroundLoginColorSecondary,
-                flexDirection: 'column',
-                height: 50,
-                borderRadius: 10,
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-                paddingBottom: 10
-              }}>
-              <View style={{ height: 30, flexDirection: 'row' }}>
-                <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
-                <TextInput
-                  style={{
-                    flex: 8,
-                    marginLeft: 10,
-                    borderBottomColor: Colors.borderColor,
-                    color: Colors.fontColor,
-                    paddingVertical: 3,
-                    fontSize: FontSize.medium,
-                    borderBottomWidth: 0.7,
-                  }}
-
-                  placeholderTextColor={Colors.fontColorSecondary}
-
-                  value={baseurl}
-                  placeholder={'ที่อยู่ฐานข้อมูล'}
-                  onChangeText={(val) => {
-                    setBsaeurl(val);
-                  }}></TextInput>
-
+              <View style={{ marginTop: 10 }}>
+                <Text style={styles.textTitle}>
+                  ชื่อผู้ใช้ :
+                </Text>
               </View>
-            </View>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.textTitle}>
-              ชื่อผู้ใช้ :
-            </Text>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                backgroundColor: Colors.backgroundLoginColorSecondary,
-                flexDirection: 'column',
-                height: 50,
-                borderRadius: 10,
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-                paddingBottom: 10
-              }}>
-              <View style={{ height: 30, flexDirection: 'row' }}>
-                <FontAwesome name="user" size={30} color={Colors.backgroundLoginColor} />
-                <TextInput
+              <View style={{ marginTop: 10 }}>
+                <View
                   style={{
-                    flex: 8,
-                    marginLeft: 5,
-                    borderBottomColor: Colors.borderColor,
-                    color: Colors.fontColor,
-                    paddingVertical: 3,
-                    fontSize: FontSize.medium,
-                    borderBottomWidth: 0.7,
-                  }}
+                    backgroundColor: Colors.backgroundLoginColorSecondary,
+                    flexDirection: 'column',
+                    height: 50,
+                    borderRadius: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                  }}>
+                  <View style={{ height: 30, flexDirection: 'row' }}>
+                    <FontAwesome name="user" size={30} color={Colors.backgroundLoginColor} />
+                    <TextInput
+                      style={{
+                        flex: 8,
+                        marginLeft: 5,
+                        borderBottomColor: Colors.borderColor,
+                        color: Colors.fontColor,
+                        paddingVertical: 3,
+                        fontSize: FontSize.medium,
+                        borderBottomWidth: 0.7,
+                      }}
 
-                  placeholderTextColor={Colors.fontColorSecondary}
+                      placeholderTextColor={Colors.fontColorSecondary}
 
-                  value={username}
-                  placeholder={'ชื่อผู้ใช้'}
-                  onChangeText={(val) => {
-                    setUsername(val);
-                  }}></TextInput>
+                      value={username}
+                      placeholder={'ชื่อผู้ใช้'}
+                      onChangeText={(val) => {
+                        setUsername(val);
+                      }}></TextInput>
 
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.textTitle}>
-              รหัสผ่าน :
-            </Text>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                backgroundColor: Colors.backgroundLoginColorSecondary,
-                flexDirection: 'column',
-                height: 50,
-                borderRadius: 10,
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-                paddingBottom: 10
-              }}>
-              <View style={{ height: 30, flexDirection: 'row' }}>
-                <FontAwesome name="lock" size={30} color={Colors.backgroundLoginColor} />
-                <TextInput
+              <View style={{ marginTop: 10 }}>
+                <Text style={styles.textTitle}>
+                  รหัสผ่าน :
+                </Text>
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <View
                   style={{
-                    flex: 8,
-                    marginLeft: 5,
-                    color: Colors.fontColor,
-                    paddingVertical: 3,
-                    fontSize: FontSize.medium,
-                    borderBottomColor: Colors.borderColor,
-                    borderBottomWidth: 0.7,
-                  }}
-                  secureTextEntry={data.secureTextEntry ? true : false}
-                  keyboardType="default"
+                    backgroundColor: Colors.backgroundLoginColorSecondary,
+                    flexDirection: 'column',
+                    height: 50,
+                    borderRadius: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                  }}>
+                  <View style={{ height: 30, flexDirection: 'row' }}>
+                    <FontAwesome name="lock" size={30} color={Colors.backgroundLoginColor} />
+                    <TextInput
+                      style={{
+                        flex: 8,
+                        marginLeft: 5,
+                        color: Colors.fontColor,
+                        paddingVertical: 3,
+                        fontSize: FontSize.medium,
+                        borderBottomColor: Colors.borderColor,
+                        borderBottomWidth: 0.7,
+                      }}
+                      secureTextEntry={data.secureTextEntry ? true : false}
+                      keyboardType="default"
 
-                  placeholderTextColor={Colors.fontColorSecondary}
-                  placeholder={'รหัสผ่าน'}
-                  value={password}
-                  onChangeText={(val) => {
-                    setPassword(val);
-                  }}
-                />
-
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={updateSecureTextEntry}>
-                  {data.secureTextEntry ? (
-                    <FontAwesome
-                      name="eye-slash"
-                      size={25}
-                      color={Colors.buttonColorPrimary}
+                      placeholderTextColor={Colors.fontColorSecondary}
+                      placeholder={'รหัสผ่าน'}
+                      value={password}
+                      onChangeText={(val) => {
+                        setPassword(val);
+                      }}
                     />
-                  ) : (
-                    <FontAwesome
-                      name="eye"
-                      size={25}
-                      color={Colors.buttonColorPrimary} />
-                  )}
-                </TouchableOpacity>
+
+                    <TouchableOpacity style={{ marginLeft: 10 }} onPress={updateSecureTextEntry}>
+                      {data.secureTextEntry ? (
+                        <FontAwesome
+                          name="eye-slash"
+                          size={25}
+                          color={Colors.buttonColorPrimary}
+                        />
+                      ) : (
+                        <FontAwesome
+                          name="eye"
+                          size={25}
+                          color={Colors.buttonColorPrimary} />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
+              <View style={{ marginTop: 20 }}>
+                <TouchableNativeFeedback
+                  onPress={() => _onPressAddbase()}>
+                  <View
+                    style={{
+                      borderRadius: 10,
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      height: 50,
+                      backgroundColor: Colors.buttonColorPrimary,
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.fontColor2,
+                        alignSelf: 'center',
+                        fontSize: FontSize.medium,
+                        fontWeight: 'bold',
+                      }}>
+                      บันทึก และ เชื่อมต่อ
+                    </Text>
+                  </View>
+                </TouchableNativeFeedback>
+              </View>
+
             </View>
-          </View>
-          <View style={{ marginTop: 20 }}>
-            <TouchableNativeFeedback
-              onPress={() => _onPressAddbase()}>
-              <View
-                style={{
-                  borderRadius: 10,
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  height: 50,
-                  backgroundColor: Colors.buttonColorPrimary,
-                }}>
-                <Text
-                  style={{
-                    color: Colors.fontColor2,
-                    alignSelf: 'center',
-                    fontSize: FontSize.medium,
-                    fontWeight: 'bold',
-                  }}>
-                  บันทึก และ เชื่อมต่อ
-                </Text>
-              </View>
-            </TouchableNativeFeedback>
-          </View>
-         
-        </View>
-        {loading && (
-          <View
-            style={{
-              width: deviceWidth,
-              height: deviceHeight,
-              opacity: 0.5,
-              backgroundColor: 'black',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              alignContent: 'center',
-              position: 'absolute',
-            }}>
-            <ActivityIndicator
-              style={{
-                borderRadius: 15,
-                backgroundColor: null,
-                width: 100,
-                height: 100,
-                alignSelf: 'center',
-              }}
-              animating={loading}
-              size="large"
-              color={Colors.lightPrimiryColor}
-            />
-          </View>
-        )}
-         </KeyboardAvoidingView>
-         </ScrollView>
+
+          </KeyboardAvoidingView>
+        </ScrollView>
       </SafeAreaView>
+      {loading && (
+        <View
+          style={{
+            width: deviceWidth,
+            height: deviceHeight,
+            opacity: 0.5,
+            backgroundColor: 'black',
+            alignSelf: 'center',
+            justifyContent: 'center',
+            alignContent: 'center',
+            position: 'absolute',
+          }}>
+          <ActivityIndicator
+            style={{
+              borderRadius: 15,
+              backgroundColor: null,
+              width: 100,
+              height: 100,
+              alignSelf: 'center',
+            }}
+            animating={loading}
+            size="large"
+            color={Colors.lightPrimiryColor}
+          />
+        </View>
+      )}
     </View>
   )
 }

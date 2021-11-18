@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet, View, Text, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Platform,View, Text, Alert, TouchableOpacity } from 'react-native';
 
 import { RNCamera } from 'react-native-camera';
 
@@ -8,7 +8,7 @@ import { RNCamera } from 'react-native-camera';
 import { decode } from 'jpeg-js';
 import jsQR from 'jsqr';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import * as ImagePicker from 'react-native-image-picker';
+import  ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 

@@ -4,17 +4,17 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import com.zoontek.rnpermissions.RNPermissionsPackage;
-import org.reactnative.camera.RNCameraPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import android.database.CursorWindow;
+import java.lang.reflect.Field;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -50,6 +50,16 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    try {
+      Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+      field.setAccessible(true);
+      field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+      
+    } catch (Exception e) {
+      if (e != null) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /**
