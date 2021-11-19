@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import {  monthFormat ,currencyFormat,dateFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, dateFormat, setnewdateF } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -99,7 +99,7 @@ const AP_GoodsBooking = ({ route }) => {
     }, [arrayObj])
     const regisMacAdd = async () => {
         console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -137,20 +137,20 @@ const AP_GoodsBooking = ({ route }) => {
 
     const _fetchGuidLog = async () => {
         console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -194,7 +194,7 @@ const AP_GoodsBooking = ({ route }) => {
 
     };
 
-   
+
     const InCome = async () => {
 
         setLoading(true)
@@ -209,12 +209,12 @@ const AP_GoodsBooking = ({ route }) => {
         var sDate = setnewdateF(start_date)
         var eDate = setnewdateF(end_date)
 
-        await fetch(databaseReducer.Data.urlser + 'Executive', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWGOODSORDERARKEY',
+                'BPAPUS-FUNCTION': 'SHOWGOODSPURCHASEAPKEY',
                 'BPAPUS-PARAM':
                     '{ "TO_DATE": "' +
                     eDate +
@@ -230,14 +230,16 @@ const AP_GoodsBooking = ({ route }) => {
             .then((json) => {
 
                 let responseData = JSON.parse(json.ResponseData);
-                console.log(responseData.SHOWGOODSORDERARKEY)
-                for (var i in responseData.SHOWGOODSORDERARKEY) {
+                console.log(responseData.SHOWGOODSPURCHASEAPKEY)
+                for (var i in responseData.SHOWGOODSPURCHASEAPKEY) {
                     let jsonObj = {
-                        id: i,
-                        date: responseData.SHOWGOODSORDERARKEY[i].DI_DATE,
-                        id_ref: responseData.SHOWGOODSORDERARKEY[i].DI_REF,
-                        ard_A_mt: responseData.SHOWGOODSORDERARKEY[i].ARD_A_AMT,
-                        sumamount: responseData.SHOWGOODSORDERARKEY[i].SHOWSUMAMOUNT,
+                        goods_code: responseData.SHOWGOODSPURCHASEAPKEY[i].GOODS_CODE,
+                        sku_nmae: responseData.SHOWGOODSPURCHASEAPKEY[i].SKU_NAME,
+                        utq_qty: responseData.SHOWGOODSPURCHASEAPKEY[i].UTQ_QTY,
+                        trd_qty: responseData.SHOWGOODSPURCHASEAPKEY[i].TRD_QTY,
+                        trd_qty_free: responseData.SHOWGOODSPURCHASEAPKEY[i].TRD_Q_FREE,
+                        showusedqty: responseData.SHOWGOODSPURCHASEAPKEY[i].SHOWUSEDQTY,
+                        showusedfree: responseData.SHOWGOODSPURCHASEAPKEY[i].SHOWUSEDFREE,
                     };
                     arrayResult.push(jsonObj)
                 }
@@ -326,24 +328,24 @@ const AP_GoodsBooking = ({ route }) => {
                                         <DataTable.Title ><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
-                                        }}>วันที่</Text></DataTable.Title>
+                                        }}>รหัส</Text></DataTable.Title>
                                         <DataTable.Title ><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
-                                        }}>เอกสาร</Text></DataTable.Title>
+                                        }}>ชื่อ</Text></DataTable.Title>
 
                                         <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
-                                        }}> ยอดหนี้ </Text></DataTable.Title>
+                                        }}> จำนวนค้างส่ง </Text></DataTable.Title>
                                         <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
-                                        }}> ชำระแล้ว </Text></DataTable.Title>
+                                        }}> ส่งแล้ว </Text></DataTable.Title>
                                         <DataTable.Title numeric><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2
-                                        }}> ตงค้าง </Text></DataTable.Title>
+                                        }}> จำนวนจอง </Text></DataTable.Title>
 
                                     </DataTable.Header>
 
@@ -355,11 +357,11 @@ const AP_GoodsBooking = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell>{dateFormat(item.date)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.id_ref}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.ard_A_mt)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.sumamount)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat((item.ard_A_mt + item.sumamount))}</DataTable.Cell>
+                                                                    <DataTable.Cell>{item.goods_code}</DataTable.Cell>
+                                                                    <DataTable.Cell >{item.sku_nmae}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.trd_qty)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(  item.trd_qty_free)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat((item.trd_qty))}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>
                                                         </>
@@ -432,9 +434,9 @@ const AP_GoodsBooking = ({ route }) => {
                                                 date={end_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
-                                               
-                                                
+                                                format="DD-MM-YYYY"
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

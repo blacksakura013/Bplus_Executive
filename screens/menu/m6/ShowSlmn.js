@@ -96,7 +96,7 @@ const ShowSlmn = ({ route }) => {
     }
     const fetchInSearch = async () => {
 
-        await fetch(databaseReducer.Data.urlser + 'LookupErp', {
+        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,

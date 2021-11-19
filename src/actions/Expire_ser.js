@@ -8,7 +8,7 @@ const regisMacAdd =  (urlser,machineNum,usernameser,passwordser,userName) => {
     
     console.log('REGIS MAC ADDRESS');
     
-     fetch( urlser + 'DevUsers', {
+     fetch( urlser + '/DevUsers', {
         method: 'POST',
         body: JSON.stringify({
             'BPAPUS-BPAPSV': serviceID,
@@ -50,7 +50,7 @@ const _fetchGuidLog = async (urlser,serviceID,machineNum,usernameser,passwordser
 
     
     console.log('FETCH GUID LOGIN');
-    await fetch(urlser + 'DevUsers', {
+    await fetch(urlser + '/DevUsers', {
         method: 'POST',
         body: JSON.stringify({
             'BPAPUS-BPAPSV': serviceID,

@@ -168,7 +168,7 @@ const LoginScreen = () => {
     console.log('BPAPUS-MACHINE : > ' + registerReducer.machineNum);
     console.log('BPAPUS-USERID : > ' + username);
     console.log('BPAPUS-PASSWORD : > ' + password);
-    await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -206,7 +206,7 @@ const LoginScreen = () => {
 
   const _fetchGuidLog = async () => {
     console.log('FETCH GUID LOGIN');
-    await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -239,12 +239,10 @@ const LoginScreen = () => {
           dispatch(loginActions.guid(responseData.BPAPUS_GUID))
           dispatch(loginActions.userNameED(username))
           dispatch(loginActions.passwordED(password))
-
           dispatch(loginActions.userlogin(isSelected))
           navigation.dispatch(
             navigation.replace('MainMenu')
           )
-
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'), json.ResponseCode

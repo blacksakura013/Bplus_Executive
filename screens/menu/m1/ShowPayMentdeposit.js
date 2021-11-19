@@ -103,7 +103,7 @@ const ShowPayMentdeposit = ({ route }) => {
 
     const regisMacAdd = async () => {
         console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -141,7 +141,7 @@ const ShowPayMentdeposit = ({ route }) => {
 
     const _fetchGuidLog = async () => {
         console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -211,7 +211,7 @@ const ShowPayMentdeposit = ({ route }) => {
         var sDate = setnewdateF(start_date)
         var eDate = setnewdateF(end_date)
 
-        await fetch(databaseReducer.Data.urlser + 'Executive', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -231,7 +231,7 @@ const ShowPayMentdeposit = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
+                if(responseData.RECORD_COUNT>0){
                 for (var i in responseData.SHOWPAYMENTDEPOSITBYYEARMONTH) {
                     let jsonObj = {
                         id: i,
@@ -243,6 +243,9 @@ const ShowPayMentdeposit = ({ route }) => {
                     };
                     arrayResult.push(jsonObj)
                 }
+            }else{
+                Alert.alert("ไม่พบข้อมูล");
+            }
             })
             .catch((error) => {
                 if (ser_die) {
@@ -435,7 +438,7 @@ const ShowPayMentdeposit = ({ route }) => {
                                                 date={start_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
+                                                format="DD-MM-YYYY"
                                                 
                                                 
                                                 confirmBtnText="Confirm"
@@ -466,7 +469,7 @@ const ShowPayMentdeposit = ({ route }) => {
                                                 date={end_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
+                                                format="DD-MM-YYYY"
                                                 
                                                 
                                                 confirmBtnText="Confirm"

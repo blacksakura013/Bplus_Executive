@@ -140,15 +140,17 @@ const SelectBase = ({ route }) => {
     return c
   }
   const _onPressAddbase = async () => {
+    let tempurl = baseurl.split('.dll')
+    let newurl = tempurl[0] + '.dll'
     setLoading(true)
     if (checkValue() == true) {
       let temp = []
       let check = false;
-    
+
       temp = loginReducer.ipAddress;
       for (let i in loginReducer.ipAddress) {
         if (
-          loginReducer.ipAddress[i].urlser == baseurl
+          loginReducer.ipAddress[i].urlser == newurl
         ) {
           setShowDialog(false);
           Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
@@ -164,7 +166,7 @@ const SelectBase = ({ route }) => {
           Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           setShowDialog(false);
         } else {
-          await fetch(baseurl + 'DevUsers', {
+          await fetch(newurl + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
               'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -200,7 +202,7 @@ const SelectBase = ({ route }) => {
 
                 let newObj = {
                   nameser: basename,
-                  urlser: baseurl,
+                  urlser: newurl,
                   usernameser: username,
                   passwordser: password
                 }
@@ -244,7 +246,7 @@ const SelectBase = ({ route }) => {
 
   // const checkIPAddress = async (url) => {
   //   let result = false;
-  //   await fetch(url + 'DevUsers', {
+  //   await fetch(url + '/DevUsers', {
   //     method: 'POST',
   //     body: JSON.stringify({
   //       'BPAPUS-BPAPSV': '{167f0c96-86fd-488f-94d1-cc3169d60b1a}',
@@ -274,7 +276,7 @@ const SelectBase = ({ route }) => {
   const checkIPAddress = async () => {
 
     let result = true;
-    fetch(baseurl + 'DevUsers', {
+    fetch(baseurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': serviceID,
@@ -289,7 +291,7 @@ const SelectBase = ({ route }) => {
       .then((response) => response.json())
       .then((json) => {
         if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-          result =  true;
+          result = true;
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),
@@ -524,7 +526,7 @@ const SelectBase = ({ route }) => {
                       onChangeText={(val) => {
                         setBasename(val);
                       }}></TextInput>
-                    <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen')}>
+                    <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen', { route: 'SelectScreen' })}>
 
                       <FontAwesome
                         name="qrcode"
@@ -552,9 +554,10 @@ const SelectBase = ({ route }) => {
                     paddingLeft: 20,
                     paddingRight: 20,
                     paddingTop: 10,
+                    height: 'auto',
                     paddingBottom: 10
                   }}>
-                  <View style={{ height: 30, flexDirection: 'row' }}>
+                  <View style={{ height: 'auto', flexDirection: 'row' }}>
                     <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
                     <TextInput
                       style={{
@@ -564,9 +567,10 @@ const SelectBase = ({ route }) => {
                         color: Colors.fontColor,
                         paddingVertical: 3,
                         fontSize: FontSize.medium,
+                        height: 'auto',
                         borderBottomWidth: 0.7,
                       }}
-
+                      multiline={true}
                       placeholderTextColor={Colors.fontColorSecondary}
 
                       value={baseurl}

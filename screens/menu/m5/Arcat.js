@@ -101,7 +101,7 @@ const Arcat = ({ route }) => {
 
     const regisMacAdd = async () => {
         console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -139,7 +139,7 @@ const Arcat = ({ route }) => {
 
     const _fetchGuidLog = async () => {
         console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -212,7 +212,7 @@ const Arcat = ({ route }) => {
         var sDate = setnewdateF(start_date)
         var eDate = setnewdateF(end_date)
 
-        await fetch(databaseReducer.Data.urlser + 'Executive', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -430,7 +430,7 @@ const Arcat = ({ route }) => {
                                                 date={start_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
+                                                format="DD-MM-YYYY"
                                                 
                                                 
                                                 confirmBtnText="Confirm"
@@ -461,7 +461,7 @@ const Arcat = ({ route }) => {
                                                 date={end_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
+                                                format="DD-MM-YYYY"
                                                 
                                                 
                                                 confirmBtnText="Confirm"

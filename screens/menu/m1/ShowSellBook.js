@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import {  monthFormat ,currencyFormat,dateFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, dateFormat, setnewdateF } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -102,7 +102,7 @@ const ShowSellBook = ({ route }) => {
 
     const regisMacAdd = async () => {
         console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -140,20 +140,20 @@ const ShowSellBook = ({ route }) => {
 
     const _fetchGuidLog = async () => {
         console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -197,7 +197,7 @@ const ShowSellBook = ({ route }) => {
 
     };
 
- 
+
     const InCome = async () => {
         setLoading(true)
         await fetchInCome()
@@ -209,7 +209,7 @@ const ShowSellBook = ({ route }) => {
         var sDate = setnewdateF(start_date)
         var eDate = setnewdateF(end_date)
 
-        await fetch(databaseReducer.Data.urlser + 'Executive', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -229,17 +229,20 @@ const ShowSellBook = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
-                for (var i in responseData.SHOWSELLBOOKPURCPOBYYEARMONTH) {
-                    let jsonObj = {
-                        id: i,
-                        date: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].DI_DATE,
-                        sellamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWSELLAMOUNT,
-                        bookamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWBOOKAMOUNT,
-                        purcamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWPURCAMOUNT,
-                        poamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWPOAMOUNT,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWSELLBOOKPURCPOBYYEARMONTH) {
+                        let jsonObj = {
+                            id: i,
+                            date: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].DI_DATE,
+                            sellamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWSELLAMOUNT,
+                            bookamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWBOOKAMOUNT,
+                            purcamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWPURCAMOUNT,
+                            poamount: responseData.SHOWSELLBOOKPURCPOBYYEARMONTH[i].SHOWPOAMOUNT,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
             })
             .catch((error) => {
@@ -433,9 +436,9 @@ const ShowSellBook = ({ route }) => {
                                                 date={start_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
-                                                
-                                                
+                                                format="DD-MM-YYYY"
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -464,9 +467,9 @@ const ShowSellBook = ({ route }) => {
                                                 date={end_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
-                                                
-                                                
+                                                format="DD-MM-YYYY"
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -562,7 +565,7 @@ const styles = StyleSheet.create({
 
     },
     tableHeader: {
-        
+
         backgroundColor: Colors.buttonColorPrimary,
 
     },

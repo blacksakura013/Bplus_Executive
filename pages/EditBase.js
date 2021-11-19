@@ -134,17 +134,18 @@ const EditBase = ({ route }) => {
   }
   const _onPressUpdate = async () => {
     setLoading(true)
-
+    let tempurl = baseurl.split('.dll')
+    let newurl = tempurl[0] + '.dll'
     if (checkValue() == true) {
       let temp = []
 
-      console.log(checkIPAddress())
+    
 
       if (checkIPAddress() == false) {
         Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         setShowDialog(false);
       } else {
-        await fetch(baseurl + 'DevUsers', {
+        await fetch(newurl + '/DevUsers', {
           method: 'POST',
           body: JSON.stringify({
             'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -180,7 +181,7 @@ const EditBase = ({ route }) => {
               dispatch(loginActions.ipAddress([]))
               let newObj = {
                 nameser: basename,
-                urlser: baseurl,
+                urlser: newurl,
                 usernameser: username,
                 passwordser: password
               }
@@ -268,7 +269,7 @@ const EditBase = ({ route }) => {
     console.log('registerReducer.machineNum : ', registerReducer.machineNum)
     console.log('username : ', username)
     let result = true;
-    fetch(baseurl + 'DevUsers', {
+    fetch(baseurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': serviceID,
@@ -364,7 +365,7 @@ const EditBase = ({ route }) => {
                   onChangeText={(val) => {
                     setBasename(val);
                   }}></TextInput>
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen')}>
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen',{route:'EditBase'})}>
 
                   <FontAwesome
                     name="qrcode"
@@ -383,41 +384,43 @@ const EditBase = ({ route }) => {
             </Text>
           </View>
           <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                backgroundColor: Colors.backgroundLoginColorSecondary,
-                flexDirection: 'column',
-                height: 50,
-                borderRadius: 10,
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-                paddingBottom: 10
-              }}>
-              <View style={{ height: 30, flexDirection: 'row' }}>
-                <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
-                <TextInput
+                <View
                   style={{
-                    flex: 8,
-                    marginLeft: 10,
-                    borderBottomColor: Colors.borderColor,
-                    color: Colors.fontColor,
-                    paddingVertical: 3,
-                    fontSize: FontSize.medium,
-                    borderBottomWidth: 0.7,
-                  }}
+                    backgroundColor: Colors.backgroundLoginColorSecondary,
+                    flexDirection: 'column',
+                    height: 50,
+                    borderRadius: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    height: 'auto',
+                    paddingBottom: 10
+                  }}>
+                  <View style={{ height: 'auto', flexDirection: 'row' }}>
+                    <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
+                    <TextInput
+                      style={{
+                        flex: 8,
+                        marginLeft: 10,
+                        borderBottomColor: Colors.borderColor,
+                        color: Colors.fontColor,
+                        paddingVertical: 3,
+                        fontSize: FontSize.medium,
+                        height: 'auto',
+                        borderBottomWidth: 0.7,
+                      }}
+                      multiline={true}
+                      placeholderTextColor={Colors.fontColorSecondary}
 
-                  placeholderTextColor={Colors.fontColorSecondary}
+                      value={baseurl}
+                      placeholder={'ที่อยู่ฐานข้อมูล'}
+                      onChangeText={(val) => {
+                        setBsaeurl(val);
+                      }}></TextInput>
 
-                  value={baseurl}
-                  placeholder={'ที่อยู่ฐานข้อมูล'}
-                  onChangeText={(val) => {
-                    setBsaeurl(val);
-                  }}></TextInput>
-
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
           <View style={{ marginTop: 10 }}>
             <Text style={styles.textTitle}>
               ชื่อผู้ใช้ :

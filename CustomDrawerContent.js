@@ -48,7 +48,7 @@ function CustomDrawerContent(props) {
 
   const logOut = async () => {
     setLoading(true)
-    await fetch(loginReducer.ipAddress[0].urlser + 'DevUsers', {
+    await fetch(loginReducer.ipAddress[0].urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,

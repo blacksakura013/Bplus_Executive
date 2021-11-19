@@ -101,7 +101,7 @@ const AR_ShowArdetail = ({ route }) => {
 
     const regisMacAdd = async () => {
         console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -139,7 +139,7 @@ const AR_ShowArdetail = ({ route }) => {
 
     const _fetchGuidLog = async () => {
         console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -211,12 +211,12 @@ const AR_ShowArdetail = ({ route }) => {
         var sDate = setnewdateF(start_date)
         var eDate = setnewdateF(end_date)
 
-        await fetch(databaseReducer.Data.urlser + 'Executive', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWARBALANCEBYARKEY',
+                'BPAPUS-FUNCTION': 'SHOWGOODSORDERARKEY',
                 'BPAPUS-PARAM':
                     '{ "TO_DATE": "' +
                     eDate +
@@ -232,14 +232,14 @@ const AR_ShowArdetail = ({ route }) => {
             .then((json) => {
 
                 let responseData = JSON.parse(json.ResponseData);
-                console.log(responseData.SHOWARBALANCEBYARKEY)
-                for (var i in responseData.SHOWARBALANCEBYARKEY) {
+                console.log(responseData.SHOWGOODSORDERARKEY)
+                for (var i in responseData.SHOWGOODSORDERARKEY) {
                     let jsonObj = {
                         id: i,
-                        date: responseData.SHOWARBALANCEBYARKEY[i].DI_DATE,
-                        id_ref: responseData.SHOWARBALANCEBYARKEY[i].DI_REF,
-                        ard_A_mt: responseData.SHOWARBALANCEBYARKEY[i].ARD_A_AMT,
-                        sumamount: responseData.SHOWARBALANCEBYARKEY[i].SHOWSUMAMOUNT,
+                        date: responseData.SHOWGOODSORDERARKEY[i].DI_DATE,
+                        id_ref: responseData.SHOWGOODSORDERARKEY[i].DI_REF,
+                        ard_A_mt: responseData.SHOWGOODSORDERARKEY[i].ARD_A_AMT,
+                        sumamount: responseData.SHOWGOODSORDERARKEY[i].SHOWSUMAMOUNT,
                     };
                     arrayResult.push(jsonObj)
                 }
@@ -434,7 +434,7 @@ const AR_ShowArdetail = ({ route }) => {
                                                 date={end_date} //start date
                                                 mode="date"
                                                 placeholder="select date"
-                                                format="YYYY-MM-DD"
+                                                format="DD-MM-YYYY"
                                                 
                                                 
                                                 confirmBtnText="Confirm"

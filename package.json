@@ -45,7 +45,7 @@
     "react-native-flexi-radio-button": "^0.2.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-i18n": "^2.0.15",
-    "react-native-image-picker": "^2.3.4",
+    "react-native-image-picker": "^4.3.0",
     "react-native-navigation-drawer-layout": "^0.0.7",
     "react-native-paper": "^4.9.2",
     "react-native-permissions": "^3.1.0",

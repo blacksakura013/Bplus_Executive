@@ -103,7 +103,7 @@ const ShowInCome = ({ route }) => {
     }, [arrayObj])
     const regisMacAdd = async () => {
         console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -141,7 +141,7 @@ const ShowInCome = ({ route }) => {
 
     const _fetchGuidLog = async () => {
         console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -211,7 +211,7 @@ const ShowInCome = ({ route }) => {
         var sDate = setnewdateF(start_date)
         var eDate = setnewdateF(end_date)
 
-        await fetch(databaseReducer.Data.urlser + 'Executive', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -231,16 +231,21 @@ const ShowInCome = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
-                for (var i in responseData.SHOWINCOMEBYYEAR) {
-                    let jsonObj = {
-                        id: i,
-                        year: responseData.SHOWINCOMEBYYEAR[i].SHOWYEAR,
-                        month: responseData.SHOWINCOMEBYYEAR[i].SHOWMONTH,
-                        sellAmount: responseData.SHOWINCOMEBYYEAR[i].SHOWSELLAMOUNT,
-                    };
-                    arrayResult.push(jsonObj)
+                
+                if(responseData.RECORD_COUNT>0){
+                    for (var i in responseData.SHOWINCOMEBYYEAR) {
+                        let jsonObj = {
+                            id: i,
+                            year: responseData.SHOWINCOMEBYYEAR[i].SHOWYEAR,
+                            month: responseData.SHOWINCOMEBYYEAR[i].SHOWMONTH,
+                            sellAmount: responseData.SHOWINCOMEBYYEAR[i].SHOWSELLAMOUNT,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                }else{
+                    Alert.alert("ไม่พบข้อมูล");
                 }
+               
                 setLoading(false)
             })
             .catch((error) => {
@@ -426,8 +431,7 @@ const ShowInCome = ({ route }) => {
                                             date={start_date} //start date
                                             mode="date"
                                             placeholder="select date"
-                                            format="YYYY-MM-DD"
-
+                                            format="DD-MM-YYYY"
                                             confirmBtnText="Confirm"
                                             cancelBtnText="Cancel"
                                             customStyles={{
@@ -454,9 +458,9 @@ const ShowInCome = ({ route }) => {
                                         <DatePicker
                                             style={{ width: 250, }}
                                             date={end_date} //start date
-                                            mode="time"
+                                            mode="date"
                                             placeholder="select date"
-                                            format="YYYY-MM-DD"
+                                            format="DD-MM-YYYY"
 
                                             confirmBtnText="Confirm"
                                             cancelBtnText="Cancel"

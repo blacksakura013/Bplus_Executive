@@ -13,7 +13,7 @@ const MainScreen = () => {
   var ser_die = true
   const regisMacAdd = async () => {
     console.log('REGIS MAC ADDRESS');
-    await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -51,7 +51,7 @@ const MainScreen = () => {
 
   const _fetchGuidLog = async () => {
     console.log('FETCH GUID LOGIN');
-    await fetch(databaseReducer.Data.urlser + 'DevUsers', {
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,

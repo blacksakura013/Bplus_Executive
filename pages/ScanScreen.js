@@ -8,16 +8,24 @@ import { RNCamera } from 'react-native-camera';
 import { decode } from 'jpeg-js';
 import jsQR from 'jsqr';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import * as ImagePicker from 'react-native-image-picker';
+
+ 
+ import * as  ImagePicker from 'react-native-image-picker';
+ 
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { FontSize } from '../components/FontSizeHelper';
 import { Language } from '../translations/I18n';
+
 import { QRreader } from 'react-native-qr-decode-image-camera';
 
 const ScanScreen = ({ navigation, route }) => {
   let checkAndroidPermission = true
+  useEffect(() => {
+    console.log(route.params)
+}, [])
+ 
   if (Platform.OS === 'android' && Platform.Version < 23) {
     checkAndroidPermission = false
   }
@@ -26,13 +34,15 @@ const ScanScreen = ({ navigation, route }) => {
     if (e && e.type != 'QR_CODE' && e.type != 'org.iso.QRCode') {
       Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
     } else {
-      if (e && e.data && e.data.indexOf('name:') == -1) {
+      if (e && e.data && e.data.indexOf('/name:') == -1) {
         Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         navigation.goBack();
       } else {
-        let result = e.data.split('name:');
-        let newObj = { label: result[0], value: result[1] };
-        navigation.navigate('SelectScreen', { post: newObj });
+        let result = e.data.split('/name:');
+        let url = result[0].split('.dll')
+
+        let newObj = { label: url[0]+'.dll', value: result[1] };
+        navigation.navigate(route.params.route, { post: newObj });
       }
     }
   };
@@ -51,17 +61,23 @@ const ScanScreen = ({ navigation, route }) => {
       } else if (response.error) {
         console.log('response.error');
       } else {
-        let path = response.path;
+        let path = response.assets[0].path;
         if (!path) {
-          path = response.uri;
+          path = response.assets[0].uri;
         }
-        console.log(path)
+        if(Platform.OS === 'android' && path.startsWith('file://')){
+          //แทนที่ (หา,ที่แทนลงไป)
+          path = path.replace(/file:\/\//, ''  )
+        }
+        console.log('response ==>>',response.assets[0].uri)
+        console.log('path ==>>',path)
         QRreader(path)
           .then((data) => {
             console.log(data)
-            let result = data.split('name:');
-            let newObj = {label: result[0], value: result[1]};
-            navigation.navigate('SelectScreen', {post: newObj});
+            let result = data.split('/name:');
+            let url = result[0].split('.dll')
+            let newObj = {label: url[0]+'.dll', value: result[1]};
+            navigation.navigate(route.params.route, {post: newObj});
           })
           .catch((error) => {
             console.log(error);
