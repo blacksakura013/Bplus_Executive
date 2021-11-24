@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,7 +42,7 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
@@ -102,8 +101,8 @@ const ShowPos = ({ route }) => {
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ps000402',
-                'BPAPUS-PARAM': 'AND (POS1_NAME LIKE %' + textsearch + '%) OR (POS1_STATION LIKE %' + textsearch + '%) OR (POS1_KEY LIKE %' + textsearch + '%)',
-                'BPAPUS-FILTER': '',
+                'BPAPUS-PARAM': '',
+                'BPAPUS-FILTER': 'AND (POS1_NAME LIKE %' + textsearch + '%)',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
@@ -112,17 +111,20 @@ const ShowPos = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
-                for (var i in responseData.Ps000402) {
-                    let jsonObj = {
-                        id: i,
-                        name: responseData.Ps000402[i].POS1_NAME,
-                        code: responseData.Ps000402[i].POS1_STATION,
-                        key: responseData.Ps000402[i].POS1_KEY,
-                        tax_id: responseData.Ps000402[i].POS1_TAX_ID,
-                        pos_id: responseData.Ps000402[i].POS1_POS_ID,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.Ps000402) {
+                        let jsonObj = {
+                            id: i,
+                            name: responseData.Ps000402[i].POS1_NAME,
+                            code: responseData.Ps000402[i].POS1_STATION,
+                            key: responseData.Ps000402[i].POS1_KEY,
+                            tax_id: responseData.Ps000402[i].POS1_TAX_ID,
+                            pos_id: responseData.Ps000402[i].POS1_POS_ID,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
             })
             .catch((error) => {
@@ -214,8 +216,8 @@ const ShowPos = ({ route }) => {
                                                         <View>
                                                             <TouchableOpacity
                                                                 onPress={() => navigation.navigate(route.params.route.routeName, {
-                                                                    route: route.params.route,Obj:item.code
-                                                                  })}>
+                                                                    route: route.params.route, Obj: item.code
+                                                                })}>
                                                                 <DataTable.Row>
                                                                     <DataTable.Cell>{item.name}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.code ? item.code : 'ไม่มีข้อมูล'}</DataTable.Cell>

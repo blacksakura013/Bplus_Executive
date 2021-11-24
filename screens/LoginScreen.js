@@ -31,8 +31,8 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector, useDispatch } from 'react-redux';
+ 
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,6 +43,8 @@ import { FontSize } from '../components/FontSizeHelper';
 import * as loginActions from '../src/actions/loginActions';
 import * as registerActions from '../src/actions/registerActions';
 import * as databaseActions from '../src/actions/databaseActions';
+import {Base64 } from './menu/safe_Format';
+
 import Colors from '../src/Colors';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -82,6 +84,20 @@ const LoginScreen = () => {
     secureTextEntry: true,
   });
 
+  useEffect(() => {
+    console.log(Base64.encode('http://192.168.0.110:8905/BplusDvSvr/BplusErpDvSvrIIS.dll|{60b9aae0-7b15-4110-9514-ed687d4439c5}|MachineID|phone|user|system|'))
+    console.log(Base64.encode(Base64.encode('http://192.168.0.110:8905/BplusDvSvr/BplusErpDvSvrIIS.dll|{60b9aae0-7b15-4110-9514-ed687d4439c5}|MachineID|phone|user|system|')))
+    console.log(Base64.decode(Base64.decode('YUhSMGNEb3ZMekU1TWk0eE5qZ3VNQzR4TVRBNk9Ea3dOUzlDY0d4MWMwUjJVM1p5TDBKd2JIVnpSWEp3UkhaVGRuSkpTVk11Wkd4c2ZIczJNR0k1WVdGbE1DMDNZakUxTFRReE1UQXRPVFV4TkMxbFpEWTROMlEwTkRNNVl6VjlmRTFoWTJocGJtVkpSSHh3YUc5dVpYeDFjMlZ5ZkhONWMzUmxiWHc9')))
+    getMacAddress()
+  }, []);
+  useEffect(() => {
+
+
+
+    console.log('/n/n/ machineNum :', registerReducer.machineNum +'\n\n\n\n')
+
+
+  }, [registerReducer.machineNum]);
 
   const closeLoading = () => {
     setLoading(false);
@@ -96,70 +112,23 @@ const LoginScreen = () => {
       secureTextEntry: !data.secureTextEntry,
     });
   };
-  const setdata = () => {
-    DeviceInfo.getMacAddress().then((androidId) => {
-      dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'));
-    })
-    // let temp = []
-    // let newObj = {
-    //   nameser: 'base1',
-    //   urlser: 'http://192.168.0.110:9981/BplusErpDvSvrIIS.dll/',
-    //   usernameser: 'BUSINESS',
-    //   passwordser: 'SYSTEM'
-    // }
-    // console.log(newObj)
-    // temp.push(newObj)
-    // dispatch(loginActions.ipAddress(temp))
-    // dispatch(loginActions.userName('0615978938'))
-    // dispatch(loginActions.password('1234'))
-
-
-    console.log(loginReducer.ipAddress)
-
-    let newObj1 = {
-      name: 'base1',
-      url: 'http://192.168.0.110:9981/BplusErpDvSvrIIS.dll/',
-      username: '0615978938',
-      password: '1234'
-    }
-
-    dispatch(databaseActions.setData(newObj1));
+  const getMacAddress = async () => {
+    
+    await DeviceInfo.getMacAddress().then((machine) => {
+      dispatch(registerActions.machine(machine));
+    }).catch((e)=>console.log(e));
+   console.log('\nmachine > > '+machine)
   }
-  var ser_die = true
+ 
   useEffect(() => {
 
 
   }, [])
 
-  useEffect(() => {
-    // setUsername(loginReducer.userName)
-    // setPassword(loginReducer.password)
-    // setSelection(loginReducer.userloggedIn)
-  }, [loginReducer.ipAddress])
+ 
   const tslogin = async () => {
     await setLoading(true)
-
-
     await regisMacAdd()
-
-
-
-    // _fetchGuidLog()
-
-    // if (username == databaseReducer.Data.username && password == databaseReducer.Data.password) {
-    //   if (isSelected) {
-    //     dispatch(loginActions.userName(username))
-    //     dispatch(loginActions.password(password))
-    //     dispatch(loginActions.userlogin(true))
-    //   } else {
-    //     dispatch(loginActions.userName(''))
-    //     dispatch(loginActions.password(''))
-    //     dispatch(loginActions.userlogin(false))
-    //   }
-    //   regisMacAdd()
-    // } else {
-    //   Alert.alert('รหัสผ่านไม่ถูกต้อง');
-    // }
     await setLoading(false)
   }
 
@@ -185,6 +154,9 @@ const LoginScreen = () => {
         if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
           await _fetchGuidLog();
         } else {
+          Alert.alert(
+            Language.t('alert.errorTitle'),
+            Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           console.log('REGISTER MAC FAILED');
         }
       })
@@ -388,7 +360,7 @@ const LoginScreen = () => {
             <CheckBox
               value={isSelected}
               onValueChange={(value) => setSelection(value)}
-             
+
               tintColors={{ true: '#FFFF', false: '#FFFF' }}
               style={styles.checkbox}
             />
@@ -419,7 +391,7 @@ const LoginScreen = () => {
                   </Text>
                 </View>
               </TouchableNativeFeedback>
-              <View >
+              {/* <View >
                 <Text style={{
                   color: Colors.buttonColorPrimary,
                   alignSelf: 'center',
@@ -444,7 +416,7 @@ const LoginScreen = () => {
                   fontSize: FontSize.medium,
                   fontWeight: 'bold',
                 }}>{databaseReducer.Data.passwordser ? 'password: ' + databaseReducer.Data.passwordser : null}</Text>
-              </View>
+              </View> */}
             </View>
           </View>
 
@@ -541,16 +513,16 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     flexDirection: "row",
-    marginTop:10,
+    marginTop: 10,
     marginLeft: 10,
     marginBottom: 20,
   },
   checkbox: {
-    
+
     alignSelf: "center",
     borderBottomColor: '#ffff',
     color: '#ffff',
-    
+
   },
   label: {
     margin: 8,

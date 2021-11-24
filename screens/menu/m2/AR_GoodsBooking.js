@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,18 +42,19 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import {  monthFormat ,currencyFormat,dateFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, dateFormat, setnewdateF } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const AR_GoodsBooking = ({ route }) => {
+    const dispatch = useDispatch();
     let arrayResult = [];
 
     const navigation = useNavigation();
@@ -146,13 +146,13 @@ const AR_GoodsBooking = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -196,7 +196,7 @@ const AR_GoodsBooking = ({ route }) => {
 
     };
 
- 
+
     const InCome = async () => {
 
         setLoading(true)
@@ -232,19 +232,22 @@ const AR_GoodsBooking = ({ route }) => {
             .then((json) => {
 
                 let responseData = JSON.parse(json.ResponseData);
-                console.log(responseData.SHOWGOODSORDERARKEY)
-                for (var i in responseData.SHOWGOODSORDERARKEY) {
-                    let jsonObj = {
-                        id: i,
-                        goods_code: responseData.SHOWGOODSORDERARKEY[i].GOODS_CODE,
-                        sku_nmae: responseData.SHOWGOODSORDERARKEY[i].SKU_NAME,
-                        utq_qty: responseData.SHOWGOODSORDERARKEY[i].UTQ_QTY,
-                        trd_qty: responseData.SHOWGOODSORDERARKEY[i].TRD_QTY,
-                        trd_qty_free: responseData.SHOWGOODSORDERARKEY[i].TRD_Q_FREE,
-                        showusedqty: responseData.SHOWGOODSORDERARKEY[i].SHOWUSEDQTY,
-                        showusedfree: responseData.SHOWGOODSORDERARKEY[i].SHOWUSEDFREE,
-                    };    
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWGOODSORDERARKEY) {
+                        let jsonObj = {
+                            id: i,
+                            goods_code: responseData.SHOWGOODSORDERARKEY[i].GOODS_CODE,
+                            sku_nmae: responseData.SHOWGOODSORDERARKEY[i].SKU_NAME,
+                            utq_qty: responseData.SHOWGOODSORDERARKEY[i].UTQ_QTY,
+                            trd_qty: responseData.SHOWGOODSORDERARKEY[i].TRD_QTY,
+                            trd_qty_free: responseData.SHOWGOODSORDERARKEY[i].TRD_Q_FREE,
+                            showusedqty: responseData.SHOWGOODSORDERARKEY[i].SHOWUSEDQTY,
+                            showusedfree: responseData.SHOWGOODSORDERARKEY[i].SHOWUSEDFREE,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
             })
             .catch((error) => {
@@ -363,7 +366,7 @@ const AR_GoodsBooking = ({ route }) => {
                                                                     <DataTable.Cell>{item.goods_code}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.sku_nmae}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat(item.trd_qty)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat( item.trd_qty_free)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.trd_qty_free)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat(item.trd_qty)}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>
@@ -438,8 +441,8 @@ const AR_GoodsBooking = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                                
-                                                
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

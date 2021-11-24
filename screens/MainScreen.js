@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import NavigationDrawerLayout from 'react-native-navigation-drawer-layout';
 
 const MainScreen = () => {
+  const dispatch = useDispatch();
   const constructor = () => {
     super();
     this.state = {

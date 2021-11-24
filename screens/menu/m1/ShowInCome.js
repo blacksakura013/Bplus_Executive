@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 

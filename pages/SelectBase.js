@@ -29,9 +29,10 @@ import Dialog from 'react-native-dialog';
 import { Language } from '../translations/I18n';
 import DeviceInfo from 'react-native-device-info';
 
-import * as loginActions from '../src/actions/loginActions';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
+
+import * as loginActions from '../src/actions/loginActions';
 import * as registerActions from '../src/actions/registerActions';
 import * as databaseActions from '../src/actions/databaseActions';
 
@@ -96,13 +97,7 @@ const SelectBase = ({ route }) => {
       setBsaeurl(route.params.post.label)
     }
   }, [route.params?.post]);
-  useEffect(() => {
 
-    console.log('\n', registerReducer.machineNum)
-    for (let i in loginReducer) {
-      console.log(loginReducer[i])
-    }
-  }, [registerReducer.machineNum]);
   const _onPressSelected = async () => {
     setLoading(true)
     for (let i in loginReducer.ipAddress) {
@@ -150,9 +145,9 @@ const SelectBase = ({ route }) => {
       temp = loginReducer.ipAddress;
       for (let i in loginReducer.ipAddress) {
         if (
-          loginReducer.ipAddress[i].urlser == newurl
+          loginReducer.ipAddress[i].urlser == newurl||loginReducer.ipAddress[i].nameser == basename
         ) {
-          setShowDialog(false);
+
           Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           check = true;
 
@@ -164,7 +159,7 @@ const SelectBase = ({ route }) => {
 
         if (checkIPAddress() == false) {
           Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          setShowDialog(false);
+
         } else {
           await fetch(newurl + '/DevUsers', {
             method: 'POST',
@@ -274,7 +269,7 @@ const SelectBase = ({ route }) => {
   // };
 
   const checkIPAddress = async () => {
-
+    console.log(registerReducer.machineNum)
     let result = true;
     fetch(baseurl + '/DevUsers', {
       method: 'POST',
@@ -316,7 +311,7 @@ const SelectBase = ({ route }) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}>
-            <FontAwesome name="arrow-left" size={20} />
+            <FontAwesome name="arrow-left" style={{color:'black',}}size={20} />
           </TouchableOpacity>
           <Text
             style={{
@@ -328,7 +323,8 @@ const SelectBase = ({ route }) => {
         <View>
           <Picker
             selectedValue={selectlanguage}
-            style={{ width: 110 }}
+            style={{ color:'black',width: 110 }}
+            mode="dropdown"
             onValueChange={(itemValue, itemIndex) => setlanguage(itemValue)}>
             <Picker.Item label="TH" value="thai" />
             <Picker.Item label="EN" value="eng" />
@@ -353,9 +349,10 @@ const SelectBase = ({ route }) => {
                       <Picker
                         selectedValue={selectbaseValue}
                         enabled={true}
+                       
                         mode="dropdown"
                         style={{
-                          width: deviceWidth * 0.95, flexDirection: 'column',
+                          color:'black', width: deviceWidth * 0.95, flexDirection: 'column',
                           justifyContent: 'center', backgroundColor: '#fff', borderRadius: 10,
                         }}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
@@ -368,14 +365,11 @@ const SelectBase = ({ route }) => {
                     ) : (
                       <Picker
                         selectedValue={selectbaseValue}
-                        style={{
-                          width: '100%', backgroundColor: '#fff', borderRadius: 10,
-                        }}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
                         enabled={false}
                         mode="dropdown"
                         style={{
-                          width: deviceWidth * 0.95, flexDirection: 'column',
+                          color:'black',width: deviceWidth * 0.95, flexDirection: 'column',
                           justifyContent: 'center', backgroundColor: '#fff', borderRadius: 10,
                         }}
                       >
@@ -399,28 +393,28 @@ const SelectBase = ({ route }) => {
                   </View>
                   <View style={{
                     marginTop: 10, flexDirection: 'row',
-                    justifyContent: 'center', backgroundColor: '#fff', color: 'black', padding: 10, borderRadius: 10,
+                    justifyContent: 'center', borderColor: loginReducer.ipAddress.length > 0 ?'#fff':'#979797', borderWidth:1,  padding: 10, borderRadius: 10,
                   }}>
 
-                    <Text style={{ fontSize: FontSize.large }}></Text>
+                    <Text style={{  fontSize: FontSize.large }}></Text>
 
                     {loginReducer.ipAddress.length > 0 ? (
                       <Picker
                         selectedValue={selectbaseValue}
                         enabled={true}
                         mode="dropdown"
-
+                        state={{color:'black',}}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
                         {loginReducer.ipAddress.map((obj, index) => {
                           return (
-                            <Picker.Item label={obj.nameser} value={obj.nameser} />
+                            <Picker.Item   label={obj.nameser} value={obj.nameser} />
                           )
                         })}
                       </Picker>
                     ) : (
                       <Picker
                         selectedValue={selectbaseValue}
-
+                        state={{color:'black',}}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
                         enabled={false}
                         mode="dropdown"
@@ -437,57 +431,107 @@ const SelectBase = ({ route }) => {
                   </View>
                 </>
               )}
-
-              <View style={styles.body1e}>
-
-                <TouchableNativeFeedback
-                  onPress={() => _onPressSelected()}>
-                  <View
-                    style={{
-                      borderRadius: 10,
-                      flexDirection: 'column',
-                      marginLeft: 10,
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: 100,
-                      backgroundColor: Colors.buttonColorPrimary,
-                    }}>
-                    <Text
+              {loginReducer.ipAddress.length > 0 ? (
+                <View style={styles.body1e}>
+                  <TouchableNativeFeedback
+                    onPress={() => _onPressSelected()}>
+                    <View
                       style={{
-                        color: Colors.fontColor2,
-                        alignSelf: 'center',
-                        fontSize: FontSize.medium,
-                        fontWeight: 'bold',
+                        borderRadius: 10,
+                        flexDirection: 'column',
+                        marginLeft: 10,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        width: 100,
+                        backgroundColor: Colors.buttonColorPrimary,
                       }}>
-                      เชื่อมต่อ
-                    </Text>
-                  </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
-                  onPress={() => _onPressEdit()}>
-                  <View
-                    style={{
-                      borderRadius: 10,
-                      flexDirection: 'column',
-                      marginLeft: 10,
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: 100,
-                      backgroundColor: 'red',
-                    }}>
-                    <Text
+                      <Text
+                        style={{
+                          color: Colors.fontColor2,
+                          alignSelf: 'center',
+                          fontSize: FontSize.medium,
+                          fontWeight: 'bold',
+                        }}>
+                        เชื่อมต่อ
+                      </Text>
+                    </View>
+                  </TouchableNativeFeedback>
+                  <TouchableNativeFeedback
+                    onPress={() => _onPressEdit()}>
+                    <View
                       style={{
-                        color: Colors.fontColor2,
-                        alignSelf: 'center',
-                        fontSize: FontSize.medium,
-                        fontWeight: 'bold',
+                        borderRadius: 10,
+                        flexDirection: 'column',
+                        marginLeft: 10,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        width: 100,
+                        backgroundColor: 'red',
                       }}>
-                      แก้ไข
-                    </Text>
+                      <Text
+                        style={{
+                          color: Colors.fontColor2,
+                          alignSelf: 'center',
+                          fontSize: FontSize.medium,
+                          fontWeight: 'bold',
+                        }}>
+                        แก้ไข
+                      </Text>
+                    </View>
+                  </TouchableNativeFeedback>
+                </View>
+              ) : (
+                <>
+                  <View style={styles.body1e}>
+                    <TouchableNativeFeedback
+                      onPress={() => null}>
+                      <View
+                        style={{
+                          borderRadius: 10,
+                          flexDirection: 'column',
+                          marginLeft: 10,
+                          paddingTop: 10,
+                          paddingBottom: 10,
+                          width: 100,
+                          backgroundColor: '#979797',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#C5C5C5',
+                            alignSelf: 'center',
+                            fontSize: FontSize.medium,
+                            fontWeight: 'bold',
+                          }}>
+                          เชื่อมต่อ
+                        </Text>
+                      </View>
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                      onPress={() => null}>
+                      <View
+                        style={{
+                          borderRadius: 10,
+                          flexDirection: 'column',
+                          marginLeft: 10,
+                          paddingTop: 10,
+                          paddingBottom: 10,
+                          width: 100,
+                          backgroundColor: '#979797',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#C5C5C5',
+                            alignSelf: 'center',
+                            fontSize: FontSize.medium,
+                            fontWeight: 'bold',
+                          }}>
+                          แก้ไข
+                        </Text>
+                      </View>
+                    </TouchableNativeFeedback>
                   </View>
-                </TouchableNativeFeedback>
-              </View>
-
+                </>
+              )}
               <View style={{ marginTop: 10 }}>
                 <Text style={styles.textTitle}>
                   ชื่อฐานข้อมูล :

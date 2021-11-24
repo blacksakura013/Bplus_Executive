@@ -43,13 +43,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import {  monthFormat ,currencyFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -149,13 +149,13 @@ const ShowSellBook = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -201,8 +201,8 @@ const ShowSellBook = ({ route }) => {
         setLoading(false)
     };
 
- 
-   
+
+
     const InCome = async () => {
         setLoading(true)
         await fetchInCome()
@@ -234,19 +234,19 @@ const ShowSellBook = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-                if(responseData.RECORD_COUNT>0){
-                for (var i in responseData.SHOWINCOMEBYYEAR) {
-                    let jsonObj = {
-                        id: i,
-                        year: responseData.SHOWINCOMEBYYEAR[i].SHOWYEAR,
-                        month: responseData.SHOWINCOMEBYYEAR[i].SHOWMONTH,
-                        sellamount: responseData.SHOWINCOMEBYYEAR[i].SHOWSELLAMOUNT,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWINCOMEBYYEAR) {
+                        let jsonObj = {
+                            id: i,
+                            year: responseData.SHOWINCOMEBYYEAR[i].SHOWYEAR,
+                            month: responseData.SHOWINCOMEBYYEAR[i].SHOWMONTH,
+                            sellamount: responseData.SHOWINCOMEBYYEAR[i].SHOWSELLAMOUNT,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
-            }else{
-                Alert.alert("ไม่พบข้อมูล");
-            }
             })
             .catch((error) => {
                 if (ser_die) {
@@ -428,7 +428,7 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                                
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -458,7 +458,7 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                                
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

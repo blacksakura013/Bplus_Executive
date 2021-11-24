@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,7 +42,7 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
@@ -54,6 +53,7 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const AP_GoodsBooking = ({ route }) => {
+    const dispatch = useDispatch();
     let arrayResult = [];
 
     const navigation = useNavigation();
@@ -230,18 +230,21 @@ const AP_GoodsBooking = ({ route }) => {
             .then((json) => {
 
                 let responseData = JSON.parse(json.ResponseData);
-                console.log(responseData.SHOWGOODSPURCHASEAPKEY)
-                for (var i in responseData.SHOWGOODSPURCHASEAPKEY) {
-                    let jsonObj = {
-                        goods_code: responseData.SHOWGOODSPURCHASEAPKEY[i].GOODS_CODE,
-                        sku_nmae: responseData.SHOWGOODSPURCHASEAPKEY[i].SKU_NAME,
-                        utq_qty: responseData.SHOWGOODSPURCHASEAPKEY[i].UTQ_QTY,
-                        trd_qty: responseData.SHOWGOODSPURCHASEAPKEY[i].TRD_QTY,
-                        trd_qty_free: responseData.SHOWGOODSPURCHASEAPKEY[i].TRD_Q_FREE,
-                        showusedqty: responseData.SHOWGOODSPURCHASEAPKEY[i].SHOWUSEDQTY,
-                        showusedfree: responseData.SHOWGOODSPURCHASEAPKEY[i].SHOWUSEDFREE,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWGOODSPURCHASEAPKEY) {
+                        let jsonObj = {
+                            goods_code: responseData.SHOWGOODSPURCHASEAPKEY[i].GOODS_CODE,
+                            sku_nmae: responseData.SHOWGOODSPURCHASEAPKEY[i].SKU_NAME,
+                            utq_qty: responseData.SHOWGOODSPURCHASEAPKEY[i].UTQ_QTY,
+                            trd_qty: responseData.SHOWGOODSPURCHASEAPKEY[i].TRD_QTY,
+                            trd_qty_free: responseData.SHOWGOODSPURCHASEAPKEY[i].TRD_Q_FREE,
+                            showusedqty: responseData.SHOWGOODSPURCHASEAPKEY[i].SHOWUSEDQTY,
+                            showusedfree: responseData.SHOWGOODSPURCHASEAPKEY[i].SHOWUSEDFREE,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
             })
             .catch((error) => {
@@ -360,7 +363,7 @@ const AP_GoodsBooking = ({ route }) => {
                                                                     <DataTable.Cell>{item.goods_code}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.sku_nmae}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat(item.trd_qty)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(  item.trd_qty_free)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{currencyFormat(item.trd_qty_free)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric>{currencyFormat((item.trd_qty))}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>

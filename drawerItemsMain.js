@@ -7,7 +7,7 @@ export const drawerItemsMain = [
       { nav: 'ShowInComeTeam', routeName: 'ShowInComeTeam', title: 'ยอดขายตามทีมขาย' },
       { nav: 'ShowBank', routeName: 'ShowBank', title: 'ยอดเงินในธนาคาร' },
       { nav: 'ShowSellBook', routeName: 'ShowSellBook', title: 'แสดงยอดซื้อขายรายวัน' },
-      { nav: 'ShowPayMentdeposit', routeName: 'ShowPayMentdeposit', title: 'แสดงยอดจ่ายชำระรายวัน' },
+      { nav: 'ShowPayMentdeposit', routeName: 'ShowPayMentdeposit', title: 'แสดงยอดรับจ่ายชำระรายวัน' },
       { nav: 'CurrentStatus', routeName: 'CurrentStatus', title: 'สรุปสถานภาพปัจจุบัน' },
     ],
   },

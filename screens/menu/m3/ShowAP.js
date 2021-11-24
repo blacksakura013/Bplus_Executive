@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,7 +42,7 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
@@ -55,6 +54,7 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const ShowAP = ({ route }) => {
+    const dispatch = useDispatch();
     let arrayResult = [];
 
     const navigation = useNavigation();
@@ -132,13 +132,13 @@ const ShowAP = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -197,8 +197,8 @@ const ShowAP = ({ route }) => {
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ap000130',
-                'BPAPUS-PARAM': 'AND (AP_NAME LIKE %' + textsearch + '%)',
-                'BPAPUS-FILTER': '',
+                'BPAPUS-PARAM': '',
+                'BPAPUS-FILTER': "AND (AP_NAME LIKE '%" + textsearch + "%')",
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
@@ -207,16 +207,19 @@ const ShowAP = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
-                for (var i in responseData.Ap000130) {
-                    let jsonObj = {
-                        id: i,
-                        name: responseData.Ap000130[i].AP_NAME,
-                        key: responseData.Ap000130[i].AP_KEY,
-                        code: responseData.Ap000130[i].AP_CODE,
-                        phone: responseData.Ap000130[i].ADDB_PHONE,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.Ap000130) {
+                        let jsonObj = {
+                            id: i,
+                            name: responseData.Ap000130[i].AP_NAME,
+                            key: responseData.Ap000130[i].AP_KEY,
+                            code: responseData.Ap000130[i].AP_CODE,
+                            phone: responseData.Ap000130[i].ADDB_PHONE,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
             })
             .catch((error) => {
@@ -248,9 +251,6 @@ const ShowAP = ({ route }) => {
                                 color: Colors.fontColor2
                             }}>{route.params.route.title}</Text>
                     </View>
-
-
-
                 </View>
                 <View style={tabbar} >
                     <View style={{

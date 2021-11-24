@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet, Platform,View, Text, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Platform, View, Text, Alert, TouchableOpacity } from 'react-native';
 
 import { RNCamera } from 'react-native-camera';
 
@@ -9,9 +9,9 @@ import { decode } from 'jpeg-js';
 import jsQR from 'jsqr';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
- 
- import * as  ImagePicker from 'react-native-image-picker';
- 
+
+import * as  ImagePicker from 'react-native-image-picker';
+
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -24,8 +24,8 @@ const ScanScreen = ({ navigation, route }) => {
   let checkAndroidPermission = true
   useEffect(() => {
     console.log(route.params)
-}, [])
- 
+  }, [])
+
   if (Platform.OS === 'android' && Platform.Version < 23) {
     checkAndroidPermission = false
   }
@@ -34,14 +34,16 @@ const ScanScreen = ({ navigation, route }) => {
     if (e && e.type != 'QR_CODE' && e.type != 'org.iso.QRCode') {
       Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
     } else {
-      if (e && e.data && e.data.indexOf('/name:') == -1) {
+      if (e && e.data && e.data.indexOf('.dll') == -1) {
         Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-        navigation.goBack();
-      } else {
-        let result = e.data.split('/name:');
-        let url = result[0].split('.dll')
 
-        let newObj = { label: url[0]+'.dll', value: result[1] };
+      } else {
+        let result = e.data.split('.dll')
+        let tempurl = result[0] + '.dll'
+        let tempnmae = tempurl.split('/')
+        let urlnmae = null;
+        for (var s in tempnmae) if (tempnmae[s].search('.dll') > -1) urlnmae = tempnmae[s].split('.dll')
+        let newObj = { label: tempurl, value: urlnmae[0] };
         navigation.navigate(route.params.route, { post: newObj });
       }
     }
@@ -61,35 +63,51 @@ const ScanScreen = ({ navigation, route }) => {
       } else if (response.error) {
         console.log('response.error');
       } else {
-        let path = response.assets[0].path;
-        if (!path) {
-          path = response.assets[0].uri;
+        let path = null;
+        if (Platform.OS == 'android') {
+          path = response.assets[0].path;
+          if (!path) {
+            path = response.assets[0].uri;
+          }
+        } else {
+          path = response.path;
+          if (!path) {
+            path = response.uri;
+          }
         }
-        if(Platform.OS === 'android' && path.startsWith('file://')){
-          //แทนที่ (หา,ที่แทนลงไป)
-          path = path.replace(/file:\/\//, ''  )
-        }
-        console.log('response ==>>',response.assets[0].uri)
-        console.log('path ==>>',path)
+
+        // if(Platform.OS === 'android' && path.startsWith('file://')){
+        //   //แทนที่ (หา,ที่แทนลงไป)
+        //   path = path.replace(/file:\/\//, ''  )
+        // }
+ 
         QRreader(path)
           .then((data) => {
-            console.log(data)
-            let result = data.split('/name:');
-            let url = result[0].split('.dll')
-            let newObj = {label: url[0]+'.dll', value: result[1]};
-            navigation.navigate(route.params.route, {post: newObj});
+            if (data && data.indexOf('.dll') == -1) {
+              Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+
+            } else {
+              let result = data.split('.dll')
+              let tempurl = result[0] + '.dll'
+              let tempnmae = tempurl.split('/')
+              let urlnmae = null;
+              for (var s in tempnmae) if (tempnmae[s].search('.dll') > -1) urlnmae = tempnmae[s].split('.dll')
+              let newObj = { label: tempurl, value: urlnmae[0] };
+              navigation.navigate(route.params.route, { post: newObj });
+            }
           })
           .catch((error) => {
             console.log(error);
-            Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'),[{text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed')}]);
+            Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           });
+        
       }
     });
   };
 
   return (
     <QRCodeScanner
-    checkAndroid6Permissions={checkAndroidPermission}
+      checkAndroid6Permissions={checkAndroidPermission}
       onRead={onSuccess}
       cameraType={'back'}
       fadeIn={true}

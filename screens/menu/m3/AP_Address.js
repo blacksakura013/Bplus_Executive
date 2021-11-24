@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,18 +42,19 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import {  monthFormat ,currencyFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const AP_Address = ({ route }) => {
+    const dispatch = useDispatch();
     let arrayResult = [];
 
     const navigation = useNavigation();
@@ -143,13 +143,13 @@ const AP_Address = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -193,7 +193,7 @@ const AP_Address = ({ route }) => {
 
     };
 
-   
+
     const InCome = async () => {
 
         setLoading(true)
@@ -224,44 +224,45 @@ const AP_Address = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
-                console.log(responseData)
-                for (var i in responseData.Ap000130) {
-                    let jsonObj = {
-                        id: i,
-                        key: responseData.Ap000130[i].AP_KEY,
-                        code: responseData.Ap000130[i].AP_CODE,
-                        name: responseData.Ap000130[i].AP_NAME,
-                        arcat: responseData.Ap000130[i].AP_ARCAT,
-                        arcat_name: responseData.Ap000130[i].ARCAT_NAME,
-                        ars_alert_msg: responseData.Ap000130[i].ARS_ALERT_MSG,
-                        addb_key: responseData.Ap000130[i].ADDB_KEY,
-                        addb_company: responseData.Ap000130[i].ADDB_COMPANY,
-                        addb_branch: responseData.Ap000130[i].ADDB_BRANCH,
-                        addb_br_no: responseData.Ap000130[i].ADDB_BR_NO,
-                        addb_tax_id: responseData.Ap000130[i].ADDB_TAX_ID,
-                        addb_reg_no: responseData.Ap000130[i].ADDB_REG_NO,
-                        addb_addb_1: responseData.Ap000130[i].ADDB_ADDB_1,
-                        addb_addb_2: responseData.Ap000130[i].ADDB_ADDB_2,
-                        addb_addb_3: responseData.Ap000130[i].ADDB_ADDB_3,
-                        addb_sub_district: responseData.Ap000130[i].ADDB_SUB_DISTRICT,
-                        addb_district: responseData.Ap000130[i].ADDB_DISTRICT,
-                        addb_province: responseData.Ap000130[i].ADDB_PROVINCE,
-                        addb_post: responseData.Ap000130[i].ADDB_POST,
-                        addb_country: responseData.Ap000130[i].ADDB_COUNTRY,
-                        addb_cntry_code: responseData.Ap000130[i].ADDB_CNTRY_CODE,
-                        addb_phone: responseData.Ap000130[i].ADDB_PHONE,
-                        addb_fax: responseData.Ap000130[i].ADDB_FAX,
-                        addb_website: responseData.Ap000130[i].ADDB_WEBSITE,
-                        addb_remark: responseData.Ap000130[i].ADDB_REMARK,
-                        addb_search: responseData.Ap000130[i].ADDB_SEARCH,
-                        addb_email: responseData.Ap000130[i].ADDB_EMAIL,
-                        addb_gps_lat_s: responseData.Ap000130[i].ADDB_GPS_LAT_S,
-                        addb_gps_long_s: responseData.Ap000130[i].ADDB_GPS_LONG_S
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.Ap000130) {
+                        let jsonObj = {
+                            id: i,
+                            key: responseData.Ap000130[i].AP_KEY,
+                            code: responseData.Ap000130[i].AP_CODE,
+                            name: responseData.Ap000130[i].AP_NAME,
+                            arcat: responseData.Ap000130[i].AP_ARCAT,
+                            arcat_name: responseData.Ap000130[i].ARCAT_NAME,
+                            ars_alert_msg: responseData.Ap000130[i].ARS_ALERT_MSG,
+                            addb_key: responseData.Ap000130[i].ADDB_KEY,
+                            addb_company: responseData.Ap000130[i].ADDB_COMPANY,
+                            addb_branch: responseData.Ap000130[i].ADDB_BRANCH,
+                            addb_br_no: responseData.Ap000130[i].ADDB_BR_NO,
+                            addb_tax_id: responseData.Ap000130[i].ADDB_TAX_ID,
+                            addb_reg_no: responseData.Ap000130[i].ADDB_REG_NO,
+                            addb_addb_1: responseData.Ap000130[i].ADDB_ADDB_1,
+                            addb_addb_2: responseData.Ap000130[i].ADDB_ADDB_2,
+                            addb_addb_3: responseData.Ap000130[i].ADDB_ADDB_3,
+                            addb_sub_district: responseData.Ap000130[i].ADDB_SUB_DISTRICT,
+                            addb_district: responseData.Ap000130[i].ADDB_DISTRICT,
+                            addb_province: responseData.Ap000130[i].ADDB_PROVINCE,
+                            addb_post: responseData.Ap000130[i].ADDB_POST,
+                            addb_country: responseData.Ap000130[i].ADDB_COUNTRY,
+                            addb_cntry_code: responseData.Ap000130[i].ADDB_CNTRY_CODE,
+                            addb_phone: responseData.Ap000130[i].ADDB_PHONE,
+                            addb_fax: responseData.Ap000130[i].ADDB_FAX,
+                            addb_website: responseData.Ap000130[i].ADDB_WEBSITE,
+                            addb_remark: responseData.Ap000130[i].ADDB_REMARK,
+                            addb_search: responseData.Ap000130[i].ADDB_SEARCH,
+                            addb_email: responseData.Ap000130[i].ADDB_EMAIL,
+                            addb_gps_lat_s: responseData.Ap000130[i].ADDB_GPS_LAT_S,
+                            addb_gps_long_s: responseData.Ap000130[i].ADDB_GPS_LONG_S
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
-
 
             })
             .catch((error) => {

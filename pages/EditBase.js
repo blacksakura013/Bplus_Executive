@@ -19,7 +19,7 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 
- 
+
 import { connect } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../src/Colors';
@@ -138,85 +138,100 @@ const EditBase = ({ route }) => {
     let newurl = tempurl[0] + '.dll'
     if (checkValue() == true) {
       let temp = []
+      let check = false;
 
-    
 
-      if (checkIPAddress() == false) {
-        Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-        setShowDialog(false);
-      } else {
-        await fetch(newurl + '/DevUsers', {
-          method: 'POST',
-          body: JSON.stringify({
-            'BPAPUS-BPAPSV': loginReducer.serviceID,
-            'BPAPUS-LOGIN-GUID': '',
-            'BPAPUS-FUNCTION': 'Login',
-            'BPAPUS-PARAM':
-              '{"BPAPUS-MACHINE": "' +
-              registerReducer.machineNum +
-              '","BPAPUS-USERID": "' +
-              username +
-              '","BPAPUS-PASSWORD": "' +
-              password +
-              '"}',
-          }),
-        })
-          .then((response) => response.json())
-          .then((json) => {
-            if (json && json.ResponseCode == '635') {
-              Alert.alert(
-                Language.t('alert.errorTitle'),
-                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-              console.log('NOT FOUND MEMBER');
-            } else if (json && json.ResponseCode == '629') {
-              Alert.alert(
-                Language.t('alert.errorTitle'),
-                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-              console.log('Function Parameter Required');
-            } else if (json && json.ResponseCode == '609') {
-              Alert.alert(
-                Language.t('alert.errorTitle'),
-                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-            } else if (json && json.ResponseCode == '200') {
-              dispatch(loginActions.ipAddress([]))
-              let newObj = {
-                nameser: basename,
-                urlser: newurl,
-                usernameser: username,
-                passwordser: password
-              }
-              console.log(json.ResponseCode)
-              for (let i in loginReducer.ipAddress) {
-                if (i == updateindex) {
-                  temp.push(newObj)
-                } else {
-                  temp.push(loginReducer.ipAddress[i])
-                }
-              }
-              dispatch(loginActions.ipAddress(temp))
-              dispatch(databaseActions.setData(newObj))
-              setTimeout(() => {
-                RNRestart.Restart();
-              }, 1000);
-            } else {
-              Alert.alert(
-                Language.t('alert.errorTitle'),
-                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-            }
-          })
-          .catch((error) => {
-            Alert.alert(
-              Language.t('alert.errorTitle'),
-              Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-            console.error('_fetchGuidLogin ' + error);
-          });
+      for (let i in loginReducer.ipAddress) {
+        if (
+          loginReducer.ipAddress[i].urlser == newurl || loginReducer.ipAddress[i].nameser == basename
+        ) {
 
+          Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+          check = true;
+
+          break;
+        }
       }
+      if (!check) {
 
-    } else {
-      Alert.alert(
-        Language.t('alert.errorTitle'),
-        Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+
+        if (checkIPAddress() == false) {
+          Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+          setShowDialog(false);
+        } else {
+          await fetch(newurl + '/DevUsers', {
+            method: 'POST',
+            body: JSON.stringify({
+              'BPAPUS-BPAPSV': loginReducer.serviceID,
+              'BPAPUS-LOGIN-GUID': '',
+              'BPAPUS-FUNCTION': 'Login',
+              'BPAPUS-PARAM':
+                '{"BPAPUS-MACHINE": "' +
+                registerReducer.machineNum +
+                '","BPAPUS-USERID": "' +
+                username +
+                '","BPAPUS-PASSWORD": "' +
+                password +
+                '"}',
+            }),
+          })
+            .then((response) => response.json())
+            .then((json) => {
+              if (json && json.ResponseCode == '635') {
+                Alert.alert(
+                  Language.t('alert.errorTitle'),
+                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+                console.log('NOT FOUND MEMBER');
+              } else if (json && json.ResponseCode == '629') {
+                Alert.alert(
+                  Language.t('alert.errorTitle'),
+                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+                console.log('Function Parameter Required');
+              } else if (json && json.ResponseCode == '609') {
+                Alert.alert(
+                  Language.t('alert.errorTitle'),
+                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+              } else if (json && json.ResponseCode == '200') {
+                dispatch(loginActions.ipAddress([]))
+                let newObj = {
+                  nameser: basename,
+                  urlser: newurl,
+                  usernameser: username,
+                  passwordser: password
+                }
+                console.log(json.ResponseCode)
+                for (let i in loginReducer.ipAddress) {
+                  if (i == updateindex) {
+                    temp.push(newObj)
+                  } else {
+                    temp.push(loginReducer.ipAddress[i])
+                  }
+                }
+                dispatch(loginActions.ipAddress(temp))
+                dispatch(databaseActions.setData(newObj))
+                setTimeout(() => {
+                  RNRestart.Restart();
+                }, 1000);
+              } else {
+                Alert.alert(
+                  Language.t('alert.errorTitle'),
+                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+              }
+            })
+            .catch((error) => {
+              Alert.alert(
+                Language.t('alert.errorTitle'),
+                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+              console.error('_fetchGuidLogin ' + error);
+            });
+
+        }
+
+      } else {
+        Alert.alert(
+          Language.t('alert.errorTitle'),
+          Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+      }
     }
     setLoading(false)
   }
@@ -365,7 +380,7 @@ const EditBase = ({ route }) => {
                   onChangeText={(val) => {
                     setBasename(val);
                   }}></TextInput>
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen',{route:'EditBase'})}>
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('ScanScreen', { route: 'EditBase' })}>
 
                   <FontAwesome
                     name="qrcode"
@@ -384,43 +399,43 @@ const EditBase = ({ route }) => {
             </Text>
           </View>
           <View style={{ marginTop: 10 }}>
-                <View
+            <View
+              style={{
+                backgroundColor: Colors.backgroundLoginColorSecondary,
+                flexDirection: 'column',
+                height: 50,
+                borderRadius: 10,
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingTop: 10,
+                height: 'auto',
+                paddingBottom: 10
+              }}>
+              <View style={{ height: 'auto', flexDirection: 'row' }}>
+                <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
+                <TextInput
                   style={{
-                    backgroundColor: Colors.backgroundLoginColorSecondary,
-                    flexDirection: 'column',
-                    height: 50,
-                    borderRadius: 10,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    paddingTop: 10,
+                    flex: 8,
+                    marginLeft: 10,
+                    borderBottomColor: Colors.borderColor,
+                    color: Colors.fontColor,
+                    paddingVertical: 3,
+                    fontSize: FontSize.medium,
                     height: 'auto',
-                    paddingBottom: 10
-                  }}>
-                  <View style={{ height: 'auto', flexDirection: 'row' }}>
-                    <FontAwesome name="refresh" size={30} color={Colors.backgroundLoginColor} />
-                    <TextInput
-                      style={{
-                        flex: 8,
-                        marginLeft: 10,
-                        borderBottomColor: Colors.borderColor,
-                        color: Colors.fontColor,
-                        paddingVertical: 3,
-                        fontSize: FontSize.medium,
-                        height: 'auto',
-                        borderBottomWidth: 0.7,
-                      }}
-                      multiline={true}
-                      placeholderTextColor={Colors.fontColorSecondary}
+                    borderBottomWidth: 0.7,
+                  }}
+                  multiline={true}
+                  placeholderTextColor={Colors.fontColorSecondary}
 
-                      value={baseurl}
-                      placeholder={'ที่อยู่ฐานข้อมูล'}
-                      onChangeText={(val) => {
-                        setBsaeurl(val);
-                      }}></TextInput>
+                  value={baseurl}
+                  placeholder={'ที่อยู่ฐานข้อมูล'}
+                  onChangeText={(val) => {
+                    setBsaeurl(val);
+                  }}></TextInput>
 
-                  </View>
-                </View>
               </View>
+            </View>
+          </View>
           <View style={{ marginTop: 10 }}>
             <Text style={styles.textTitle}>
               ชื่อผู้ใช้ :

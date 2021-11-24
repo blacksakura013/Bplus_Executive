@@ -33,8 +33,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -42,19 +41,22 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { height } from 'styled-system';
-import {  monthFormat ,currencyFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const ShowSellBook = ({ route }) => {
+
+    const dispatch = useDispatch();
+
     let arrayResult = [];
 
     const navigation = useNavigation();
@@ -196,7 +198,7 @@ const ShowSellBook = ({ route }) => {
 
     };
 
-  
+
     const InCome = async () => {
         setLoading(true)
         await fetchInCome()
@@ -228,27 +230,25 @@ const ShowSellBook = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-                if(responseData.RECORD_COUNT>0){
-                for (var i in responseData.SHOWBANKBALANCE) {
-                    let Bname = responseData.SHOWBANKBALANCE[i].BNKAC_NAME
-                    let Bnamedate = Bname.split(' ')
-                    for (let j in Bnamedate) {
-                        console.log(Bnamedate[j])
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWBANKBALANCE) {
+                        let Bname = responseData.SHOWBANKBALANCE[i].BNKAC_NAME
+                        let Bnamedate = Bname.split(' ')
+
+                        let jsonObj = {
+                            id: i,
+                            key: responseData.SHOWBANKBALANCE[i].BNKAC_KEY,
+                            code: responseData.SHOWBANKBALANCE[i].BNKAC_COD,
+                            name: { account: Bnamedate[0], bnk: Bnamedate[1], branch: Bnamedate[2], code: Bnamedate[3] },
+                            forward: responseData.SHOWBANKBALANCE[i].FORWARD,
+                            thismonth: responseData.SHOWBANKBALANCE[i].THISMONTH,
+                            balance: responseData.SHOWBANKBALANCE[i].BALANCE,
+                        };
+                        arrayResult.push(jsonObj)
                     }
-                    let jsonObj = {
-                        id: i,
-                        key: responseData.SHOWBANKBALANCE[i].BNKAC_KEY,
-                        code: responseData.SHOWBANKBALANCE[i].BNKAC_COD,
-                        name: { account: Bnamedate[0], bnk: Bnamedate[1], branch: Bnamedate[2], code: Bnamedate[3] },
-                        forward: responseData.SHOWBANKBALANCE[i].FORWARD,
-                        thismonth: responseData.SHOWBANKBALANCE[i].THISMONTH,
-                        balance: responseData.SHOWBANKBALANCE[i].BALANCE,
-                    };
-                    arrayResult.push(jsonObj)
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
-            }else{
-                Alert.alert("ไม่พบข้อมูล");
-            }
             })
             .catch((error) => {
                 if (ser_die) {
@@ -327,12 +327,12 @@ const ShowSellBook = ({ route }) => {
                 <View>
                     <View  >
                         <ScrollView>
-                            
+
                             <ScrollView horizontal={true}>
                                 <DataTable
                                     style={styles.table}>
                                     <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title style={{alignItems:'center'}} ><Text style={{
+                                        <DataTable.Title style={{ alignItems: 'center' }} ><Text style={{
                                             fontSize: FontSize.medium,
                                             color: Colors.fontColor2,
 
@@ -358,21 +358,21 @@ const ShowSellBook = ({ route }) => {
                                                     return (
                                                         <>
                                                             <View>
-                                                                <DataTable.Row  style={{borderBottomWidth:0}} >
-                                                                    <DataTable.Cell  style={{alignItems:'flex-end'}} >   {item.name.account}   </DataTable.Cell>
+                                                                <DataTable.Row style={{ borderBottomWidth: 0 }} >
+                                                                    <DataTable.Cell style={{ alignItems: 'flex-end' }} >   {item.name.account}   </DataTable.Cell>
                                                                     <DataTable.Cell numeric > </DataTable.Cell>
                                                                     <DataTable.Cell numeric > </DataTable.Cell>
                                                                     <DataTable.Cell numeric > </DataTable.Cell>
                                                                 </DataTable.Row>
-                                                                
-                                                                <DataTable.Row style={{borderBottomWidth:0}}>
-                                                                    <DataTable.Cell  style={{alignItems:'center'}}>       {item.name.code}  </DataTable.Cell>
+
+                                                                <DataTable.Row style={{ borderBottomWidth: 0 }}>
+                                                                    <DataTable.Cell style={{ alignItems: 'center' }}>       {item.name.code}  </DataTable.Cell>
                                                                     <DataTable.Cell numeric >{currencyFormat(item.balance)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric >{currencyFormat(item.thismonth)}</DataTable.Cell>
                                                                     <DataTable.Cell numeric >{currencyFormat(item.forward)}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                                 <DataTable.Row  >
-                                                                    <DataTable.Cell style={{alignItems:'flex-start'}}  >   {item.name.bnk} {' '}  {item.name.branch}  </DataTable.Cell>
+                                                                    <DataTable.Cell style={{ alignItems: 'flex-start' }}  >   {item.name.bnk} {' '}  {item.name.branch}  </DataTable.Cell>
                                                                     <DataTable.Cell numeric > </DataTable.Cell>
                                                                     <DataTable.Cell numeric > </DataTable.Cell>
                                                                     <DataTable.Cell numeric > </DataTable.Cell>
@@ -434,7 +434,7 @@ const ShowSellBook = ({ route }) => {
                                                 <RadioButton value={radio_props[3].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                 </RadioButton>
-                                                 
+
 
                                             </RadioGroup>
                                         </View>
@@ -449,8 +449,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                                
-                                                
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -479,8 +479,8 @@ const ShowSellBook = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                                
-                                                
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

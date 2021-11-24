@@ -29,6 +29,8 @@ target 'Bplus_Executive' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
 
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
   target 'Bplus_ExecutiveTests' do
     inherit! :complete
     # Pods for testing

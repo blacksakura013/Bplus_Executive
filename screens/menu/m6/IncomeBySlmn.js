@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -50,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { fontSize } from 'styled-system';
-import {  monthFormat ,currencyFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -149,13 +148,13 @@ const IncomeBySlmn = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -198,7 +197,7 @@ const IncomeBySlmn = ({ route }) => {
             });
 
     };
-    
+
     const InCome = async () => {
         setLoading(true)
         setModalVisible(false)
@@ -234,17 +233,20 @@ const IncomeBySlmn = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-
-                for (var i in responseData.SHOWINCOMEBYSALESMAN) {
-                    let jsonObj = {
-                        id: i,
-                        code: responseData.SHOWINCOMEBYSALESMAN[i].SLMN_CODE,
-                        name: responseData.SHOWINCOMEBYSALESMAN[i].SLMN_NAME,
-                        sellAmount: responseData.SHOWINCOMEBYSALESMAN[i].SHOWSELLAMOUNT,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWINCOMEBYSALESMAN) {
+                        let jsonObj = {
+                            id: i,
+                            code: responseData.SHOWINCOMEBYSALESMAN[i].SLMN_CODE,
+                            name: responseData.SHOWINCOMEBYSALESMAN[i].SLMN_NAME,
+                            sellAmount: responseData.SHOWINCOMEBYSALESMAN[i].SHOWSELLAMOUNT,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
-                setLoading(false)
+
             })
             .catch((error) => {
 
@@ -255,7 +257,7 @@ const IncomeBySlmn = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent' + error)
             })
-
+        setLoading(false)
 
     }
 
@@ -430,8 +432,8 @@ const IncomeBySlmn = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                               
-                                                
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -461,8 +463,8 @@ const IncomeBySlmn = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                               
-                                                
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{

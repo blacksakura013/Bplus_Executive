@@ -34,8 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useSelector,connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,17 +42,18 @@ import { useSelector } from 'react-redux';
 import { Language } from '../../../translations/I18n';
 import { FontSize } from '../../../components/FontSizeHelper';
 
-
+import * as loginActions from '../../../src/actions/loginActions';
 import * as registerActions from '../../../src/actions/registerActions';
 import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import {  monthFormat ,currencyFormat,setnewdateF} from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const ApDueDate = ({ route }) => {
+    const dispatch = useDispatch();
     let arrayResult = [];
 
     const navigation = useNavigation();
@@ -145,13 +145,13 @@ const ApDueDate = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': '',
                 'BPAPUS-FUNCTION': 'Login',
                 'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
-                loginReducer.userNameED +
-                '","BPAPUS-PASSWORD": "' +
-                loginReducer.passwordED +
-                '"}',
+                    '{"BPAPUS-MACHINE": "' +
+                    registerReducer.machineNum +
+                    '","BPAPUS-USERID": "' +
+                    loginReducer.userNameED +
+                    '","BPAPUS-PASSWORD": "' +
+                    loginReducer.passwordED +
+                    '"}',
             }),
         })
             .then((response) => response.json())
@@ -194,7 +194,7 @@ const ApDueDate = ({ route }) => {
             });
 
     };
- 
+
     const InCome = async () => {
         console.log(route.params.Obj)
         setLoading(true)
@@ -229,16 +229,20 @@ const ApDueDate = ({ route }) => {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+
                 let responseData = JSON.parse(json.ResponseData);
-                for (var i in responseData.SHOWSKUBALANCEBYICDEPT) {
-                    let jsonObj = {
-                        id: i,
-                        code: responseData.SHOWSKUBALANCEBYICDEPT[i].ICDEPT_CODE,
-                        thaidesc: responseData.SHOWSKUBALANCEBYICDEPT[i].ICDEPT_THAIDESC,
-                        sumcost: responseData.SHOWSKUBALANCEBYICDEPT[i].SUMCOST,
-                    };
-                    arrayResult.push(jsonObj)
+                if (responseData.RECORD_COUNT > 0) {
+                    for (var i in responseData.SHOWSKUBALANCEBYICDEPT) {
+                        let jsonObj = {
+                            id: i,
+                            code: responseData.SHOWSKUBALANCEBYICDEPT[i].ICDEPT_CODE,
+                            thaidesc: responseData.SHOWSKUBALANCEBYICDEPT[i].ICDEPT_THAIDESC,
+                            sumcost: responseData.SHOWSKUBALANCEBYICDEPT[i].SUMCOST,
+                        };
+                        arrayResult.push(jsonObj)
+                    }
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
                 }
             })
             .catch((error) => {
@@ -421,8 +425,8 @@ const ApDueDate = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-                                              
-                                                
+
+
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
