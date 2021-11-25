@@ -19,7 +19,7 @@ import { FontSize } from '../components/FontSizeHelper';
 import { Language } from '../translations/I18n';
 
 import { QRreader } from 'react-native-qr-decode-image-camera';
-
+import { Base64 } from '../screens/menu/safe_Format';
 const ScanScreen = ({ navigation, route }) => {
   let checkAndroidPermission = true
   useEffect(() => {
@@ -34,17 +34,20 @@ const ScanScreen = ({ navigation, route }) => {
     if (e && e.type != 'QR_CODE' && e.type != 'org.iso.QRCode') {
       Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
     } else {
-      if (e && e.data && e.data.indexOf('.dll') == -1) {
-        Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
-      } else {
-        let result = e.data.split('.dll')
-        let tempurl = result[0] + '.dll'
-        let tempnmae = tempurl.split('/')
-        let urlnmae = null;
-        for (var s in tempnmae) if (tempnmae[s].search('.dll') > -1) urlnmae = tempnmae[s].split('.dll')
-        let newObj = { label: tempurl, value: urlnmae[0] };
-        navigation.navigate(route.params.route, { post: newObj });
+      if (e && e.data) {
+        let result = Base64.decode(Base64.decode(e.data)).split('|')
+       
+        if (result[0].indexOf('.dll') == -1) {
+          Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+        } else {
+          let tempurl = result[0].split('.dll')
+          let serurl = tempurl[0] + '.dll'
+          let tempnmae = serurl.split('/')
+          let urlnmae = null;
+          for (var s in tempnmae) if (tempnmae[s].search('.dll') > -1) urlnmae = tempnmae[s].split('.dll')
+          let newObj = { label: serurl, value: urlnmae[0] };
+          navigation.navigate(route.params.route, { post: newObj });
+        }
       }
     }
   };
@@ -80,27 +83,30 @@ const ScanScreen = ({ navigation, route }) => {
         //   //แทนที่ (หา,ที่แทนลงไป)
         //   path = path.replace(/file:\/\//, ''  )
         // }
- 
+
         QRreader(path)
           .then((data) => {
-            if (data && data.indexOf('.dll') == -1) {
-              Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            if (data) {
+              let result = Base64.decode(Base64.decode(data)).split('|')
+              if (result[0].indexOf('.dll') == -1) {
+                Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.invalid'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
 
-            } else {
-              let result = data.split('.dll')
-              let tempurl = result[0] + '.dll'
-              let tempnmae = tempurl.split('/')
-              let urlnmae = null;
-              for (var s in tempnmae) if (tempnmae[s].search('.dll') > -1) urlnmae = tempnmae[s].split('.dll')
-              let newObj = { label: tempurl, value: urlnmae[0] };
-              navigation.navigate(route.params.route, { post: newObj });
+              } else {
+                let tempurl = result[0].split('.dll')
+                let serurl = tempurl[0] + '.dll'
+                let tempnmae = serurl.split('/')
+                let urlnmae = null;
+                for (var s in tempnmae) if (tempnmae[s].search('.dll') > -1) urlnmae = tempnmae[s].split('.dll')
+                let newObj = { label: serurl, value: urlnmae[0] };
+                navigation.navigate(route.params.route, { post: newObj });
+              }
             }
           })
           .catch((error) => {
             console.log(error);
             Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           });
-        
+
       }
     });
   };

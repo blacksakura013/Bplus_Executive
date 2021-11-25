@@ -48,7 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF, checkDate  } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -199,14 +199,9 @@ const AR_GoodsBooking = ({ route }) => {
     const fetchInCome = async () => {
 
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(start_date)
-        var eDate = setnewdateF(end_date)
-        console.log(databaseReducer.Data.urlser)
-        console.log(loginReducer.serviceID)
-        console.log(loginReducer.guid)
-        console.log(sDate)
-        console.log(eDate)
-        console.log(route.params.Obj)
+        var sDate = setnewdateF(checkDate(start_date))
+        var eDate = setnewdateF(checkDate(end_date))
+    
         await fetch(databaseReducer.Data.urlser + '/LookupErp', {
             method: 'POST',
             body: JSON.stringify({

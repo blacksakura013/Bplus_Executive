@@ -34,7 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -50,7 +50,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { fontSize, right } from 'styled-system';
 
-import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF, checkDate } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -78,13 +78,15 @@ const ShowInCome = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
+    const [radioIndex, setRadioIndex] = useState(6);
     const radio_props = [
         { label: 'ปีก่อน', value: 'lastyear' },
         { label: 'ปีนี้', value: 'nowyear' },
         { label: 'เดือนนี้', value: 'nowmonth' },
         { label: 'เดือนก่อน', value: 'lastmonth' },
         { label: 'เมื่อวาน', value: 'lastday' },
-        { label: 'วันนี้', value: 'nowday' }
+        { label: 'วันนี้', value: 'nowday' },
+        { label: null, value: null }
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
@@ -92,6 +94,8 @@ const ShowInCome = ({ route }) => {
     useEffect(() => {
         setPage(0);
     }, [itemsPerPage])
+
+
 
     useEffect(() => {
         var newsum = 0
@@ -124,7 +128,7 @@ const ShowInCome = ({ route }) => {
             })
             .catch((error) => {
                 console.log('ERROR at regisMacAdd ' + error);
-                console.log('http', databaseReducer.Data.urlser);
+
                 if (databaseReducer.Data.urlser == '') {
                     Alert.alert(
                         Language.t('alert.errorTitle'),
@@ -134,7 +138,6 @@ const ShowInCome = ({ route }) => {
                         Language.t('alert.errorTitle'),
                         Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
                 }
-
             });
     };
 
@@ -191,8 +194,6 @@ const ShowInCome = ({ route }) => {
                         Language.t('alert.errorTitle'),
                         Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
                 }
-
-
             });
 
     };
@@ -202,13 +203,16 @@ const ShowInCome = ({ route }) => {
     const InCome = async () => {
         setLoading(true)
         setModalVisible(false)
+
         await fetchInCome()
 
         setArrayObj(arrayResult)
     }
+
     const fetchInCome = async () => {
-        var sDate = setnewdateF(start_date)
-        var eDate = setnewdateF(end_date)
+
+        var sDate = setnewdateF(checkDate(start_date))
+        var eDate = setnewdateF(checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
@@ -230,8 +234,8 @@ const ShowInCome = ({ route }) => {
             .then((response) => response.json())
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
-                
-                if(responseData.RECORD_COUNT>0){
+
+                if (responseData.RECORD_COUNT > 0) {
                     for (var i in responseData.SHOWINCOMEBYYEAR) {
                         let jsonObj = {
                             id: i,
@@ -241,11 +245,11 @@ const ShowInCome = ({ route }) => {
                         };
                         arrayResult.push(jsonObj)
                     }
-                }else{
+                } else {
                     Alert.alert("ไม่พบข้อมูล");
                 }
-               
-                setLoading(false)
+
+
             })
             .catch((error) => {
 
@@ -256,47 +260,55 @@ const ShowInCome = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent' + error)
             })
+        setLoading(false)
+
 
 
     }
 
-    const setRadio_menu = (val) => {
-        var x = new Date();
-        var day = x.getDate();
-        var month = x.getMonth() + 1
-        var year = x.getFullYear()
-        var sdate = ''
-        var edate = ''
+    const setRadio_menu = (ind, val) => {
+        setRadioIndex(ind)
+        if (val != null) {
+            var x = new Date();
+            var day = x.getDate();
+            var month = x.getMonth() + 1
+            var year = x.getFullYear()
+            var sdate = ''
+            var edate = ''
 
-        if (val == 'lastyear') {
-            year = year - 1
-            sdate = new Date(year, 0, 1)
-            edate = new Date(year, 12, 0)
-        } else if (val == 'nowyear') {
-            year = year
-            sdate = new Date(year, 0, 1)
-            edate = new Date(year, 12, 0)
-        }
-        else if (val == 'nowmonth') {
-            month = month - 1
-            sdate = new Date(year, month, 1)
-            edate = new Date(year, month + 1, 0)
-        } else if (val == 'lastmonth') {
-            month = month - 2
-            sdate = new Date(year, month, 1)
-            edate = new Date(year, month + 1, 0)
-        }
-        else if (val == 'lastday') {
-            sdate = new Date().setDate(x.getDate() - 1)
-            edate = new Date().setDate(x.getDate() - 1)
-        } else {
-            sdate = new Date()
-            edate = new Date()
-        }
 
-        setS_date(new Date(sdate))
-        setE_date(new Date(edate))
+
+            if (val == 'lastyear') {
+                year = year - 1
+                sdate = new Date(year, 0, 1)
+                edate = new Date(year, 12, 0)
+            } else if (val == 'nowyear') {
+                year = year
+                sdate = new Date(year, 0, 1)
+                edate = new Date(year, 12, 0)
+            }
+            else if (val == 'nowmonth') {
+                month = month - 1
+                sdate = new Date(year, month, 1)
+                edate = new Date(year, month + 1, 0)
+            } else if (val == 'lastmonth') {
+                month = month - 2
+                sdate = new Date(year, month, 1)
+                edate = new Date(year, month + 1, 0)
+            }
+            else if (val == 'lastday') {
+                sdate = new Date().setDate(x.getDate() - 1)
+                edate = new Date().setDate(x.getDate() - 1)
+            } else {
+                sdate = new Date()
+                edate = new Date()
+            }
+
+            setS_date(new Date(sdate))
+            setE_date(new Date(edate))
+        }
     }
+
     useEffect(() => {
 
     }, [])
@@ -329,7 +341,7 @@ const ShowInCome = ({ route }) => {
                     <DataTable
                         style={styles.table}>
                         <DataTable.Header style={styles.tableHeader}>
-                            <DataTable.Title style={{ flex: 0.2 }} numeric >
+                            <DataTable.Title style={{ flex: 0.2 }}  >
                                 <Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
@@ -346,14 +358,14 @@ const ShowInCome = ({ route }) => {
                                 }}> ยอดขาย </Text></DataTable.Title>
                         </DataTable.Header>
                         <ScrollView>
-                            <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'} >
+                            <KeyboardAvoidingView keyboardVerticalOffset={1}  >
                                 <TouchableNativeFeedback>
                                     <View marginBottom={20}>
                                         {arrayObj.map((item) => {
                                             return (
                                                 <>
                                                     <DataTable.Row>
-                                                        <DataTable.Cell style={{ flex: 0.2 }} numeric >{item.year}</DataTable.Cell>
+                                                        <DataTable.Cell style={{ flex: 0.2 }}  >{item.year}</DataTable.Cell>
                                                         <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   >{monthFormat(item.month)}</DataTable.Cell>
                                                         <DataTable.Cell style={{ flex: 0.5 }} numeric >{currencyFormat(item.sellAmount)}</DataTable.Cell>
                                                     </DataTable.Row>
@@ -395,8 +407,8 @@ const ShowInCome = ({ route }) => {
 
                                     }}>
                                         <RadioGroup
-
-                                            onSelect={(index, value) => setRadio_menu(value)}
+                                            selectedIndex={radioIndex}
+                                            onSelect={(index, value) => setRadio_menu(index, value)}
                                         >
                                             <RadioButton value={radio_props[0].value} >
                                                 <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
@@ -445,7 +457,10 @@ const ShowInCome = ({ route }) => {
                                                 }
                                                 // ... You can check the source to find the other keys.
                                             }}
-                                            onDateChange={(date) => { setS_date(date) }}
+                                            onDateChange={(date) => {
+                                                setS_date(date)
+                                                setRadio_menu(6, null)
+                                            }}
                                         />
                                     </View>
 
@@ -474,7 +489,10 @@ const ShowInCome = ({ route }) => {
                                                 }
                                                 // ... You can check the source to find the other keys.
                                             }}
-                                            onDateChange={(date) => { setE_date(date) }}
+                                            onDateChange={(date) => {
+                                                setE_date(date)
+                                                setRadio_menu(6, null)
+                                            }}
                                         />
                                     </View>
                                     <Pressable

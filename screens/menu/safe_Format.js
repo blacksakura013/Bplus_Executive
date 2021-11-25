@@ -19,6 +19,15 @@ export const dateFormat = (date) => {
     if (inputyear <= Number(x.getFullYear())) inputyear += 543
     return inputyear + '/' + date.substring(4, 6) + '/' + date.substring(6, 8)
 }
+
+export const checkDate = (temp_date) => {
+    if (temp_date.toString().search(':') == -1) {
+        var tempdate = temp_date.split('-')
+        temp_date = new Date(tempdate[2] + '-' + tempdate[1] + '-' + tempdate[0])
+    }
+    return temp_date
+}
+
 export const setnewdateF = (date) => {
     var x = new Date(date);
 

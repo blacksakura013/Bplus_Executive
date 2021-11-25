@@ -79,7 +79,7 @@ const EditBase = ({ route }) => {
   };
 
   useEffect(() => {
-    getMacAddress()
+  
 
     console.log('/n/n/nipAddress :', loginReducer.ipAddress)
 
@@ -268,13 +268,7 @@ const EditBase = ({ route }) => {
       setLoading(false)
     }, 3000);
   }
-
-  const getMacAddress = async () => {
-    await DeviceInfo.getMacAddress().then((androidId) => {
-      dispatch(registerActions.machine(androidId));
-      setMachineNo(androidId);
-    });
-  };
+ 
 
 
 

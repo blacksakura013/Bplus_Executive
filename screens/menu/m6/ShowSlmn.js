@@ -207,7 +207,7 @@ const ShowSlmn = ({ route }) => {
 
                             </DataTable.Header>
                             <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                     <TouchableNativeFeedback>
                                         <View  >
                                             {arrayObj.map((item) => {

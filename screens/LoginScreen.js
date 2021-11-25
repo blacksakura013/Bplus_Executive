@@ -16,6 +16,8 @@ import {
 
 import CheckBox from '@react-native-community/checkbox';
 import DeviceInfo from 'react-native-device-info';
+import { NetworkInfo } from "react-native-network-info";
+
 import {
   ScrollView,
   TouchableNativeFeedback,
@@ -31,8 +33,8 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
- 
-import { useSelector,connect, useDispatch } from 'react-redux';
+
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -43,7 +45,7 @@ import { FontSize } from '../components/FontSizeHelper';
 import * as loginActions from '../src/actions/loginActions';
 import * as registerActions from '../src/actions/registerActions';
 import * as databaseActions from '../src/actions/databaseActions';
-import {Base64 } from './menu/safe_Format';
+import { Base64 } from './menu/safe_Format';
 
 import Colors from '../src/Colors';
 
@@ -85,16 +87,13 @@ const LoginScreen = () => {
   });
 
   useEffect(() => {
-    console.log(Base64.encode('http://192.168.0.110:8905/BplusDvSvr/BplusErpDvSvrIIS.dll|{60b9aae0-7b15-4110-9514-ed687d4439c5}|MachineID|phone|user|system|'))
-    console.log(Base64.encode(Base64.encode('http://192.168.0.110:8905/BplusDvSvr/BplusErpDvSvrIIS.dll|{60b9aae0-7b15-4110-9514-ed687d4439c5}|MachineID|phone|user|system|')))
-    console.log(Base64.decode(Base64.decode('YUhSMGNEb3ZMekU1TWk0eE5qZ3VNQzR4TVRBNk9Ea3dOUzlDY0d4MWMwUjJVM1p5TDBKd2JIVnpSWEp3UkhaVGRuSkpTVk11Wkd4c2ZIczJNR0k1WVdGbE1DMDNZakUxTFRReE1UQXRPVFV4TkMxbFpEWTROMlEwTkRNNVl6VjlmRTFoWTJocGJtVkpSSHh3YUc5dVpYeDFjMlZ5ZkhONWMzUmxiWHc9')))
-    getMacAddress()
+    getMac()
   }, []);
   useEffect(() => {
 
 
 
-    console.log('/n/n/ machineNum :', registerReducer.machineNum +'\n\n\n\n')
+    console.log('/n/n/ machineNum :', registerReducer.machineNum + '\n\n\n\n')
 
 
   }, [registerReducer.machineNum]);
@@ -112,20 +111,35 @@ const LoginScreen = () => {
       secureTextEntry: !data.secureTextEntry,
     });
   };
-  const getMacAddress = async () => {
-    
-    await DeviceInfo.getMacAddress().then((machine) => {
-      dispatch(registerActions.machine(machine));
-    }).catch((e)=>console.log(e));
-   console.log('\nmachine > > '+machine)
-  }
+  const getMac = async () => {
+    var lodstr = ''
+    for (var i =0 ;i< 100;i++) {
+      lodstr+='_'
+      
+     
+    }
  
+
+    await DeviceInfo.getMacAddress().then((mac) => {
+      console.log('\nmachine > > ' + mac)
+      if (mac.length > 0) dispatch(registerActions.machine(mac));
+      else NetworkInfo.getBSSID ().then( macwifi => {
+        console.log('\nmachine(wifi) > > ' + macwifi)
+        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi));
+        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'));
+      }).catch((e) => console.log(e));
+  
+
+    }).catch((e) => console.log(e));
+
+  }
+
   useEffect(() => {
 
 
   }, [])
 
- 
+
   const tslogin = async () => {
     await setLoading(true)
     await regisMacAdd()
@@ -133,10 +147,7 @@ const LoginScreen = () => {
   }
 
   const regisMacAdd = async () => {
-    console.log('REGIS MAC ADDRESS');
-    console.log('BPAPUS-MACHINE : > ' + registerReducer.machineNum);
-    console.log('BPAPUS-USERID : > ' + username);
-    console.log('BPAPUS-PASSWORD : > ' + password);
+ 
     await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -234,8 +245,6 @@ const LoginScreen = () => {
             Language.t('alert.errorTitle'),
             Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
-
-
       });
     setLoading(false)
   };
@@ -391,6 +400,14 @@ const LoginScreen = () => {
                   </Text>
                 </View>
               </TouchableNativeFeedback>
+              <View >
+                <Text style={{
+                  color: Colors.buttonColorPrimary,
+                  alignSelf: 'center',
+                  fontSize: FontSize.medium,
+                  fontWeight: 'bold',
+                }}>{'25/11'}</Text>
+              </View>
               {/* <View >
                 <Text style={{
                   color: Colors.buttonColorPrimary,

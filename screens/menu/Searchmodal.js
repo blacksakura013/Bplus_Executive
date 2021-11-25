@@ -111,7 +111,6 @@ const ShowAP = ({ route }) => {
             })
             .catch((error) => {
                 console.log('ERROR at regisMacAdd ' + error);
-                console.log('http', databaseReducer.Data.urlser);
                 if (databaseReducer.Data.urlser == '') {
                     Alert.alert(
                         Language.t('alert.errorTitle'),
@@ -300,7 +299,7 @@ const ShowAP = ({ route }) => {
 
                             </DataTable.Header>
                             <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                <KeyboardAvoidingView keyboardVerticalOffset={1}>
                                     <TouchableNativeFeedback>
                                         <View  >
                                             {arrayObj.map((item) => {

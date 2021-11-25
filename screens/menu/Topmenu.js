@@ -93,7 +93,6 @@ const Topmenu = () => {
             })
             .catch((error) => {
                 console.log('ERROR at regisMacAdd ' + error);
-                console.log('http', databaseReducer.Data.urlser);
                 if (databaseReducer.Data.urlser == '') {
                     Alert.alert(
                         Language.t('alert.errorTitle'),
@@ -170,7 +169,7 @@ const Topmenu = () => {
         <SafeAreaView style={container}>
             <StatusBar hidden={true} />
             <ScrollView>
-                <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                <KeyboardAvoidingView keyboardVerticalOffset={1} >
                     <TouchableNativeFeedback>
                         <Image
                             style={topImage}

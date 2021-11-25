@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { fontSize } from 'styled-system';
-import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF, checkDate  } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -82,7 +82,8 @@ const IncomeByPos = ({ route }) => {
         { label: 'เดือนนี้', value: 'nowmonth' },
         { label: 'เดือนก่อน', value: 'lastmonth' },
         { label: 'เมื่อวาน', value: 'lastday' },
-        { label: 'วันนี้', value: 'nowday' }
+        { label: 'วันนี้', value: 'nowday' },
+        { label: null, value: null }
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
@@ -125,7 +126,6 @@ const IncomeByPos = ({ route }) => {
             })
             .catch((error) => {
                 console.log('ERROR at regisMacAdd ' + error);
-                console.log('http', databaseReducer.Data.urlser);
                 if (databaseReducer.Data.urlser == '') {
                     Alert.alert(
                         Language.t('alert.errorTitle'),
@@ -206,12 +206,8 @@ const IncomeByPos = ({ route }) => {
         setArrayObj(arrayResult)
     }
     const fetchInCome = async () => {
-
-
-
-
-        var sDate = setnewdateF(start_date)
-        var eDate = setnewdateF(end_date)
+        var sDate = setnewdateF(checkDate(start_date))
+        var eDate = setnewdateF(checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
@@ -341,7 +337,7 @@ const IncomeByPos = ({ route }) => {
                                 }}> ยอดขาย </Text></DataTable.Title>
                             </DataTable.Header>
                             <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                     <TouchableNativeFeedback>
                                         <View marginBottom={20}>
                                             {arrayObj.map((item) => {
@@ -445,7 +441,10 @@ const IncomeByPos = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { setS_date(date) }}
+                                                onDateChange={(date) => {
+                                                    setS_date(date)
+                                                    setRadio_menu(6, null)
+                                                }}
                                             />
                                         </View>
 
@@ -475,7 +474,10 @@ const IncomeByPos = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { setE_date(date) }}
+                                                onDateChange={(date) => {
+                                                    setE_date(date)
+                                                    setRadio_menu(6, null)
+                                                }}
                                             />
                                         </View>
                                         <Pressable

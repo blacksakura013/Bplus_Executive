@@ -31,6 +31,8 @@ target 'Bplus_Executive' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'react-native-network-info', :path => '../node_modules/react-native-network-info'
+
   target 'Bplus_ExecutiveTests' do
     inherit! :complete
     # Pods for testing

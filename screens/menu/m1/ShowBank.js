@@ -33,7 +33,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -48,7 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { height } from 'styled-system';
-import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF, checkDate } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -83,7 +83,8 @@ const ShowSellBook = ({ route }) => {
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
-        { label: 'วันนี้', value: 'nowday' }
+        { label: 'วันนี้', value: 'nowday' },
+        { label: null, value: null }
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
@@ -207,9 +208,8 @@ const ShowSellBook = ({ route }) => {
     }
     const fetchInCome = async () => {
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(start_date)
-        var eDate = setnewdateF(end_date)
-
+        var sDate = setnewdateF(checkDate(start_date))
+        var eDate = setnewdateF(checkDate(end_date))
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
@@ -217,9 +217,7 @@ const ShowSellBook = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'SHOWBANKBALANCE',
                 'BPAPUS-PARAM':
-                    '{"FROM_DATE": "' +
-                    sDate +
-                    '","TO_DATE": ' +
+                    '{"FROM_DATE": "19000101","TO_DATE": ' +
                     eDate + '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
@@ -351,7 +349,7 @@ const ShowSellBook = ({ route }) => {
                                         }}> ยอดยกมา </Text></DataTable.Title>
                                     </DataTable.Header>
 
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
                                             <View marginBottom={20}>
                                                 {arrayObj.map((item) => {
@@ -442,36 +440,6 @@ const ShowSellBook = ({ route }) => {
                                             flexDirection: 'row', justifyContent: 'space-between',
                                             alignItems: 'center', marginBottom: 10
                                         }}>
-                                            <Text style={{ fontSize: FontSize.medium, color: 'black', marginRight: 5, fontWeight: 'bold', }}>ตั้งแต่</Text>
-                                            <DatePicker
-                                                style={{ width: 250 }}
-                                                date={start_date} //start date
-                                                mode="date"
-                                                placeholder="select date"
-                                                format="DD-MM-YYYY"
-
-
-                                                confirmBtnText="Confirm"
-                                                cancelBtnText="Cancel"
-                                                customStyles={{
-                                                    dateIcon: {
-                                                        left: 0,
-                                                        top: 4,
-                                                        marginLeft: 0
-                                                    },
-                                                    dateInput: {
-
-
-                                                    }
-                                                    // ... You can check the source to find the other keys.
-                                                }}
-                                                onDateChange={(date) => { setS_date(date) }}
-                                            />
-                                        </View>
-                                        <View style={{
-                                            flexDirection: 'row', justifyContent: 'space-between',
-                                            alignItems: 'center', marginBottom: 10
-                                        }}>
                                             <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>ถึง</Text>
                                             <DatePicker
                                                 style={{ width: 250, }}
@@ -494,7 +462,10 @@ const ShowSellBook = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { setE_date(date) }}
+                                                onDateChange={(date) => { 
+                                                    setE_date(date) 
+                                                    setRadio_menu(4, null)
+                                                }}
                                             />
                                         </View>
                                         <Pressable

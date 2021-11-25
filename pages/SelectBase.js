@@ -81,7 +81,7 @@ const SelectBase = ({ route }) => {
   };
 
   useEffect(() => {
-    getMacAddress()
+
 
 
 
@@ -145,10 +145,18 @@ const SelectBase = ({ route }) => {
       temp = loginReducer.ipAddress;
       for (let i in loginReducer.ipAddress) {
         if (
-          loginReducer.ipAddress[i].urlser == newurl||loginReducer.ipAddress[i].nameser == basename
+          loginReducer.ipAddress[i].nameser == basename
         ) {
 
-          Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+          Alert.alert('', 'มีชื่อฐานข้อมูลนี้แล้ว', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+          check = true;
+
+          break;
+        } else if (
+          loginReducer.ipAddress[i].urlser == newurl
+        ) {
+
+          Alert.alert('', 'มีที่อยู่ฐานข้อมูลนี้แล้ว', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           check = true;
 
           break;
@@ -232,12 +240,7 @@ const SelectBase = ({ route }) => {
     setLoading(false)
   }
 
-  const getMacAddress = async () => {
-    await DeviceInfo.getMacAddress().then((androidId) => {
-      dispatch(registerActions.machine(androidId));
-      setMachineNo(androidId);
-    });
-  };
+
 
   // const checkIPAddress = async (url) => {
   //   let result = false;
@@ -311,7 +314,7 @@ const SelectBase = ({ route }) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}>
-            <FontAwesome name="arrow-left" style={{color:'black',}}size={20} />
+            <FontAwesome name="arrow-left" style={{ color: 'black', }} size={20} />
           </TouchableOpacity>
           <Text
             style={{
@@ -323,7 +326,7 @@ const SelectBase = ({ route }) => {
         <View>
           <Picker
             selectedValue={selectlanguage}
-            style={{ color:'black',width: 110 }}
+            style={{ color: 'black', width: 110 }}
             mode="dropdown"
             onValueChange={(itemValue, itemIndex) => setlanguage(itemValue)}>
             <Picker.Item label="TH" value="thai" />
@@ -332,10 +335,10 @@ const SelectBase = ({ route }) => {
         </View>
 
       </View>
-
+      <ScrollView>
       <SafeAreaView >
-        <ScrollView>
-          <KeyboardAvoidingView keyboardVerticalOffset={5} behavior={'position'}>
+ 
+          <KeyboardAvoidingView >
             <View style={styles.body}>
               {Platform.OS == 'ios' ? (
                 <>
@@ -349,10 +352,10 @@ const SelectBase = ({ route }) => {
                       <Picker
                         selectedValue={selectbaseValue}
                         enabled={true}
-                       
+
                         mode="dropdown"
                         style={{
-                          color:'black', width: deviceWidth * 0.95, flexDirection: 'column',
+                          color: 'black', width: deviceWidth * 0.95, flexDirection: 'column',
                           justifyContent: 'center', backgroundColor: '#fff', borderRadius: 10,
                         }}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
@@ -369,7 +372,7 @@ const SelectBase = ({ route }) => {
                         enabled={false}
                         mode="dropdown"
                         style={{
-                          color:'black',width: deviceWidth * 0.95, flexDirection: 'column',
+                          color: 'black', width: deviceWidth * 0.95, flexDirection: 'column',
                           justifyContent: 'center', backgroundColor: '#fff', borderRadius: 10,
                         }}
                       >
@@ -393,28 +396,28 @@ const SelectBase = ({ route }) => {
                   </View>
                   <View style={{
                     marginTop: 10, flexDirection: 'row',
-                    justifyContent: 'center', borderColor: loginReducer.ipAddress.length > 0 ?'#fff':'#979797', borderWidth:1,  padding: 10, borderRadius: 10,
+                    justifyContent: 'center', borderColor: loginReducer.ipAddress.length > 0 ? '#fff' : '#979797', borderWidth: 1, padding: 10, borderRadius: 10,
                   }}>
 
-                    <Text style={{  fontSize: FontSize.large }}></Text>
+                    <Text style={{ fontSize: FontSize.large }}></Text>
 
                     {loginReducer.ipAddress.length > 0 ? (
                       <Picker
                         selectedValue={selectbaseValue}
                         enabled={true}
                         mode="dropdown"
-                        state={{color:'black',}}
+                        state={{ color: 'black', }}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}>
                         {loginReducer.ipAddress.map((obj, index) => {
                           return (
-                            <Picker.Item   label={obj.nameser} value={obj.nameser} />
+                            <Picker.Item label={obj.nameser} value={obj.nameser} />
                           )
                         })}
                       </Picker>
                     ) : (
                       <Picker
                         selectedValue={selectbaseValue}
-                        state={{color:'black',}}
+                        state={{ color: 'black', }}
                         onValueChange={(itemValue, itemIndex) => setSelectbaseValue(itemValue)}
                         enabled={false}
                         mode="dropdown"
@@ -751,8 +754,9 @@ const SelectBase = ({ route }) => {
             </View>
 
           </KeyboardAvoidingView>
-        </ScrollView>
+      
       </SafeAreaView>
+      </ScrollView>
       {loading && (
         <View
           style={{

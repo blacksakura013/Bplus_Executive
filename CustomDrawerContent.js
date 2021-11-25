@@ -47,6 +47,7 @@ function CustomDrawerContent(props) {
   };
 
   const logOut = async () => {
+    
     setLoading(true)
     await fetch(loginReducer.ipAddress[0].urlser + '/DevUsers', {
       method: 'POST',
@@ -191,7 +192,8 @@ function CustomDrawerContent(props) {
   }
 
   return (
-    <ScrollView>
+    <>
+    <ScrollView style={{backgroundColor: Colors.backgroundLoginColor}}>
       <SafeAreaView
         style={styles.container}
         forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -208,33 +210,9 @@ function CustomDrawerContent(props) {
           {mainDrawer ? renderMainDrawer() : renderFilteredItemsDrawer()}
         </View>
       </SafeAreaView>
-      {loading && (
-        <View
-          style={{
-            width: deviceWidth,
-            height: deviceHeight,
-            opacity: 0.5,
-            backgroundColor: 'black',
-            alignSelf: 'center',
-            justifyContent: 'center',
-            alignContent: 'center',
-            position: 'absolute',
-          }}>
-          <ActivityIndicator
-            style={{
-              borderRadius: 15,
-              backgroundColor: null,
-              width: 100,
-              height: 100,
-              alignSelf: 'center',
-            }}
-            animating={loading}
-            size="large"
-            color={Colors.lightPrimiryColor}
-          />
-        </View>
-      )}
+     
     </ScrollView>
+    </>
   );
 }
 
@@ -256,7 +234,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     zIndex: 1000,
-
   },
   centered: {
     alignItems: 'center',

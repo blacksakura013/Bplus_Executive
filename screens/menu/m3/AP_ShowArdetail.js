@@ -48,7 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { monthFormat, currencyFormat, dateFormat, setnewdateF } from '../safe_Format';
+import { monthFormat, currencyFormat, dateFormat, setnewdateF, checkDate  } from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -80,7 +80,8 @@ const AP_ShowArdetail = ({ route }) => {
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
-        { label: 'วันนี้', value: 'nowday' }
+        { label: 'วันนี้', value: 'nowday' },
+        { label: null, value: null }
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
@@ -122,7 +123,6 @@ const AP_ShowArdetail = ({ route }) => {
             })
             .catch((error) => {
                 console.log('ERROR at regisMacAdd ' + error);
-                console.log('http', databaseReducer.Data.urlser);
                 if (databaseReducer.Data.urlser == '') {
                     Alert.alert(
                         Language.t('alert.errorTitle'),
@@ -207,8 +207,8 @@ const AP_ShowArdetail = ({ route }) => {
     const fetchInCome = async () => {
 
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(start_date)
-        var eDate = setnewdateF(end_date)
+        var sDate = setnewdateF(checkDate(start_date))
+        var eDate = setnewdateF(checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
@@ -351,7 +351,7 @@ const AP_ShowArdetail = ({ route }) => {
 
                                     </DataTable.Header>
 
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
                                             <View marginBottom={20}>
                                                 {arrayObj.map((item) => {
@@ -452,7 +452,10 @@ const AP_ShowArdetail = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { setE_date(date) }}
+                                                onDateChange={(date) => { 
+                                                    setE_date(date) 
+                                                    setRadio_menu(4, null)
+                                                }}
                                             />
                                         </View>
                                         <Pressable

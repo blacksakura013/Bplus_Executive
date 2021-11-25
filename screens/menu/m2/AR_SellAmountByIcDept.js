@@ -47,7 +47,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { monthFormat, currencyFormat, setnewdateF } from '../safe_Format';
+import { monthFormat, currencyFormat, setnewdateF, checkDate  } from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -82,7 +82,8 @@ const AR_SellAmountByIcDept = ({ route }) => {
         { label: 'เดือนนี้', value: 'nowmonth' },
         { label: 'เดือนก่อน', value: 'lastmonth' },
         { label: 'เมื่อวาน', value: 'lastday' },
-        { label: 'วันนี้', value: 'nowday' }
+        { label: 'วันนี้', value: 'nowday' },
+        { label: null, value: null }
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
@@ -210,8 +211,8 @@ const AR_SellAmountByIcDept = ({ route }) => {
     const fetchInCome = async () => {
 
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(start_date)
-        var eDate = setnewdateF(end_date)
+        var sDate = setnewdateF(checkDate(start_date))
+        var eDate = setnewdateF(checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
@@ -346,7 +347,7 @@ const AR_SellAmountByIcDept = ({ route }) => {
 
                                     </DataTable.Header>
 
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
                                             <View marginBottom={20}>
                                                 {arrayObj.map((item) => {
@@ -450,7 +451,10 @@ const AR_SellAmountByIcDept = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { setS_date(date) }}
+                                                onDateChange={(date) => {
+                                                    setS_date(date)
+                                                    setRadio_menu(6, null)
+                                                }}
                                             />
                                         </View>
 
@@ -480,7 +484,10 @@ const AR_SellAmountByIcDept = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { setE_date(date) }}
+                                                onDateChange={(date) => {
+                                                    setE_date(date)
+                                                    setRadio_menu(6, null)
+                                                }}
                                             />
                                         </View>
                                         <Pressable

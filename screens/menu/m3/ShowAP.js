@@ -109,7 +109,6 @@ const ShowAP = ({ route }) => {
             })
             .catch((error) => {
                 console.log('ERROR at regisMacAdd ' + error);
-                console.log('http', databaseReducer.Data.urlser);
                 if (databaseReducer.Data.urlser == '') {
                     Alert.alert(
                         Language.t('alert.errorTitle'),
@@ -273,7 +272,7 @@ const ShowAP = ({ route }) => {
                             placeholderTextColor={Colors.fontColorSecondary}
                             value={textsearch}
 
-                            placeholder={'ชื่อลูกหนี้'}
+                            placeholder={'ชื่อเจ้าหนี้'}
                             onChangeText={(val) => {
                                 setSearch(val)
                             }} />
@@ -291,7 +290,7 @@ const ShowAP = ({ route }) => {
                                 <DataTable.Title ><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2, width: '60%'
-                                }}>ชื่อลูกหนี้</Text></DataTable.Title>
+                                }}>ชื่อเจ้าหนี้</Text></DataTable.Title>
                                 <DataTable.Title ><Text style={{
                                     fontSize: FontSize.medium,
                                     color: Colors.fontColor2
@@ -299,7 +298,7 @@ const ShowAP = ({ route }) => {
 
                             </DataTable.Header>
                             <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                     <TouchableNativeFeedback>
                                         <View  >
                                             {arrayObj.map((item) => {
