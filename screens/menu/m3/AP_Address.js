@@ -48,8 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { monthFormat, currencyFormat, setnewdateF, checkDate  } from '../safe_Format';
-
+import * as safe_Format from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -77,6 +76,7 @@ const AP_Address = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
+    const [radioIndex, setRadioIndex] = useState(4);
     const radio_props = [
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
@@ -97,100 +97,10 @@ const AP_Address = ({ route }) => {
         console.log(arrayObj)
 
     }, [arrayObj])
-    const regisMacAdd = async () => {
-        console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
-            method: 'POST',
-            body: JSON.stringify({
-                'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': '',
-                'BPAPUS-FUNCTION': 'Register',
-                'BPAPUS-PARAM':
-                    '{"BPAPUS-MACHINE":"' +
-                    registerReducer.machineNum +
-                    '","BPAPUS-CNTRY-CODE": "66","BPAPUS-MOBILE": "0828845662"}',
-            }),
-        })
-            .then((response) => response.json())
-            .then(async (json) => {
-                if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-                    await _fetchGuidLog();
-                } else {
-                    console.log('REGISTER MAC FAILED');
-                }
-            })
-            .catch((error) => {
-                console.log('ERROR at regisMacAdd ' + error);
-                if (databaseReducer.Data.urlser == '') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                } else {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                }
-
-            });
-    };
-
-    const _fetchGuidLog = async () => {
-        console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
-            method: 'POST',
-            body: JSON.stringify({
-                'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': '',
-                'BPAPUS-FUNCTION': 'Login',
-                'BPAPUS-PARAM':
-                    '{"BPAPUS-MACHINE": "' +
-                    registerReducer.machineNum +
-                    '","BPAPUS-USERID": "' +
-                    loginReducer.userNameED +
-                    '","BPAPUS-PASSWORD": "' +
-                    loginReducer.passwordED +
-                    '"}',
-            }),
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                if (json && json.ResponseCode == '635') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                    console.log('NOT FOUND MEMBER');
-                } else if (json && json.ResponseCode == '629') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                } else if (json && json.ResponseCode == '200') {
-                    let responseData = JSON.parse(json.ResponseData);
-                    dispatch(loginActions.guid(responseData.BPAPUS_GUID));
-
-                    // navigation.navigate('MainMenu')
-                } else {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'), json.ResponseCode
-                    );
-                }
-            })
-            .catch((error) => {
-                console.error('ERROR at _fetchGuidLogin' + error);
-                if (databaseReducer.Data.urlser == '') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
-                } else {
-
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                }
-
-
-            });
-
+      const regisMacAdd = async () => {
+        console.log('ser_die')
+        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
+        await fetchInCome()
     };
 
 
@@ -205,8 +115,8 @@ const AP_Address = ({ route }) => {
     const fetchInCome = async () => {
 
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(checkDate(start_date))
-        var eDate = setnewdateF(checkDate(end_date))
+        var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
+        var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/LookupErp', {
             method: 'POST',
@@ -267,10 +177,9 @@ const AP_Address = ({ route }) => {
             })
             .catch((error) => {
                 if (ser_die) {
-                    ser_die = false
                     regisMacAdd()
                 }
-                console.error('ERROR at fetchContent' + error)
+                console.error('ERROR at fetchContent >> ' + error)
             })
         setLoading(false)
     }

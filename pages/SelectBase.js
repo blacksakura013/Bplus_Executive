@@ -85,7 +85,7 @@ const SelectBase = ({ route }) => {
 
 
 
-    console.log('/n/n/nipAddress :', loginReducer.ipAddress)
+    console.log('>> Address :', loginReducer.ipAddress)
 
 
   }, []);
@@ -240,36 +240,7 @@ const SelectBase = ({ route }) => {
     setLoading(false)
   }
 
-
-
-  // const checkIPAddress = async (url) => {
-  //   let result = false;
-  //   await fetch(url + '/DevUsers', {
-  //     method: 'POST',
-  //     body: JSON.stringify({
-  //       'BPAPUS-BPAPSV': '{167f0c96-86fd-488f-94d1-cc3169d60b1a}',
-  //       'BPAPUS-LOGIN-GUID': '',
-  //       'BPAPUS-FUNCTION': 'Register',
-  //       'BPAPUS-PARAM':
-  //         '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTsRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}',
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //       if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-  //         result = true;
-  //       } else {
-  //         console.log('checkIPAddress FAILED');
-  //         result = false;
-  //       }
-  //       console.log('checkIPAddress FAILED');
-  //     })
-  //     .catch((error) => {
-  //       result = false;
-  //       console.log('checkIPAddress', error);
-  //     });
-  //   return result;
-  // };
+ 
 
   const checkIPAddress = async () => {
     console.log(registerReducer.machineNum)

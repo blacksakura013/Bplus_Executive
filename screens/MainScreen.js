@@ -12,6 +12,7 @@ const MainScreen = () => {
     };
   }
   var ser_die = true
+  
   const regisMacAdd = async () => {
     console.log('REGIS MAC ADDRESS');
     await fetch(databaseReducer.Data.urlser + '/DevUsers', {

@@ -34,7 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -48,8 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { monthFormat, currencyFormat, dateFormat, setnewdateF, checkDate  } from '../safe_Format';
-
+import * as safe_Format from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -77,6 +76,7 @@ const AR_ShowArdetail = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
+    const [radioIndex, setRadioIndex] = useState(4);
     const radio_props = [
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
@@ -86,6 +86,14 @@ const AR_ShowArdetail = ({ route }) => {
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
+
+    const [arrayObj_ard_A_mt, ard_A_mtsetArrayObj] = useState([]);
+    const [arrayObj_sumamount, sumamountsetArrayObj] = useState([]);
+    const [arrayObj_ard_sumamount, ard_sumamountsetArrayObj] = useState([]);
+    let sum_ard_A_mt = []
+    let sum_sumamount = []
+    let sum_ard_sumamount = []
+
     var ser_die = true
     useEffect(() => {
         setPage(0);
@@ -100,100 +108,10 @@ const AR_ShowArdetail = ({ route }) => {
 
     }, [arrayObj])
 
-    const regisMacAdd = async () => {
-        console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
-            method: 'POST',
-            body: JSON.stringify({
-                'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': '',
-                'BPAPUS-FUNCTION': 'Register',
-                'BPAPUS-PARAM':
-                    '{"BPAPUS-MACHINE":"' +
-                    registerReducer.machineNum +
-                    '","BPAPUS-CNTRY-CODE": "66","BPAPUS-MOBILE": "0828845662"}',
-            }),
-        })
-            .then((response) => response.json())
-            .then(async (json) => {
-                if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-                    await _fetchGuidLog();
-                } else {
-                    console.log('REGISTER MAC FAILED');
-                }
-            })
-            .catch((error) => {
-                console.log('ERROR at regisMacAdd ' + error);
-                if (databaseReducer.Data.urlser == '') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                } else {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                }
-
-            });
-    };
-
-    const _fetchGuidLog = async () => {
-        console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
-            method: 'POST',
-            body: JSON.stringify({
-                'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': '',
-                'BPAPUS-FUNCTION': 'Login',
-                'BPAPUS-PARAM':
-                    '{"BPAPUS-MACHINE": "' +
-                    registerReducer.machineNum +
-                    '","BPAPUS-USERID": "' +
-                    loginReducer.userNameED +
-                    '","BPAPUS-PASSWORD": "' +
-                    loginReducer.passwordED +
-                    '"}',
-            }),
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                if (json && json.ResponseCode == '635') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                    console.log('NOT FOUND MEMBER');
-                } else if (json && json.ResponseCode == '629') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                } else if (json && json.ResponseCode == '200') {
-                    let responseData = JSON.parse(json.ResponseData);
-                    dispatch(loginActions.guid(responseData.BPAPUS_GUID));
-
-                    // navigation.navigate('MainMenu')
-                } else {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'), json.ResponseCode
-                    );
-                }
-            })
-            .catch((error) => {
-                console.error('ERROR at _fetchGuidLogin' + error);
-                if (databaseReducer.Data.urlser == '') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
-                } else {
-
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                }
-
-
-            });
-
+      const regisMacAdd = async () => {
+        console.log('ser_die')
+        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
+        await fetchInCome()
     };
 
 
@@ -203,25 +121,28 @@ const AR_ShowArdetail = ({ route }) => {
         await fetchInCome()
         setModalVisible(!modalVisible)
         setArrayObj(arrayResult)
+        ard_A_mtsetArrayObj(sum_ard_A_mt)
+        sumamountsetArrayObj(sum_sumamount)
+        ard_sumamountsetArrayObj(sum_ard_sumamount)
 
     }
     const fetchInCome = async () => {
 
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(checkDate(start_date))
-        var eDate = setnewdateF(checkDate(end_date))
+        var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
+        var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWGOODSORDERARKEY',
+                'BPAPUS-FUNCTION': 'SHOWARBALANCEBYARKEY',
                 'BPAPUS-PARAM':
                     '{ "TO_DATE": "' +
                     eDate +
-                    '","AR_KEY": ' +
-                    route.params.Obj + '}',
+                    '","AR_KEY": "' +
+                    route.params.Obj + '"}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -232,15 +153,20 @@ const AR_ShowArdetail = ({ route }) => {
             .then((json) => {
 
                 let responseData = JSON.parse(json.ResponseData);
+
                 if (responseData.RECORD_COUNT > 0) {
-                    for (var i in responseData.SHOWGOODSORDERARKEY) {
+                    for (var i in responseData.SHOWARBALANCEBYARKEY) {
                         let jsonObj = {
                             id: i,
-                            date: responseData.SHOWGOODSORDERARKEY[i].DI_DATE,
-                            id_ref: responseData.SHOWGOODSORDERARKEY[i].DI_REF,
-                            ard_A_mt: responseData.SHOWGOODSORDERARKEY[i].ARD_A_AMT,
-                            sumamount: responseData.SHOWGOODSORDERARKEY[i].SHOWSUMAMOUNT,
+                            date: responseData.SHOWARBALANCEBYARKEY[i].DI_DATE,
+                            id_ref: responseData.SHOWARBALANCEBYARKEY[i].DI_REF,
+                            ard_A_mt: responseData.SHOWARBALANCEBYARKEY[i].ARD_A_AMT,
+                            sumamount: responseData.SHOWARBALANCEBYARKEY[i].SHOWSUMAMOUNT,
                         };
+
+                        sum_ard_A_mt.push(jsonObj.ard_A_mt)
+                        sum_sumamount.push(jsonObj.sumamount)
+                        sum_ard_sumamount.push(jsonObj.ard_A_mt-jsonObj.sumamount)
                         arrayResult.push(jsonObj)
                     }
                 } else {
@@ -249,50 +175,20 @@ const AR_ShowArdetail = ({ route }) => {
             })
             .catch((error) => {
                 if (ser_die) {
-                    ser_die = false
                     regisMacAdd()
                 }
-                console.error('ERROR at fetchContent' + error)
+                console.error('ERROR at fetchContent >> ' + error)
             })
         setLoading(false)
     }
 
-    const setRadio_menu = (val) => {
-        var x = new Date();
-        var day = x.getDate();
-        var month = x.getMonth() + 1
-        var year = x.getFullYear()
-        var sdate = ''
-        var edate = ''
-
-        if (val == 'lastyear') {
-            year = year - 1
-            sdate = new Date(year, 0, 1)
-            edate = new Date(year, 12, 0)
-        } else if (val == 'nowyear') {
-            year = year
-            sdate = new Date(year, 0, 1)
-            edate = new Date(year, 12, 0)
+    const setRadio_menu = (index, val) => {
+        const Radio_Obj = safe_Format.Radio_menu(index, val)
+        setRadioIndex(Radio_Obj.index)
+        if (val != null) {
+            setS_date(new Date(Radio_Obj.sdate))
+            setE_date(new Date(Radio_Obj.edate))
         }
-        else if (val == 'nowmonth') {
-            month = month - 1
-            sdate = new Date(year, month, 1)
-            edate = new Date(year, month + 1, 0)
-        } else if (val == 'lastmonth') {
-            month = month - 2
-            sdate = new Date(year, month, 1)
-            edate = new Date(year, month + 1, 0)
-        }
-        else if (val == 'lastday') {
-            sdate = new Date().setDate(x.getDate() - 1)
-            edate = new Date().setDate(x.getDate() - 1)
-        } else {
-            sdate = new Date()
-            edate = new Date()
-        }
-
-        setS_date(new Date(sdate))
-        setE_date(new Date(edate))
     }
     useEffect(() => {
 
@@ -321,50 +217,50 @@ const AR_ShowArdetail = ({ route }) => {
                     </View>
 
                 </View>
-                <View>
+                <View style={{ flex: 1 }} >
                     <View  >
-                        <ScrollView>
-                            <ScrollView horizontal={true}>
-                                <DataTable
-                                    style={styles.table}>
-                                    <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}>วันที่</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}>เอกสาร</Text></DataTable.Title>
 
-                                        <DataTable.Title numeric><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}> ยอดหนี้ </Text></DataTable.Title>
-                                        <DataTable.Title numeric><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}> ชำระแล้ว </Text></DataTable.Title>
-                                        <DataTable.Title numeric><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}> คงค้าง </Text></DataTable.Title>
+                        <ScrollView horizontal={true}>
+                            <DataTable
+                                style={styles.table}>
+                                <DataTable.Header style={styles.tableHeader}>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>วันที่</Text></DataTable.Title>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>เอกสาร</Text></DataTable.Title>
 
-                                    </DataTable.Header>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> ยอดหนี้ </Text></DataTable.Title>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> ชำระแล้ว </Text></DataTable.Title>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> คงค้าง </Text></DataTable.Title>
 
+                                </DataTable.Header>
+                                <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
-                                            <View marginBottom={20}>
+                                            <View >
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell>{dateFormat(item.date)}</DataTable.Cell>
+                                                                    <DataTable.Cell>{safe_Format.dateFormat(item.date)}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.id_ref}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.ard_A_mt)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.sumamount)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat((item.ard_A_mt + item.sumamount))}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.ard_A_mt)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sumamount)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat((item.ard_A_mt - item.sumamount))}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>
                                                         </>
@@ -373,9 +269,38 @@ const AR_ShowArdetail = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
+                                </ScrollView>
+                                {arrayObj.length > 0 ?
+                                    <View >
+                                        <DataTable.Row style={styles.tabbuttomsum}>
+                                            <DataTable.Cell style={{ flex: 0.6 }} ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >รวม </Text> </DataTable.Cell>
 
-                                </DataTable>
-                            </ScrollView>
+                                            <DataTable.Cell numeric>   <Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} > </Text></DataTable.Cell>
+                                            <DataTable.Cell numeric>   <Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_ard_A_mt))}</Text></DataTable.Cell>
+                                            <DataTable.Cell numeric>   <Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_sumamount))}</Text></DataTable.Cell>
+                                            <DataTable.Cell numeric>
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2
+                                                }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_ard_sumamount))}</Text></DataTable.Cell>
+
+                                        </DataTable.Row>
+                                    </View>
+                                    : null}
+                            </DataTable>
+
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -405,8 +330,9 @@ const AR_ShowArdetail = ({ route }) => {
                                             marginBottom: 10
                                         }}>
                                             <RadioGroup
+                                                selectedIndex={radioIndex}
 
-                                                onSelect={(index, value) => setRadio_menu(value)}
+                                                onSelect={(index, value) => setRadio_menu(index, value)}
                                             >
 
                                                 <RadioButton value={radio_props[0].value} >
@@ -453,8 +379,8 @@ const AR_ShowArdetail = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { 
-                                                    setE_date(date) 
+                                                onDateChange={(date) => {
+                                                    setE_date(date)
                                                     setRadio_menu(4, null)
                                                 }}
                                             />
@@ -477,19 +403,7 @@ const AR_ShowArdetail = ({ route }) => {
 
 
             </SafeAreaView>
-            <View style={styles.tabbuttom}>
-                <Text style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.fontColor2
-                }} >ยอดรวม</Text>
-                <Text  > </Text>
-                <Text style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.fontColor2
-                }} >{currencyFormat(sum)}</Text>
-            </View>
+            
             {loading && (
                 <View
                     style={{
@@ -568,6 +482,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
+    },
+    tabbuttomsum: {
+        backgroundColor: Colors.backgroundLoginColor,
+        color: Colors.fontColor2
     },
     textTitle2: {
         alignSelf: 'center',

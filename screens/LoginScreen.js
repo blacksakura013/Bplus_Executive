@@ -93,7 +93,7 @@ const LoginScreen = () => {
 
 
 
-    console.log('/n/n/ machineNum :', registerReducer.machineNum + '\n\n\n\n')
+    console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
 
 
   }, [registerReducer.machineNum]);
@@ -400,40 +400,15 @@ const LoginScreen = () => {
                   </Text>
                 </View>
               </TouchableNativeFeedback>
-              <View >
+              <View style={{marginTop:10}} >
                 <Text style={{
                   color: Colors.buttonColorPrimary,
                   alignSelf: 'center',
                   fontSize: FontSize.medium,
                   fontWeight: 'bold',
-                }}>{'25/11'}</Text>
+                }}>{'26/11'}</Text>
               </View>
-              {/* <View >
-                <Text style={{
-                  color: Colors.buttonColorPrimary,
-                  alignSelf: 'center',
-                  fontSize: FontSize.medium,
-                  fontWeight: 'bold',
-                }}>{databaseReducer.Data.nameser ? 'name: ' + databaseReducer.Data.nameser : null}</Text>
-                <Text style={{
-                  color: Colors.buttonColorPrimary,
-                  alignSelf: 'center',
-                  fontSize: FontSize.medium,
-                  fontWeight: 'bold',
-                }}>{databaseReducer.Data.urlser ? 'url: ' + databaseReducer.Data.urlser : null}</Text>
-                <Text style={{
-                  color: Colors.buttonColorPrimary,
-                  alignSelf: 'center',
-                  fontSize: FontSize.medium,
-                  fontWeight: 'bold',
-                }}>{databaseReducer.Data.usernameser ? 'user: ' + databaseReducer.Data.usernameser : null}</Text>
-                <Text style={{
-                  color: Colors.buttonColorPrimary,
-                  alignSelf: 'center',
-                  fontSize: FontSize.medium,
-                  fontWeight: 'bold',
-                }}>{databaseReducer.Data.passwordser ? 'password: ' + databaseReducer.Data.passwordser : null}</Text>
-              </View> */}
+         
             </View>
           </View>
 

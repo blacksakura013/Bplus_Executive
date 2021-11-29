@@ -84,7 +84,11 @@ const ShowSlmn = ({ route }) => {
 
 
     }, [])
-
+      const regisMacAdd = async () => {
+        console.log('ser_die')
+        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
+        await fetchInCome()
+    };
 
     const InSearch = async () => {
         console.log('InSearch')
@@ -129,10 +133,9 @@ const ShowSlmn = ({ route }) => {
             })
             .catch((error) => {
                 if (ser_die) {
-                    ser_die = false
                     regisMacAdd()
                 }
-                console.error('ERROR at fetchContent' + error)
+                console.error('ERROR at fetchContent >> ' + error)
             })
 
         setLoading(false)

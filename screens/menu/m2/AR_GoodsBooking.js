@@ -34,7 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -48,7 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import { monthFormat, currencyFormat, dateFormat, setnewdateF, checkDate } from '../safe_Format';
+import * as safe_Format from '../safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -77,6 +77,7 @@ const AR_GoodsBooking = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
+    const [radioIndex, setRadioIndex] = useState(4);
     const radio_props = [
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
@@ -100,100 +101,10 @@ const AR_GoodsBooking = ({ route }) => {
 
     }, [arrayObj])
 
-    const regisMacAdd = async () => {
-        console.log('REGIS MAC ADDRESS');
-        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
-            method: 'POST',
-            body: JSON.stringify({
-                'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': '',
-                'BPAPUS-FUNCTION': 'Register',
-                'BPAPUS-PARAM':
-                    '{"BPAPUS-MACHINE":"' +
-                    registerReducer.machineNum +
-                    '","BPAPUS-CNTRY-CODE": "66","BPAPUS-MOBILE": "0828845662"}',
-            }),
-        })
-            .then((response) => response.json())
-            .then(async (json) => {
-                if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-                    await _fetchGuidLog();
-                } else {
-                    console.log('REGISTER MAC FAILED');
-                }
-            })
-            .catch((error) => {
-                console.log('ERROR at regisMacAdd ' + error);
-                if (databaseReducer.Data.urlser == '') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                } else {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                }
-
-            });
-    };
-
-    const _fetchGuidLog = async () => {
-        console.log('FETCH GUID LOGIN');
-        await fetch(databaseReducer.Data.urlser + '/DevUsers', {
-            method: 'POST',
-            body: JSON.stringify({
-                'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': '',
-                'BPAPUS-FUNCTION': 'Login',
-                'BPAPUS-PARAM':
-                    '{"BPAPUS-MACHINE": "' +
-                    registerReducer.machineNum +
-                    '","BPAPUS-USERID": "' +
-                    loginReducer.userNameED +
-                    '","BPAPUS-PASSWORD": "' +
-                    loginReducer.passwordED +
-                    '"}',
-            }),
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                if (json && json.ResponseCode == '635') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                    console.log('NOT FOUND MEMBER');
-                } else if (json && json.ResponseCode == '629') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                } else if (json && json.ResponseCode == '200') {
-                    let responseData = JSON.parse(json.ResponseData);
-                    dispatch(loginActions.guid(responseData.BPAPUS_GUID));
-
-                    // navigation.navigate('MainMenu')
-                } else {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'), json.ResponseCode
-                    );
-                }
-            })
-            .catch((error) => {
-                console.error('ERROR at _fetchGuidLogin' + error);
-                if (databaseReducer.Data.urlser == '') {
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
-                } else {
-
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                }
-
-
-            });
-
+      const regisMacAdd = async () => {
+        console.log('ser_die')
+        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
+        await fetchInCome()
     };
 
 
@@ -208,8 +119,8 @@ const AR_GoodsBooking = ({ route }) => {
     const fetchInCome = async () => {
 
         setModalVisible(!modalVisible)
-        var sDate = setnewdateF(checkDate(start_date))
-        var eDate = setnewdateF(checkDate(end_date))
+        var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
+        var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
 
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
@@ -252,50 +163,20 @@ const AR_GoodsBooking = ({ route }) => {
             })
             .catch((error) => {
                 if (ser_die) {
-                    ser_die = false
                     regisMacAdd()
                 }
-                console.error('ERROR at fetchContent' + error)
+                console.error('ERROR at fetchContent >> ' + error)
             })
         setLoading(false)
     }
 
-    const setRadio_menu = (val) => {
-        var x = new Date();
-        var day = x.getDate();
-        var month = x.getMonth() + 1
-        var year = x.getFullYear()
-        var sdate = ''
-        var edate = ''
-
-        if (val == 'lastyear') {
-            year = year - 1
-            sdate = new Date(year, 0, 1)
-            edate = new Date(year, 12, 0)
-        } else if (val == 'nowyear') {
-            year = year
-            sdate = new Date(year, 0, 1)
-            edate = new Date(year, 12, 0)
+    const setRadio_menu = (index, val) => {
+        const Radio_Obj = safe_Format.Radio_menu(index, val)
+        setRadioIndex(Radio_Obj.index)
+        if (val != null) {
+            setS_date(new Date(Radio_Obj.sdate))
+            setE_date(new Date(Radio_Obj.edate))
         }
-        else if (val == 'nowmonth') {
-            month = month - 1
-            sdate = new Date(year, month, 1)
-            edate = new Date(year, month + 1, 0)
-        } else if (val == 'lastmonth') {
-            month = month - 2
-            sdate = new Date(year, month, 1)
-            edate = new Date(year, month + 1, 0)
-        }
-        else if (val == 'lastday') {
-            sdate = new Date().setDate(x.getDate() - 1)
-            edate = new Date().setDate(x.getDate() - 1)
-        } else {
-            sdate = new Date()
-            edate = new Date()
-        }
-
-        setS_date(new Date(sdate))
-        setE_date(new Date(edate))
     }
     useEffect(() => {
 
@@ -326,38 +207,38 @@ const AR_GoodsBooking = ({ route }) => {
                 </View>
                 <View>
                     <View  >
-                        <ScrollView>
-                            <ScrollView horizontal={true}>
-                                <DataTable
-                                    style={styles.table}>
-                                    <DataTable.Header style={styles.tableHeader}>
-                                        <DataTable.Title ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}>รหัส</Text></DataTable.Title>
-                                        <DataTable.Title ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}>ชื่อ</Text></DataTable.Title>
 
-                                        <DataTable.Title numeric><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}> จำนวนค้างส่ง </Text></DataTable.Title>
-                                        <DataTable.Title numeric><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}> ส่งแล้ว </Text></DataTable.Title>
-                                        <DataTable.Title numeric><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }}> จำนวนจอง </Text></DataTable.Title>
+                        <ScrollView horizontal={true}>
+                            <DataTable
+                                style={styles.table}>
+                                <DataTable.Header style={styles.tableHeader}>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>รหัส</Text></DataTable.Title>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>ชื่อ</Text></DataTable.Title>
 
-                                    </DataTable.Header>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> จำนวนค้างส่ง </Text></DataTable.Title>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> ส่งแล้ว </Text></DataTable.Title>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> จำนวนจอง </Text></DataTable.Title>
 
+                                </DataTable.Header>
+                                <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1}>
                                         <TouchableNativeFeedback>
-                                            <View marginBottom={20}>
+                                            <View marginBottom={220}>
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
@@ -365,9 +246,9 @@ const AR_GoodsBooking = ({ route }) => {
                                                                 <DataTable.Row>
                                                                     <DataTable.Cell>{item.goods_code}</DataTable.Cell>
                                                                     <DataTable.Cell >{item.sku_nmae}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.trd_qty)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.trd_qty_free)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{currencyFormat(item.trd_qty)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.trd_qty)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.trd_qty_free)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.trd_qty)}</DataTable.Cell>
                                                                 </DataTable.Row>
                                                             </View>
                                                         </>
@@ -376,9 +257,8 @@ const AR_GoodsBooking = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
-
-                                </DataTable>
-                            </ScrollView>
+                                </ScrollView>
+                            </DataTable>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -408,8 +288,9 @@ const AR_GoodsBooking = ({ route }) => {
                                             marginBottom: 10
                                         }}>
                                             <RadioGroup
+                                                selectedIndex={radioIndex}
 
-                                                onSelect={(index, value) => setRadio_menu(value)}
+                                                onSelect={(index, value) => setRadio_menu(index, value)}
                                             >
 
                                                 <RadioButton value={radio_props[0].value} >
@@ -456,10 +337,10 @@ const AR_GoodsBooking = ({ route }) => {
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
-                                                onDateChange={(date) => { 
-                                                    setE_date(date) 
+                                                onDateChange={(date) => {
+                                                    setE_date(date)
                                                     setRadio_menu(4, null)
-                                                 }}
+                                                }}
                                             />
                                         </View>
                                         <Pressable
@@ -491,7 +372,7 @@ const AR_GoodsBooking = ({ route }) => {
                     marginLeft: 12,
                     fontSize: FontSize.medium,
                     color: Colors.fontColor2
-                }} >{currencyFormat(sum)}</Text>
+                }} >{safe_Format.currencyFormat(sum)}</Text>
             </View>
             {loading && (
                 <View
