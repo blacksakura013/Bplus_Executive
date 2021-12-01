@@ -99,7 +99,7 @@ const SlmnByYearMonth = ({ route }) => {
         }
         setSum(newsum)
     }, [arrayObj])
-       const regisMacAdd = async () => {
+    const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
         await fetchInCome()
@@ -270,7 +270,6 @@ const SlmnByYearMonth = ({ route }) => {
                                         }}>
                                             <RadioGroup
                                                 selectedIndex={radioIndex}
-
                                                 onSelect={(index, value) => setRadio_menu(index, value)}
                                             >
                                                 <RadioButton value={radio_props[0].value} >

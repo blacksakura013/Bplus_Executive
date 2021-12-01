@@ -106,7 +106,7 @@ const ShowPos = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ps000402',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': 'AND (POS1_NAME LIKE %' + textsearch + '%)',
+                'BPAPUS-FILTER':  "AND (POS1_NAME LIKE '%" + textsearch + "%')",
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',

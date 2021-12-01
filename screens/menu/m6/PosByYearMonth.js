@@ -231,7 +231,7 @@ const PosByYearMonth = ({ route }) => {
                                                             <DataTable.Row>
                                                                 <DataTable.Cell>{item.code} </DataTable.Cell>
                                                                 <DataTable.Cell >{item.name}</DataTable.Cell>
-                                                                <DataTable.Cell numeric>{currencyFormat(item.sellAmount)}</DataTable.Cell>
+                                                                <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sellAmount)}</DataTable.Cell>
                                                             </DataTable.Row>
                                                         </View>
                                                     </>
@@ -394,7 +394,7 @@ const PosByYearMonth = ({ route }) => {
                     marginLeft: 12,
                     fontSize: FontSize.medium,
                     color: Colors.fontColor2
-                }} >{currencyFormat(sum)}</Text>
+                }} >{safe_Format.currencyFormat(sum)}</Text>
             </View>
             {loading && (
                 <View

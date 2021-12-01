@@ -315,6 +315,7 @@ const ShowInCome = ({ route }) => {
                                             style={{ width: 250 }}
                                             date={start_date} //start date
                                             mode="date"
+                                            yearOffset={543}
                                             placeholder="select date"
                                             format="DD-MM-YYYY"
                                             confirmBtnText="Confirm"

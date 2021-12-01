@@ -106,7 +106,7 @@ const ShowSlmn = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'SL000130',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': 'AND (POS1_NAME LIKE %' + textsearch + '%)',
+                'BPAPUS-FILTER':  "AND (SLMN_NAME LIKE '%" + textsearch + "%')",
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
