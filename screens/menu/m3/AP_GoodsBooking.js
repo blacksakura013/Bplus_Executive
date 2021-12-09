@@ -93,7 +93,7 @@ const AP_GoodsBooking = ({ route }) => {
     useEffect(() => {
         var newsum = 0
         for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].ard_A_mt + arrayObj[i].sumamount)
+            newsum += Number(arrayObj[i].trd_qty_free  )
         }
 
         setSum(newsum)

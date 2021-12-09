@@ -78,10 +78,12 @@ const ShowSellBook = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    const [radioIndex, setRadioIndex] = useState(4);
+    const [radioIndex, setRadioIndex] = useState(6);
     const radio_props = [
-        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
-        { label: 'สิ้นปีก่อน', value: 'lastyear' },
+        { label: 'ปีก่อน', value: 'lastyear' },
+        { label: 'ปีนี้', value: 'nowyear' },
+        { label: 'เดือนนี้', value: 'nowmonth' },
+        { label: 'เดือนก่อน', value: 'lastmonth' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
@@ -102,7 +104,7 @@ const ShowSellBook = ({ route }) => {
 
     }, [arrayObj])
 
-       const regisMacAdd = async () => {
+    const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
         await fetchInCome()
@@ -127,7 +129,8 @@ const ShowSellBook = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
                 'BPAPUS-FUNCTION': 'SHOWBANKBALANCE',
                 'BPAPUS-PARAM':
-                    '{"FROM_DATE": "19000101","TO_DATE": ' +
+                    '{"FROM_DATE": ' +
+                    sDate + ',"TO_DATE": ' +
                     eDate + '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
@@ -296,8 +299,8 @@ const ShowSellBook = ({ route }) => {
                                             marginBottom: 10
                                         }}>
                                             <RadioGroup
-                                                selectedIndex={radioIndex}
 
+                                                selectedIndex={radioIndex}
                                                 onSelect={(index, value) => setRadio_menu(index, value)}
                                             >
                                                 <RadioButton value={radio_props[0].value} >
@@ -313,9 +316,46 @@ const ShowSellBook = ({ route }) => {
                                                 <RadioButton value={radio_props[3].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                 </RadioButton>
-
+                                                <RadioButton value={radio_props[4].value} >
+                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
+                                                </RadioButton>
+                                                <RadioButton value={radio_props[5].value} >
+                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[5].label}</Text>
+                                                </RadioButton>
 
                                             </RadioGroup>
+                                        </View>
+                                        <View style={{
+                                            flexDirection: 'row', justifyContent: 'space-between',
+                                            alignItems: 'center', marginBottom: 10
+                                        }}>
+                                            <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
+                                            <DatePicker
+                                                style={{ width: 250 }}
+                                                date={start_date} //start date
+                                                mode="date"
+                                                yearOffset={543}
+                                                placeholder="select date"
+                                                format="DD-MM-YYYY"
+                                                confirmBtnText="Confirm"
+                                                cancelBtnText="Cancel"
+                                                customStyles={{
+                                                    dateIcon: {
+                                                        left: 0,
+                                                        top: 4,
+                                                        marginLeft: 0
+                                                    },
+                                                    dateInput: {
+
+
+                                                    }
+                                                    // ... You can check the source to find the other keys.
+                                                }}
+                                                onDateChange={(date) => {
+                                                    setS_date(date)
+                                                    setRadio_menu(6, null)
+                                                }}
+                                            />
                                         </View>
                                         <View style={{
                                             flexDirection: 'row', justifyContent: 'space-between',

@@ -1,4 +1,5 @@
-
+export const months_th = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",];
+export const months_th_mini = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.",];
 export const regisMacAdd = async (urlser, serviceID, machineNum, userNameED, passwordED) => {
     console.log('REGIS MAC ADDRESS');
     await fetch(urlser + '/DevUsers', {
@@ -24,8 +25,7 @@ export const regisMacAdd = async (urlser, serviceID, machineNum, userNameED, pas
         .catch((error) => {
             console.log('ERROR at regisMacAdd ' + error);
         });
-};
-
+}
 export const _fetchGuidLog = async (urlser, serviceID, machineNum, userNameED, passwordED) => {
     console.log('FETCH GUID LOGIN');
     var new_GUID = '';
@@ -63,21 +63,14 @@ export const _fetchGuidLog = async (urlser, serviceID, machineNum, userNameED, p
     console.log(">> new_GUID :: ", new_GUID)
     return new_GUID;
 
-};
-
-
-export const months_th = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",];
-export const months_th_mini = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.",];
-
+}
 export const monthFormat = (month) => {
     return months_th[Number(month) - 1];
 }
-
 export const currencyFormat = (num) => {
     if (num == 0) return '-'
     else return Number(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
-
 export const sumTabledata = (item) => {
     var sumItem = 0;
     for (var i in item) {
@@ -85,15 +78,13 @@ export const sumTabledata = (item) => {
     }
     return sumItem;
 }
-
 export const dateFormat = (date) => {
     var x = new Date()
     var year = x.getFullYear()
     var inputyear = Number(date.substring(0, 4))
     if (inputyear <= Number(x.getFullYear())) inputyear += 543
-    return inputyear + '/' + months_th_mini[Number(date.substring(4, 6)) - 1] + '/' + date.substring(6, 8)
+    return  date.substring(6, 8)+ '/' + months_th_mini[Number(date.substring(4, 6)) - 1] + '/' + inputyear
 }
-
 export const checkDate = (temp_date) => {
     if (temp_date.toString().search(':') == -1) {
         var tempdate = temp_date.split('-')
@@ -101,7 +92,6 @@ export const checkDate = (temp_date) => {
     }
     return temp_date
 }
-
 export const setnewdateF = (date) => {
     var x = new Date(date);
 
@@ -116,7 +106,6 @@ export const setnewdateF = (date) => {
     var year = x.getFullYear()
     return year + '' + month + '' + day
 }
-
 export const Radio_menu = (index, val) => {
 
     var x = new Date();
@@ -153,7 +142,6 @@ export const Radio_menu = (index, val) => {
     }
     return { index: index, sdate: new Date(sdate), edate: new Date(edate) }
 }
-
 export const Base64 = {
     // private property
     _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",

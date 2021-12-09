@@ -35,7 +35,7 @@ export const drawerItemsMain = [
   },
   {
     key: 'Mainmenu4',
-    title: 'สรุปยอดเช็ค/สินค้าคงเหลือ',
+    title: 'สรุปยอดเช็คและสินค้าคงเหลือ',
     routes: [
       { nav: 'ChequeIn', routeName: 'ChequeIn', title: 'ยอดเช็ครับครบแต่ละเดือน' },
       { nav: 'ChequeBook', routeName: 'ChequeBook', title: 'ยอดเช็คจ่ายครบแต่ละเดือน' },

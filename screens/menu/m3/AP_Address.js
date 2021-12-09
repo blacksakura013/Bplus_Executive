@@ -118,14 +118,15 @@ const AP_Address = ({ route }) => {
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
 
-        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'Ap000130',
-                'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': "AND ( AP_KEY  ='" + route.params.Obj + "')",
+                'BPAPUS-FUNCTION': 'SHOWAPADDRESS',
+                'BPAPUS-PARAM': '{"AP_KEY": ' +
+                route.params.Obj + '}',
+                'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',

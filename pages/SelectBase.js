@@ -81,13 +81,7 @@ const SelectBase = ({ route }) => {
   };
 
   useEffect(() => {
-
-
-
-
     console.log('>> Address :', loginReducer.ipAddress)
-
-
   }, []);
 
 
@@ -209,7 +203,7 @@ const SelectBase = ({ route }) => {
                   usernameser: username,
                   passwordser: password
                 }
-                console.log(json.ResponseCode)
+                
                 temp.push(newObj)
                 dispatch(loginActions.ipAddress(temp))
                 dispatch(databaseActions.setData(newObj))
@@ -245,16 +239,14 @@ const SelectBase = ({ route }) => {
   const checkIPAddress = async () => {
     console.log(registerReducer.machineNum)
     let result = true;
-    fetch(baseurl + '/DevUsers', {
+   await fetch(baseurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': serviceID,
         'BPAPUS-LOGIN-GUID': '',
         'BPAPUS-FUNCTION': 'Register',
         'BPAPUS-PARAM':
-          '{"BPAPUS-MACHINE":"' +
-          registerReducer.machineNum +
-          '","BPAPUS-CNTRY-CODE": "66","BPAPUS-MOBILE": "0828845662"}',
+        '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}',
       }),
     })
       .then((response) => response.json())
@@ -265,7 +257,7 @@ const SelectBase = ({ route }) => {
           Alert.alert(
             Language.t('alert.errorTitle'),
             Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          console.log('checkIPAddress FAILED');
+          console.log('checkIPAddress FAILED +> ',json.ResponseCode);
           result = false;
         }
       })
@@ -276,6 +268,7 @@ const SelectBase = ({ route }) => {
           Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         console.log('checkIPAddress');
       });
+
     return result;
   };
 
@@ -840,7 +833,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
 
-    machineNum: state.registerReducer.machineNum,
+    
   };
 };
 

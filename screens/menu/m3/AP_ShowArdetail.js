@@ -272,7 +272,7 @@ const AP_ShowArdetail = ({ route }) => {
                                 {arrayObj.length > 0 ?
                                     <View >
                                         <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ flex: 0.6 }} ><Text style={{
+                                            <DataTable.Cell  ><Text style={{
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2
                                             }} >รวม </Text> </DataTable.Cell>

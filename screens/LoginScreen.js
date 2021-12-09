@@ -406,7 +406,7 @@ const LoginScreen = () => {
                   alignSelf: 'center',
                   fontSize: FontSize.medium,
                   fontWeight: 'bold',
-                }}>{'26/11'}</Text>
+                }}>{'08/12'}</Text>
               </View>
          
             </View>

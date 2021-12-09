@@ -104,7 +104,6 @@ const ScanScreen = ({ navigation, route }) => {
           })
           .catch((error) => {
             console.log(error);
-            Alert.alert(Language.t('alert.errorTitle'), Language.t('selectBase.notfound'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           });
 
       }

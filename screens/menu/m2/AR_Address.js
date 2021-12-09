@@ -34,7 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -48,7 +48,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import * as safe_Format from '../safe_Format';const deviceWidth = Dimensions.get('window').width;
+import * as safe_Format from '../safe_Format'; const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const AR_GoodsBooking = ({ route }) => {
@@ -89,7 +89,7 @@ const AR_GoodsBooking = ({ route }) => {
         console.log(arrayObj)
 
     }, [arrayObj])
-       const regisMacAdd = async () => {
+    const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
         await fetchInCome()
@@ -109,15 +109,16 @@ const AR_GoodsBooking = ({ route }) => {
         setModalVisible(!modalVisible)
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
-    
-        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
+
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'Ar000130',
-                'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': "AND ( AR_KEY  ='" + route.params.Obj + "')",
+                'BPAPUS-FUNCTION': 'SHOWARADDRESS',
+                'BPAPUS-PARAM': '{"AR_KEY": ' +
+                    route.params.Obj + '}',
+                'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',

@@ -77,33 +77,39 @@ const ShowSellBook = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    const [radioIndex, setRadioIndex] = useState(6);
+    const [radioIndex, setRadioIndex] = useState(4);
     const radio_props = [
-        { label: 'ปีก่อน', value: 'lastyear' },
-        { label: 'ปีนี้', value: 'nowyear' },
-        { label: 'เดือนนี้', value: 'nowmonth' },
-        { label: 'เดือนก่อน', value: 'lastmonth' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
+        { label: 'สิ้นปีก่อน', value: 'lastyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
+
+    const [arrayObj_last_month, last_monthsetArrayObj] = useState([]);
+    const [arrayObj_this_year, this_yearsetArrayObj] = useState([]);
+    const [arrayObj_last_year, last_yearsetArrayObj] = useState([]);
+
+    let sum_last_month = []
+    let sum_this_year = []
+    let sum_last_year = []
     var ser_die = true
     useEffect(() => {
         setPage(0);
     }, [itemsPerPage])
     useEffect(() => {
         var newsum = 0
-        for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].sellamount)
-        }
+        // for (var i in arrayObj) {
+        //     newsum += Number(arrayObj[i].sellamount)
+        // }
 
-        setSum(newsum)
+        // setSum(newsum)
 
     }, [arrayObj])
 
-       const regisMacAdd = async () => {
+    const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
         await fetchInCome()
@@ -115,7 +121,20 @@ const ShowSellBook = ({ route }) => {
         setLoading(true)
         await fetchInCome()
         setModalVisible(!modalVisible)
+
+
         setArrayObj(arrayResult)
+
+        last_monthsetArrayObj(sum_last_month)
+        this_yearsetArrayObj(sum_this_year)
+        last_yearsetArrayObj(sum_last_year)
+
+        arrayObj.map((item) => {
+            console.log("this_year >> ", item.this_year)
+            console.log("last_year >> ", item.last_year)
+            console.log("last_month >> ", item.last_month)
+            console.log()
+        })
     }
     const fetchInCome = async () => {
         setModalVisible(!modalVisible)
@@ -126,11 +145,9 @@ const ShowSellBook = ({ route }) => {
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWINCOMEBYYEAR',
+                'BPAPUS-FUNCTION': 'SHOWFINANCERATIO',
                 'BPAPUS-PARAM':
-                    '{"FROM_DATE": "' +
-                    sDate +
-                    '","TO_DATE": ' +
+                    '{"TO_DATE": ' +
                     eDate + '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
@@ -142,13 +159,19 @@ const ShowSellBook = ({ route }) => {
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-                    for (var i in responseData.SHOWINCOMEBYYEAR) {
+                    for (var i in responseData.SHOWFINANCERATIO) {
                         let jsonObj = {
                             id: i,
-                            year: responseData.SHOWINCOMEBYYEAR[i].SHOWYEAR,
-                            month: responseData.SHOWINCOMEBYYEAR[i].SHOWMONTH,
-                            sellamount: responseData.SHOWINCOMEBYYEAR[i].SHOWSELLAMOUNT,
+                            key: responseData.SHOWFINANCERATIO[i].TDATA_KEY,
+                            type: responseData.SHOWFINANCERATIO[i].TDATA_TYPE,
+                            desc: responseData.SHOWFINANCERATIO[i].TDATA_DESC,
+                            last_month: responseData.SHOWFINANCERATIO[i].TDATA_LAST_MONTH,
+                            this_year: responseData.SHOWFINANCERATIO[i].TDATA_THIS_YEAR,
+                            last_year: responseData.SHOWFINANCERATIO[i].TDATA_LAST_YEAR,
                         };
+                        sum_last_month.push(jsonObj.last_month)
+                        sum_this_year.push(jsonObj.this_year)
+                        sum_last_year.push(jsonObj.last_year)
                         arrayResult.push(jsonObj)
                     }
                 } else {
@@ -200,47 +223,80 @@ const ShowSellBook = ({ route }) => {
                     </View>
 
                 </View>
-                <View>
+                <View style={{ flex: 1 }}>
                     <View  >
-                        <DataTable
-                            style={styles.table}>
-                            <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}> ปี</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}>เดือน</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}> ยอดขาย </Text></DataTable.Title>
-                            </DataTable.Header>
-                            <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                    <TouchableNativeFeedback>
-                                        <View marginBottom={220}>
-                                            {arrayObj.map((item) => {
-                                                return (
-                                                    <>
-                                                        <View>
-                                                            <DataTable.Row>
-                                                                <DataTable.Cell>{item.year}</DataTable.Cell>
-                                                                <DataTable.Cell >{item.month}</DataTable.Cell>
-                                                                <DataTable.Cell numeric >{safe_Format.currencyFormat(item.sellamount)}</DataTable.Cell>
-                                                            </DataTable.Row>
-                                                        </View>
-                                                    </>
-                                                )
-                                            })}
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                </KeyboardAvoidingView>
-                            </ScrollView>
-                        </DataTable>
+                        <ScrollView horizontal={true}>
+                            <DataTable
+                                style={styles.table}>
+                                <DataTable.Header style={styles.tableHeader}>
+                                    <DataTable.Title style={{}}  ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>รายละเอียด</Text></DataTable.Title>
+                                    <DataTable.Title style={{}} numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>เดือนก่อน</Text></DataTable.Title>
+                                    <DataTable.Title style={{}} numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>ปีก่อน</Text></DataTable.Title>
+                                    <DataTable.Title style={{}} numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> ปีนี้ </Text></DataTable.Title>
+                                </DataTable.Header>
 
+                                <ScrollView>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                        <TouchableNativeFeedback>
+                                            <View >
+                                                {arrayObj.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <View>
+                                                                <DataTable.Row>
+                                                                    <DataTable.Cell style={{}}  >{item.desc}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{}} numeric>{safe_Format.currencyFormat(item.last_month)}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{}} numeric >{safe_Format.currencyFormat(item.last_year)}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{}} numeric>{safe_Format.currencyFormat(item.this_year)}</DataTable.Cell>
+                                                                </DataTable.Row>
+                                                            </View>
+                                                        </>
+                                                    )
+                                                })}
+                                            </View>
+                                        </TouchableNativeFeedback>
+                                    </KeyboardAvoidingView>
+                                </ScrollView>
+                                {arrayObj.length > 0 ?
+                                    <View >
+                                        <DataTable.Row style={styles.tabbuttomsum}>
+                                            <DataTable.Cell style={{}} ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >รวม </Text> </DataTable.Cell>
+
+
+                                            <DataTable.Cell numeric>   <Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_last_month))}</Text></DataTable.Cell>
+                                            <DataTable.Cell numeric>   <Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_this_year))}</Text></DataTable.Cell>
+                                            <DataTable.Cell numeric>
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2
+                                                }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_last_year))}</Text></DataTable.Cell>
+
+                                        </DataTable.Row>
+                                    </View>
+                                    : null}
+                            </DataTable>
+                        </ScrollView>
                     </View>
 
                     <View style={styles.centeredView}>
@@ -269,11 +325,9 @@ const ShowSellBook = ({ route }) => {
                                             alignItems: 'center',
                                             marginBottom: 10
                                         }}>
-                                           <RadioGroup
-                                            selectedIndex={radioIndex}
-
-                                                onSelect={(index, value) => setRadio_menu(index, value)}
-                                            >
+                                            <RadioGroup
+                                                selectedIndex={radioIndex}
+                                                onSelect={(index, value) => setRadio_menu(index, value)}>
                                                 <RadioButton value={radio_props[0].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
                                                 </RadioButton>
@@ -283,51 +337,12 @@ const ShowSellBook = ({ route }) => {
                                                 <RadioButton value={radio_props[2].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
                                                 </RadioButton>
-
                                                 <RadioButton value={radio_props[3].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                 </RadioButton>
-                                                <RadioButton value={radio_props[4].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
-                                                </RadioButton>
-                                                <RadioButton value={radio_props[5].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[5].label}</Text>
-                                                </RadioButton>
-
                                             </RadioGroup>
                                         </View>
-                                        <View style={{
-                                            flexDirection: 'row', justifyContent: 'space-between',
-                                            alignItems: 'center', marginBottom: 10
-                                        }}>
-                                            <Text style={{ fontSize: FontSize.medium, color: 'black', marginRight: 5, fontWeight: 'bold', }}>ตั้งแต่</Text>
-                                            <DatePicker
-                                                style={{ width: 250 }}
-                                                date={start_date} //start date
-                                                mode="date"
-                                                placeholder="select date"
-                                                format="DD-MM-YYYY"
 
-                                                confirmBtnText="Confirm"
-                                                cancelBtnText="Cancel"
-                                                customStyles={{
-                                                    dateIcon: {
-                                                        left: 0,
-                                                        top: 4,
-                                                        marginLeft: 0
-                                                    },
-                                                    dateInput: {
-
-
-                                                    }
-                                                    // ... You can check the source to find the other keys.
-                                                }}
-                                                onDateChange={(date) => {
-                                                    setS_date(date)
-                                                    setRadio_menu(6, null)
-                                                }}
-                                            />
-                                        </View>
 
                                         <View style={{
                                             flexDirection: 'row', justifyContent: 'space-between',
@@ -356,7 +371,7 @@ const ShowSellBook = ({ route }) => {
                                                 }}
                                                 onDateChange={(date) => {
                                                     setE_date(date)
-                                                    setRadio_menu(6, null)
+                                                    setRadio_menu(4, null)
                                                 }}
                                             />
                                         </View>
@@ -378,19 +393,7 @@ const ShowSellBook = ({ route }) => {
 
 
             </SafeAreaView>
-            <View style={styles.tabbuttom}>
-                <Text style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.fontColor2
-                }} >ยอดรวม</Text>
-                <Text  > </Text>
-                <Text style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.fontColor2
-                }} >{safe_Format.currencyFormat(sum)}</Text>
-            </View>
+
             {loading && (
                 <View
                     style={{
@@ -424,7 +427,7 @@ const ShowSellBook = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-
+        width: deviceWidth * 2,
     },
     container: {
         backgroundColor: '#fff',
@@ -442,7 +445,7 @@ const styles = StyleSheet.create({
 
     },
     tableHeader: {
-        justifyContent: 'space-between',
+
         backgroundColor: Colors.buttonColorPrimary,
 
     },
@@ -469,6 +472,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
+    },
+    tabbuttomsum: {
+        backgroundColor: Colors.backgroundLoginColor,
+        color: Colors.fontColor2
     },
     textTitle2: {
         alignSelf: 'center',

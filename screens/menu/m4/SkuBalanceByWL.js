@@ -76,6 +76,7 @@ const SkuBalanceByWL = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
+    const [radioIndex, setRadioIndex] = useState(4);
     const radio_props = [
         { label: 'สิ้นเดือนนี้', value: 'nowmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
@@ -292,36 +293,7 @@ const SkuBalanceByWL = ({ route }) => {
 
                                             </RadioGroup>
                                         </View>
-                                        <View style={{
-                                            flexDirection: 'row', justifyContent: 'space-between',
-                                            alignItems: 'center', marginBottom: 10
-                                        }}>
-                                            <Text style={{ fontSize: FontSize.medium, color: 'black', marginRight: 5, fontWeight: 'bold', }}>ตั้งแต่</Text>
-                                            <DatePicker
-                                                style={{ width: 250 }}
-                                                date={start_date} //start date
-                                                mode="date"
-                                                placeholder="select date"
-                                                format="DD-MM-YYYY"
-
-
-                                                confirmBtnText="Confirm"
-                                                cancelBtnText="Cancel"
-                                                customStyles={{
-                                                    dateIcon: {
-                                                        left: 0,
-                                                        top: 4,
-                                                        marginLeft: 0
-                                                    },
-                                                    dateInput: {
-
-
-                                                    }
-                                                    // ... You can check the source to find the other keys.
-                                                }}
-                                                onDateChange={(date) => { setS_date(date) }}
-                                            />
-                                        </View>
+                                       
 
                                         <View style={{
                                             flexDirection: 'row', justifyContent: 'space-between',

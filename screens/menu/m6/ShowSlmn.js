@@ -219,7 +219,7 @@ const ShowSlmn = ({ route }) => {
                                                         <View>
                                                             <TouchableOpacity
                                                                 onPress={() => navigation.navigate(route.params.route.routeName, {
-                                                                    route: route.params.route, Obj: item.code
+                                                                    route: route.params.route, Obj: item.key
                                                                 })}>
                                                                 <DataTable.Row>
                                                                     <DataTable.Cell>{item.name}</DataTable.Cell>

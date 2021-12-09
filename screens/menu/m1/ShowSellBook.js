@@ -114,7 +114,7 @@ const ShowSellBook = ({ route }) => {
 
     }, [arrayObj])
 
-      const regisMacAdd = async () => {
+    const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
         await fetchInCome()
@@ -131,7 +131,7 @@ const ShowSellBook = ({ route }) => {
         bookamountsetArrayObj(sum_bookamount)
         purcamountsetArrayObj(sum_purcamount)
         poamountsetArrayObj(sum_poamount)
-        
+
     }
     const fetchInCome = async () => {
         setModalVisible(!modalVisible)
@@ -159,7 +159,6 @@ const ShowSellBook = ({ route }) => {
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-
                     for (var i in responseData.SHOWSELLBOOKPURCPOBYYEARMONTH) {
                         let jsonObj = {
                             id: i,

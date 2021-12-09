@@ -211,7 +211,7 @@ const AR_SellAmount = ({ route }) => {
                             <DataTable
                                 style={styles.table}>
                                 <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{ flex: 0.2 }} numeric><Text style={{
+                                    <DataTable.Title style={{ flex: 0.2 }} ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2
                                     }}>ปี</Text></DataTable.Title>
@@ -234,7 +234,7 @@ const AR_SellAmount = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell style={{ flex: 0.2 }} numeric>{item.year}</DataTable.Cell>
+                                                                    <DataTable.Cell style={{ flex: 0.2 }} >{item.year}</DataTable.Cell>
                                                                     <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   >{safe_Format.monthFormat(item.month)}</DataTable.Cell>
                                                                     <DataTable.Cell style={{ flex: 0.5 }} numeric>{safe_Format.currencyFormat(item.sellAmount)}</DataTable.Cell>
                                                                 </DataTable.Row>
