@@ -108,7 +108,7 @@ const ShowInCome = ({ route }) => {
     const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
-        await fetchInCome()
+         fetchInCome()
     };
 
     const InCome = async () => {
@@ -308,23 +308,25 @@ const ShowInCome = ({ route }) => {
                                     </View>
                                     <View style={{
                                         flexDirection: 'row', justifyContent: 'space-between',
-                                        alignItems: 'center', marginBottom: 10
+                                        alignItems: 'center', marginBottom: 10,
                                     }}>
                                         <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
                                         <DatePicker
-                                            style={{ width: 250 }}
+                                            style={{ width: 250, }}
                                             date={start_date} //start date
                                             mode="date"
-                                            yearOffset={543}
+                                            
                                             placeholder="select date"
                                             format="DD-MM-YYYY"
                                             confirmBtnText="Confirm"
                                             cancelBtnText="Cancel"
                                             customStyles={{
+                                               
                                                 dateIcon: {
                                                     left: 0,
                                                     top: 4,
-                                                    marginLeft: 0
+                                                    marginLeft: 0,
+                                                    
                                                 },
                                                 dateInput: {
 

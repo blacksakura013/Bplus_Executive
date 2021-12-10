@@ -80,7 +80,9 @@ function CustomDrawerContent(props) {
             Language.t('alert.errorTitle'),
             'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         } else if (json && json.ResponseCode == '200') {
-          RNRestart.Restart()
+          navigation.dispatch(
+            navigation.replace('Login')
+          )
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),

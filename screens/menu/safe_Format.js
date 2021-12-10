@@ -57,6 +57,13 @@ export const _fetchGuidLog = async (urlser, serviceID, machineNum, userNameED, p
             }
         })
         .catch((error) => {
+            Alert.alert(
+                '',
+                'เซดชั่นหมดอายุ', [{ text: 'OK', onPress: () => navigation.dispatch(
+                    navigation.replace('Login')
+                  )}]);
+    
+            
             console.error('ERROR at _fetchGuidLogin' + error);
         });
 

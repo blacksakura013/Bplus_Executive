@@ -210,7 +210,9 @@ const EditBase = ({ route }) => {
                 dispatch(loginActions.ipAddress(temp))
                 dispatch(databaseActions.setData(newObj))
                 setTimeout(() => {
-                  RNRestart.Restart();
+                  navigation.dispatch(
+                    navigation.replace('Login')
+                  )
                 }, 1000);
               } else {
                 Alert.alert(

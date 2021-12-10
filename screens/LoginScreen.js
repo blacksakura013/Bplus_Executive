@@ -223,6 +223,7 @@ const LoginScreen = () => {
           dispatch(loginActions.userNameED(username))
           dispatch(loginActions.passwordED(password))
           dispatch(loginActions.userlogin(isSelected))
+          
           navigation.dispatch(
             navigation.replace('MainMenu')
           )

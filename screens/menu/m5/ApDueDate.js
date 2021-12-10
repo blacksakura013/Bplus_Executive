@@ -218,7 +218,7 @@ const ApDueDate = ({ route }) => {
                                     <DataTable.Title   numeric><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2
-                                    }}> ยอดขาย </Text></DataTable.Title>
+                                    }}> ยอดซื้อ </Text></DataTable.Title>
 
                                 </DataTable.Header>
                                 <ScrollView>
