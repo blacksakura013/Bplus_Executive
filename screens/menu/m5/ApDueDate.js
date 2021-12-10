@@ -93,7 +93,7 @@ const ApDueDate = ({ route }) => {
     useEffect(() => {
         var newsum = 0
         for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].sumcost)
+            newsum += Number(arrayObj[i].showpurcAmount)
         }
 
         setSum(newsum)
@@ -126,9 +126,9 @@ const ApDueDate = ({ route }) => {
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWSKUBALANCEBYICDEPT',
+                'BPAPUS-FUNCTION': 'SHOWPURCHASEVALUESBYAPKEY',
                 'BPAPUS-PARAM':
-                    '{ "TO_DATE": "' +
+                    '{"FROM_DATE": "20000101","TO_DATE": "' +
                     eDate +
                     '","AP_KEY": ' +
                     route.params.Obj + '}',
@@ -143,12 +143,12 @@ const ApDueDate = ({ route }) => {
 
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-                    for (var i in responseData.SHOWSKUBALANCEBYICDEPT) {
+                    for (var i in responseData.SHOWPURCHASEVALUESBYAPKEY) {
                         let jsonObj = {
                             id: i,
-                            code: responseData.SHOWSKUBALANCEBYICDEPT[i].ICDEPT_CODE,
-                            thaidesc: responseData.SHOWSKUBALANCEBYICDEPT[i].ICDEPT_THAIDESC,
-                            sumcost: responseData.SHOWSKUBALANCEBYICDEPT[i].SUMCOST,
+                            year: responseData.SHOWPURCHASEVALUESBYAPKEY[i].SHOWYEAR,
+                            month: responseData.SHOWPURCHASEVALUESBYAPKEY[i].SHOWMONTH,
+                            showpurcAmount: responseData.SHOWPURCHASEVALUESBYAPKEY[i].SHOWPURCAMOUNT,
                         };
                         arrayResult.push(jsonObj)
                     }
@@ -207,18 +207,18 @@ const ApDueDate = ({ route }) => {
                             <DataTable
                                 style={styles.table}>
                                 <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title ><Text style={{
+                                <DataTable.Title  ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2
-                                    }}>รหัส</Text></DataTable.Title>
-                                    <DataTable.Title ><Text style={{
+                                    }}>ปี</Text></DataTable.Title>
+                                    <DataTable.Title   ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2
-                                    }}>ชื่อ</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                    }}>เดือน</Text></DataTable.Title>
+                                    <DataTable.Title   numeric><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2
-                                    }}> ยอดคงเหลือ </Text></DataTable.Title>
+                                    }}> ยอดขาย </Text></DataTable.Title>
 
                                 </DataTable.Header>
                                 <ScrollView>
@@ -230,9 +230,9 @@ const ApDueDate = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell>{item.code}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.thaidesc}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sumcost)}</DataTable.Cell>
+                                                                    <DataTable.Cell>{item.year}</DataTable.Cell>
+                                                                    <DataTable.Cell    >{safe_Format.monthFormat(item.month)}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.showpurcAmount)}</DataTable.Cell>
 
                                                                 </DataTable.Row>
                                                             </View>

@@ -100,7 +100,7 @@ const ArDueDate = ({ route }) => {
 
     }, [arrayObj])
 
-      const regisMacAdd = async () => {
+    const regisMacAdd = async () => {
         console.log('ser_die')
         dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
         await fetchInCome()
@@ -120,7 +120,7 @@ const ArDueDate = ({ route }) => {
         setModalVisible(!modalVisible)
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
-
+        console.log(route.params.Obj)
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
@@ -229,9 +229,9 @@ const ArDueDate = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <DataTable.Row>
-                                                                    <DataTable.Cell style={{ flex: 0.2 }} >{item.year}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   >{safe_Format.monthFormat(item.month)}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{ flex: 0.5 }} numeric>{safe_Format.currencyFormat(item.showsellAmount)}</DataTable.Cell>
+                                                                    <DataTable.Cell   >{item.year}</DataTable.Cell>
+                                                                    <DataTable.Cell    >{safe_Format.monthFormat(item.month)}</DataTable.Cell>
+                                                                    <DataTable.Cell   numeric>{safe_Format.currencyFormat(item.showsellAmount)}</DataTable.Cell>
 
                                                                 </DataTable.Row>
                                                             </View>

@@ -161,7 +161,7 @@ const SelectBase = ({ route }) => {
 
         if (checkIPAddress() == false) {
           Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
+          console.log(false)
         } else {
           await fetch(newurl + '/DevUsers', {
             method: 'POST',
@@ -170,9 +170,7 @@ const SelectBase = ({ route }) => {
               'BPAPUS-LOGIN-GUID': '',
               'BPAPUS-FUNCTION': 'Login',
               'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
+                '{"BPAPUS-MACHINE": "11111122","BPAPUS-USERID": "' +
                 username +
                 '","BPAPUS-PASSWORD": "' +
                 password +
@@ -195,6 +193,7 @@ const SelectBase = ({ route }) => {
                 Alert.alert(
                   Language.t('alert.errorTitle'),
                   Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+                console.log('json.ResponseCode >> '.json.ResponseCode)
               } else if (json && json.ResponseCode == '200') {
 
                 let newObj = {
@@ -203,7 +202,7 @@ const SelectBase = ({ route }) => {
                   usernameser: username,
                   passwordser: password
                 }
-                
+
                 temp.push(newObj)
                 dispatch(loginActions.ipAddress(temp))
                 dispatch(databaseActions.setData(newObj))
@@ -211,6 +210,7 @@ const SelectBase = ({ route }) => {
                   RNRestart.Restart();
                 }, 1000);
               } else {
+                console.log('Function Parameter Required');
                 Alert.alert(
                   Language.t('alert.errorTitle'),
                   Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
@@ -234,19 +234,20 @@ const SelectBase = ({ route }) => {
     setLoading(false)
   }
 
- 
+
 
   const checkIPAddress = async () => {
     console.log(registerReducer.machineNum)
+    console.log(loginReducer.serviceID)
     let result = true;
-   await fetch(baseurl + '/DevUsers', {
+    await fetch(baseurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
-        'BPAPUS-BPAPSV': serviceID,
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
         'BPAPUS-LOGIN-GUID': '',
         'BPAPUS-FUNCTION': 'Register',
         'BPAPUS-PARAM':
-        '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}',
+          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}',
       }),
     })
       .then((response) => response.json())
@@ -257,7 +258,7 @@ const SelectBase = ({ route }) => {
           Alert.alert(
             Language.t('alert.errorTitle'),
             Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          console.log('checkIPAddress FAILED +> ',json.ResponseCode);
+          console.log('checkIPAddress FAILED +> ', json.ResponseCode);
           result = false;
         }
       })
@@ -300,8 +301,8 @@ const SelectBase = ({ route }) => {
 
       </View>
       <ScrollView>
-      <SafeAreaView >
- 
+        <SafeAreaView >
+
           <KeyboardAvoidingView >
             <View style={styles.body}>
               {Platform.OS == 'ios' ? (
@@ -718,8 +719,8 @@ const SelectBase = ({ route }) => {
             </View>
 
           </KeyboardAvoidingView>
-      
-      </SafeAreaView>
+
+        </SafeAreaView>
       </ScrollView>
       {loading && (
         <View
@@ -833,7 +834,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
 
-    
+
   };
 };
 
