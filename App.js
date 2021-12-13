@@ -153,7 +153,11 @@ const App = () => {
                 name="MainMenu"
                 component={MainMenu}
               />
-
+<LoginStack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
 
               <MainStack.Screen
                 options={{ headerShown: false }}

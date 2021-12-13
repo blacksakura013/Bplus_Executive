@@ -16,6 +16,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
 import { useSelector, useDispatch } from 'react-redux';
 import { useStateIfMounted } from 'use-state-if-mounted';
+import { useNavigation } from '@react-navigation/native';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -29,7 +30,7 @@ function CustomDrawerContent(props) {
     setMainDrawer(true);
     setFilteredItems([]);
   };
-
+  const navigation = useNavigation();
   const onItemParentPress = (key) => {
     const filteredMainDrawerRoutes = props.drawerItems.find((e) => {
       return e.key === key;
@@ -48,7 +49,7 @@ function CustomDrawerContent(props) {
 
   const logOut = async () => {
     
-    setLoading(true)
+   
     await fetch(loginReducer.ipAddress[0].urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -80,9 +81,11 @@ function CustomDrawerContent(props) {
             Language.t('alert.errorTitle'),
             'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         } else if (json && json.ResponseCode == '200') {
-          navigation.dispatch(
-            navigation.replace('Login')
-          )
+          setTimeout(() => {
+            navigation.dispatch(
+              navigation.replace('Login')
+            )
+          }, 1000);
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),
@@ -105,7 +108,7 @@ function CustomDrawerContent(props) {
 
 
       });
-    setLoading(false)
+    
   };
 
 
