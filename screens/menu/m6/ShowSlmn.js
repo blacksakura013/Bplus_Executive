@@ -14,6 +14,7 @@ import {
     BackHandler,
     StatusBar,
 
+    TouchableOpacity,
     Modal, Pressable,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
@@ -22,7 +23,6 @@ import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import {
     ScrollView,
     TouchableNativeFeedback,
-    TouchableOpacity,
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -34,7 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -84,10 +84,10 @@ const ShowSlmn = ({ route }) => {
 
 
     }, [])
-      const regisMacAdd = async () => {
-        console.log('ser_die')
-        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
-        await fetchInCome()
+    const regisMacAdd = async () => {
+        let tempGuid = await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)
+        await dispatch(loginActions.guid(tempGuid))
+        fetchInSearch(tempGuid)
     };
 
     const InSearch = async () => {
@@ -97,16 +97,16 @@ const ShowSlmn = ({ route }) => {
 
         setArrayObj(arrayResult)
     }
-    const fetchInSearch = async () => {
+    const fetchInSearch = async (tempGuid) => {
 
         await fetch(databaseReducer.Data.urlser + '/LookupErp', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': loginReducer.guid,
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'SL000130',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER':  "AND (SLMN_NAME LIKE '%" + textsearch + "%')",
+                'BPAPUS-FILTER': "AND (SLMN_NAME LIKE '%" + textsearch + "%')",
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
@@ -133,7 +133,10 @@ const ShowSlmn = ({ route }) => {
             })
             .catch((error) => {
                 if (ser_die) {
+                    ser_die = false
                     regisMacAdd()
+                } else {
+                    setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
@@ -146,6 +149,7 @@ const ShowSlmn = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
+            <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
@@ -165,7 +169,7 @@ const ShowSlmn = ({ route }) => {
                 </View>
                 <View style={tabbar} >
                     <View style={{
-                        backgroundColor: '#fff', padding: 10, alignSelf: 'center',
+                        backgroundColor: '#fff',   alignSelf: 'center',
                         justifyContent: 'center', borderRadius: 20, flexDirection: 'row', marginBottom: 10
                     }}>
 
@@ -175,9 +179,8 @@ const ShowSlmn = ({ route }) => {
                                 marginLeft: 10,
                                 borderBottomColor: Colors.borderColor,
                                 color: Colors.fontColor,
-                                paddingVertical: 7,
+                                padding: 10,
                                 fontSize: FontSize.medium,
-                                borderBottomWidth: 0.7,
 
                             }}
 
@@ -189,7 +192,7 @@ const ShowSlmn = ({ route }) => {
                                 setSearch(val)
                             }} />
 
-                        <TouchableOpacity onPress={() => InSearch()}>
+                        <TouchableOpacity style={{padding: 10,}} onPress={() => InSearch()}>
                             <FontAwesome name="search" color={'black'} size={30} />
                         </TouchableOpacity>
 

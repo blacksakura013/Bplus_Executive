@@ -14,6 +14,7 @@ import {
     BackHandler,
     StatusBar,
 
+    TouchableOpacity,
     Modal, Pressable,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
@@ -22,7 +23,6 @@ import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import {
     ScrollView,
     TouchableNativeFeedback,
-    TouchableOpacity,
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -81,6 +81,7 @@ const AR_GoodsBooking = ({ route }) => {
     var ser_die = true
     useEffect(() => {
         InCome();
+        console.log(route.params.Obj)
     }, [])
     useEffect(() => {
         setPage(0);
@@ -90,9 +91,9 @@ const AR_GoodsBooking = ({ route }) => {
 
     }, [arrayObj])
     const regisMacAdd = async () => {
-        console.log('ser_die')
-        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
-        await fetchInCome()
+        let tempGuid = await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)
+        await dispatch(loginActions.guid(tempGuid))
+        fetchInCome(tempGuid)
     };
 
 
@@ -104,18 +105,18 @@ const AR_GoodsBooking = ({ route }) => {
         setArrayObj(arrayResult)
 
     }
-    const fetchInCome = async () => {
+    const fetchInCome = async (tempGuid) => {
 
         setModalVisible(!modalVisible)
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
 
-        await fetch(databaseReducer.Data.urlser + '/Executive', {
+        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWARADDRESS',
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
+                'BPAPUS-FUNCTION': 'Ar000130',
                 'BPAPUS-PARAM': '{"AR_KEY": ' +
                     route.params.Obj + '}',
                 'BPAPUS-FILTER': '',
@@ -168,14 +169,17 @@ const AR_GoodsBooking = ({ route }) => {
                 }
 
 
+           setLoading(false)
             })
             .catch((error) => {
                 if (ser_die) {
+                    ser_die = false
                     regisMacAdd()
+                } else {
+                    setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
-        setLoading(false)
     }
 
     useEffect(() => {
@@ -185,6 +189,7 @@ const AR_GoodsBooking = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
+            <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity

@@ -48,8 +48,6 @@ function CustomDrawerContent(props) {
   };
 
   const logOut = async () => {
-    
-   
     await fetch(loginReducer.ipAddress[0].urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -70,7 +68,6 @@ function CustomDrawerContent(props) {
     })
       .then((response) => response.json())
       .then((json) => {
-
         if (json && json.ResponseCode == '635') {
           Alert.alert(
             Language.t('alert.errorTitle'),
@@ -98,20 +95,13 @@ function CustomDrawerContent(props) {
           Alert.alert(
             Language.t('alert.errorTitle'),
             Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
         } else {
-
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
-
-
       });
-    
   };
-
-
 
   function renderMainDrawer() {
     return (
@@ -153,9 +143,7 @@ function CustomDrawerContent(props) {
             <View>
               <Text style={[styles.backButtonText, styles.title]}>{filteredItems.title}</Text>
             </View>
-
           </View>
-
         </TouchableOpacity>
         {filteredItems.routes.map((route) => {
           return (
@@ -198,25 +186,23 @@ function CustomDrawerContent(props) {
 
   return (
     <>
-    <ScrollView style={{backgroundColor: Colors.backgroundLoginColor}}>
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ top: 'always', horizontal: 'never' }}>
-
-        <View style={styles.centered}>
-          <View style={{ padding: 50 }}>
-            <Image
-              source={require('./images/pic_logo_app_t__.png')}
-              style={styles.logo}
-            />
+      <ScrollView style={{ backgroundColor: Colors.backgroundLoginColor }}>
+        <SafeAreaView
+          style={styles.container}
+          forceInset={{ top: 'always', horizontal: 'never' }}>
+          <View style={styles.centered}>
+            <View style={{ padding: 50 }}>
+              <Image
+                source={require('./images/pic_logo_app_t__.png')}
+                style={styles.logo}
+              />
+            </View>
+          </View >
+          <View style={{ backgroundColor: Colors.backgroundLoginColor }}>
+            {mainDrawer ? renderMainDrawer() : renderFilteredItemsDrawer()}
           </View>
-        </View >
-        <View style={{ backgroundColor: Colors.backgroundLoginColor }}>
-          {mainDrawer ? renderMainDrawer() : renderFilteredItemsDrawer()}
-        </View>
-      </SafeAreaView>
-     
-    </ScrollView>
+        </SafeAreaView>
+      </ScrollView>
     </>
   );
 }
@@ -250,7 +236,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: 10,
     paddingLeft: 10,
-    borderBottomWidth: 2,
     borderBottomColor: Colors.backgroundLoginColor,
     paddingTop: 4,
     paddingBottom: 4,

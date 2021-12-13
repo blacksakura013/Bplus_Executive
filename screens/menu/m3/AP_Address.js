@@ -14,6 +14,7 @@ import {
     BackHandler,
     StatusBar,
 
+    TouchableOpacity,
     Modal, Pressable,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
@@ -22,7 +23,6 @@ import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import {
     ScrollView,
     TouchableNativeFeedback,
-    TouchableOpacity,
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -34,7 +34,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector,connect, useDispatch } from 'react-redux';
+import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
@@ -97,10 +97,10 @@ const AP_Address = ({ route }) => {
         console.log(arrayObj)
 
     }, [arrayObj])
-      const regisMacAdd = async () => {
-        console.log('ser_die')
-        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
-        await fetchInCome()
+    const regisMacAdd = async () => {
+        let tempGuid = await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)
+        await dispatch(loginActions.guid(tempGuid))
+        fetchInCome(tempGuid)
     };
 
 
@@ -112,20 +112,20 @@ const AP_Address = ({ route }) => {
         setArrayObj(arrayResult)
 
     }
-    const fetchInCome = async () => {
+    const fetchInCome = async (tempGuid) => {
 
         setModalVisible(!modalVisible)
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
 
-        await fetch(databaseReducer.Data.urlser + '/Executive', {
+        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SHOWAPADDRESS',
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
+                'BPAPUS-FUNCTION': 'Ap000130',
                 'BPAPUS-PARAM': '{"AP_KEY": ' +
-                route.params.Obj + '}',
+                    route.params.Obj + '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -175,14 +175,17 @@ const AP_Address = ({ route }) => {
                     Alert.alert("ไม่พบข้อมูล");
                 }
 
+                setLoading(false)
             })
             .catch((error) => {
                 if (ser_die) {
+                    ser_die = false
                     regisMacAdd()
+                } else {
+                    setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
-        setLoading(false)
     }
 
     useEffect(() => {
@@ -192,6 +195,7 @@ const AP_Address = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
+            <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity

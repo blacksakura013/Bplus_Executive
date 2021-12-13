@@ -113,22 +113,24 @@ const LoginScreen = () => {
   };
   const getMac = async () => {
     var lodstr = ''
-    for (var i =0 ;i< 100;i++) {
-      lodstr+='_'
-      
-     
+    for (var i = 0; i < 100; i++) {
+      lodstr += '_'
+
+
     }
- 
+
 
     await DeviceInfo.getMacAddress().then((mac) => {
-      console.log('\nmachine > > ' + mac)
-      if (mac.length > 0) dispatch(registerActions.machine(mac));
-      else NetworkInfo.getBSSID ().then( macwifi => {
+      var a = Math.floor(100000 + Math.random() * 900000);
+     console.log(DeviceInfo.getDeviceName())
+      console.log('\nmachine > > ' + mac+':'+a)
+      if (mac.length > 0) dispatch(registerActions.machine(mac+':'+a));
+      else NetworkInfo.getBSSID().then(macwifi => {
         console.log('\nmachine(wifi) > > ' + macwifi)
-        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi));
-        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'));
+        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi+':'+a));
+        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'+':'+a));
       }).catch((e) => console.log(e));
-  
+
 
     }).catch((e) => console.log(e));
 
@@ -147,7 +149,7 @@ const LoginScreen = () => {
   }
 
   const regisMacAdd = async () => {
- 
+
     await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -223,7 +225,7 @@ const LoginScreen = () => {
           dispatch(loginActions.userNameED(username))
           dispatch(loginActions.passwordED(password))
           dispatch(loginActions.userlogin(isSelected))
-          
+
           navigation.dispatch(
             navigation.replace('MainMenu')
           )
@@ -401,15 +403,15 @@ const LoginScreen = () => {
                   </Text>
                 </View>
               </TouchableNativeFeedback>
-              <View style={{marginTop:10}} >
+              <View style={{ marginTop: 10 }} >
                 <Text style={{
                   color: Colors.buttonColorPrimary,
                   alignSelf: 'center',
                   fontSize: FontSize.medium,
                   fontWeight: 'bold',
-                }}>{'08/12'}</Text>
+                }}>{'13/12'}</Text>
               </View>
-         
+
             </View>
           </View>
 

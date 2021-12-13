@@ -13,7 +13,7 @@ import { store, persistor } from './src/store/store';
 import { drawerItemsMain } from './drawerItemsMain';
 import CustomDrawerContent from './CustomDrawerContent';
 
-import LoginScreen from './screens/LoginScreen'; 
+import LoginScreen from './screens/LoginScreen';
 import SelectBase from './pages/SelectBase';
 import EditBase from './pages/EditBase';
 
@@ -78,28 +78,22 @@ const App = () => {
   const MainMenu = () => {
     return (
       <Drawer.Navigator
-
         drawerContent={(props) => (
           <CustomDrawerContent drawerItems={drawerItemsMain} {...props} />
         )}>
         <Drawer.Screen
-
           options={{
-
             title: 'เกี่ยวกับ',
             headerStyle: {
               backgroundColor: Colors.backgroundLoginColor,
               shadowColor: 'transparent',
-               
+
             },
             headerTintColor: Colors.backgroundColor,
             headerTitleStyle: {
               fontWeight: 'bold',
-              
-              fontSize:20
+              fontSize: 20
             },
-     
-
             headerTitleAlign: 'center'
           }}
           name="Topmenu" component={Topmenu} />
@@ -115,7 +109,7 @@ const App = () => {
           name="Login"
           component={LoginScreen}
         />
-    
+
         <LoginStack.Screen
           options={{ headerShown: false }}
           name="SelectScreen"
@@ -153,12 +147,11 @@ const App = () => {
                 name="MainMenu"
                 component={MainMenu}
               />
-<LoginStack.Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={LoginScreen}
-        />
-
+              <LoginStack.Screen
+                options={{ headerShown: false }}
+                name="Login"
+                component={LoginScreen}
+              />
               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="ShowInCome"
@@ -189,7 +182,6 @@ const App = () => {
                 name="ShowSellBook"
                 component={ShowSellBook}
               />
-
               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="ShowAR"

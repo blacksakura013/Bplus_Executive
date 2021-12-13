@@ -19,7 +19,6 @@ import CheckBox from '@react-native-community/checkbox';
 import {
     ScrollView,
     TouchableNativeFeedback,
-    TouchableOpacity,
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -68,12 +67,7 @@ const Topmenu = () => {
 
 
     }, [])
-
-       const regisMacAdd = async () => {
-        console.log('ser_die')
-        dispatch(loginActions.guid(await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)))
-        await fetchInCome()
-    };
+ 
     return (
 
         <SafeAreaView style={container}>
