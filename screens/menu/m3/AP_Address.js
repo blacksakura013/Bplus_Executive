@@ -76,7 +76,9 @@ const AP_Address = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    const [radioIndex, setRadioIndex] = useState(4);
+    const [radioIndex1, setRadioIndex1] = useState(4);
+    const [radioIndex2, setRadioIndex2] = useState(4);
+    const [radioIndex3, setRadioIndex3] = useState(4);
     const radio_props = [
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
@@ -182,6 +184,16 @@ const AP_Address = ({ route }) => {
                     ser_die = false
                     regisMacAdd()
                 } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
                     setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
@@ -195,7 +207,7 @@ const AP_Address = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
-            <StatusBar hidden={true} />
+                <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity

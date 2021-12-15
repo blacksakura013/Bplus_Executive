@@ -122,13 +122,13 @@ const LoginScreen = () => {
 
     await DeviceInfo.getMacAddress().then((mac) => {
       var a = Math.floor(100000 + Math.random() * 900000);
-     console.log(DeviceInfo.getDeviceName())
-      console.log('\nmachine > > ' + mac+':'+a)
-      if (mac.length > 0) dispatch(registerActions.machine(mac+':'+a));
+      console.log(DeviceInfo.getDeviceName())
+      console.log('\nmachine > > ' + mac + ':' + a)
+      if (mac.length > 0) dispatch(registerActions.machine(mac + ':' + a));
       else NetworkInfo.getBSSID().then(macwifi => {
         console.log('\nmachine(wifi) > > ' + macwifi)
-        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi+':'+a));
-        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'+':'+a));
+        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi + ':' + a));
+        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a));
       }).catch((e) => console.log(e));
 
 
@@ -167,10 +167,12 @@ const LoginScreen = () => {
         if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
           await _fetchGuidLog();
         } else {
+          console.log('Function Parameter Required');
+          let temp_error = 'error_ser.' + json.ResponseCode;
+          console.log('>> ', temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          console.log('REGISTER MAC FAILED');
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
       })
       .catch((error) => {
@@ -230,9 +232,12 @@ const LoginScreen = () => {
             navigation.replace('MainMenu')
           )
         } else {
+          console.log('Function Parameter Required');
+          let temp_error = 'error_ser.' + json.ResponseCode;
+          console.log('>> ', temp_error)
           Alert.alert(
-            Language.t('alert.errorTitle'), json.ResponseCode
-          );
+            Language.t('alert.errorTitle'),
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
       })
       .catch((error) => {
@@ -409,7 +414,7 @@ const LoginScreen = () => {
                   alignSelf: 'center',
                   fontSize: FontSize.medium,
                   fontWeight: 'bold',
-                }}>{'13/12'}</Text>
+                }}>{'14/12'}</Text>
               </View>
 
             </View>

@@ -48,6 +48,7 @@ function CustomDrawerContent(props) {
   };
 
   const logOut = async () => {
+    
     await fetch(loginReducer.ipAddress[0].urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -78,11 +79,9 @@ function CustomDrawerContent(props) {
             Language.t('alert.errorTitle'),
             'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         } else if (json && json.ResponseCode == '200') {
-          setTimeout(() => {
             navigation.dispatch(
-              navigation.replace('Login')
+              navigation.replace('LoginStackScreen')
             )
-          }, 1000);
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),

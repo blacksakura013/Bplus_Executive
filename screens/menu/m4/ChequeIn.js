@@ -76,7 +76,9 @@ const ChequeIn = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    const [radioIndex, setRadioIndex] = useState(4);
+    const [radioIndex1, setRadioIndex1] = useState(4);
+    const [radioIndex2, setRadioIndex2] = useState(4);
+    const [radioIndex3, setRadioIndex3] = useState(4);
     const radio_props = [
         { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
         { label: 'สิ้นปีก่อน', value: 'lastyear' },
@@ -161,19 +163,51 @@ const ChequeIn = ({ route }) => {
                     ser_die = false
                     regisMacAdd()
                 } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
                     setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
 
-    const setRadio_menu = (index, val) => {
+    const setRadio_menu1 = (index, val) => {
         const Radio_Obj = safe_Format.Radio_menu(index, val)
-        setRadioIndex(Radio_Obj.index)
+        setRadioIndex1(Radio_Obj.index)
         if (val != null) {
             setS_date(new Date(Radio_Obj.sdate))
             setE_date(new Date(Radio_Obj.edate))
         }
+        setRadioIndex2(2)
+        setRadioIndex3(2)
+    }
+    const setRadio_menu2 = (index, val) => {
+        const Radio_Obj = safe_Format.Radio_menu(index, val)
+        setRadioIndex2(Radio_Obj.index)
+        if (val != null) {
+            setS_date(new Date(Radio_Obj.sdate))
+            setE_date(new Date(Radio_Obj.edate))
+        }
+        setRadioIndex1(2)
+        setRadioIndex3(2)
+    }
+    const setRadio_menu3 = (index, val) => {
+        const Radio_Obj = safe_Format.Radio_menu(index, val)
+        setRadioIndex3(Radio_Obj.index)
+        if (val != null) {
+            setS_date(new Date(Radio_Obj.sdate))
+            setE_date(new Date(Radio_Obj.edate))
+        }
+        setRadioIndex1(2)
+        setRadioIndex2(2)
     }
     useEffect(() => {
 
@@ -255,10 +289,10 @@ const ChequeIn = ({ route }) => {
                             animationType="slide"
                             transparent={true}
                             visible={modalVisible}
-
                             onRequestClose={() => {
                                 setModalVisible(!modalVisible);
-                            }}>
+                            }}
+                        >
                             < TouchableOpacity
                                 onPress={() => setModalVisible(!modalVisible)}
                                 style={styles.centeredView}>
@@ -272,15 +306,14 @@ const ChequeIn = ({ route }) => {
 
                                         <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                         <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
-                                            <View style={{
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                marginBottom: 10
-                                            }}>
+                                            <View style={{ paddingBottom: 10 }}>
                                                 <RadioGroup
-                                                    selectedIndex={radioIndex}
-
-                                                    onSelect={(index, value) => setRadio_menu(index, value)}
+                                                    style={{
+                                                        flexDirection: 'row',
+                                                        paddingLeft: 10
+                                                    }}
+                                                    selectedIndex={radioIndex1}
+                                                    onSelect={(index, value) => setRadio_menu1(index, value)}
                                                 >
                                                     <RadioButton value={radio_props[0].value} >
                                                         <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
@@ -288,15 +321,21 @@ const ChequeIn = ({ route }) => {
                                                     <RadioButton value={radio_props[1].value} >
                                                         <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
                                                     </RadioButton>
+                                                </RadioGroup>
+                                                <RadioGroup
+                                                    style={{
+                                                        flexDirection: 'row',
+                                                        paddingLeft: 10
+                                                    }}
+                                                    selectedIndex={radioIndex2}
+                                                    onSelect={(index, value) => setRadio_menu2(index, value)}
+                                                >
                                                     <RadioButton value={radio_props[2].value} >
                                                         <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
                                                     </RadioButton>
-
                                                     <RadioButton value={radio_props[3].value} >
                                                         <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                     </RadioButton>
-
-
                                                 </RadioGroup>
                                             </View>
 
@@ -313,7 +352,6 @@ const ChequeIn = ({ route }) => {
                                                     placeholder="select date"
                                                     format="DD-MM-YYYY"
 
-
                                                     confirmBtnText="Confirm"
                                                     cancelBtnText="Cancel"
                                                     customStyles={{
@@ -329,7 +367,8 @@ const ChequeIn = ({ route }) => {
                                                     }}
                                                     onDateChange={(date) => {
                                                         setE_date(date)
-                                                        setRadio_menu(4, null)
+                                                        setRadio_menu1(4, null)
+                                                        setRadio_menu2(4, null)
                                                     }}
                                                 />
                                             </View>

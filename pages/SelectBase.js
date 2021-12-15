@@ -181,22 +181,7 @@ const SelectBase = ({ route }) => {
           })
             .then((response) => response.json())
             .then((json) => {
-              if (json && json.ResponseCode == '635') {
-                Alert.alert(
-                  Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                console.log('NOT FOUND MEMBER');
-              } else if (json && json.ResponseCode == '629') {
-                Alert.alert(
-                  Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                console.log('Function Parameter Required');
-              } else if (json && json.ResponseCode == '609') {
-                Alert.alert(
-                  Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                console.log('json.ResponseCode >> '.json.ResponseCode)
-              } else if (json && json.ResponseCode == '200') {
+               if (json && json.ResponseCode == '200') {
 
                 let newObj = {
                   nameser: basename,
@@ -215,9 +200,11 @@ const SelectBase = ({ route }) => {
                 }, 1000);
               } else {
                 console.log('Function Parameter Required');
+                let temp_error='error_ser.'+json.ResponseCode;
+                console.log('>> ',temp_error)
                 Alert.alert(
                   Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+                  Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
               }
             })
             .catch((error) => {
@@ -259,11 +246,12 @@ const SelectBase = ({ route }) => {
         if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
           result = true;
         } else {
+          console.log('Function Parameter Required');
+          let temp_error='error_ser.'+json.ResponseCode;
+          console.log('>> ',temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          console.log('checkIPAddress FAILED +> ', json.ResponseCode);
-          result = false;
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
       })
       .catch((error) => {

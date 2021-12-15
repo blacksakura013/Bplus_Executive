@@ -59,11 +59,13 @@ export const _fetchGuidLog = async (urlser, serviceID, machineNum, userNameED, p
         .catch((error) => {
             Alert.alert(
                 '',
-                'เซดชั่นหมดอายุ', [{ text: 'OK', onPress: () => navigation.dispatch(
-                    navigation.replace('Login')
-                  )}]);
-    
-            
+                'เซดชั่นหมดอายุ', [{
+                    text: 'OK', onPress: () => navigation.dispatch(
+                        navigation.replace('LoginStackScreen')
+                    )
+                }]);
+
+
             console.error('ERROR at _fetchGuidLogin' + error);
         });
 
@@ -90,7 +92,7 @@ export const dateFormat = (date) => {
     var year = x.getFullYear()
     var inputyear = Number(date.substring(0, 4))
     if (inputyear <= Number(x.getFullYear())) inputyear += 543
-    return  date.substring(6, 8)+ '/' + months_th_mini[Number(date.substring(4, 6)) - 1] + '/' + inputyear
+    return date.substring(6, 8) + '/' + months_th_mini[Number(date.substring(4, 6)) - 1] + '/' + inputyear
 }
 export const checkDate = (temp_date) => {
     if (temp_date.toString().search(':') == -1) {

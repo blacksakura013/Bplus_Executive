@@ -58,13 +58,19 @@ import PosByYearMonth from './screens/menu/m6/PosByYearMonth'
 import IncomeBySlmn from './screens/menu/m6/IncomeBySlmn'
 import IncomeByPos from './screens/menu/m6/IncomeByPos'
 
-import { Language } from './translations/I18n';
+import { Language ,changeLanguage} from './translations/I18n';
 import { FontSize } from './components/FontSizeHelper';
 import Colors from './src/Colors';
-
+import { useSelector } from 'react-redux';
 const App = () => {
+ 
+  useEffect(() => {
 
-
+     
+      changeLanguage('th');
+   
+  //backsakura 
+  }, []);
   useEffect(() => {
 
 
@@ -147,11 +153,7 @@ const App = () => {
                 name="MainMenu"
                 component={MainMenu}
               />
-              <LoginStack.Screen
-                options={{ headerShown: false }}
-                name="Login"
-                component={LoginScreen}
-              />
+            
               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="ShowInCome"

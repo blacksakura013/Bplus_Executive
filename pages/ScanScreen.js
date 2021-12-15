@@ -79,11 +79,7 @@ const ScanScreen = ({ navigation, route }) => {
           }
         }
 
-        // if(Platform.OS === 'android' && path.startsWith('file://')){
-        //   //แทนที่ (หา,ที่แทนลงไป)
-        //   path = path.replace(/file:\/\//, ''  )
-        // }
-
+  
         QRreader(path)
           .then((data) => {
             if (data) {

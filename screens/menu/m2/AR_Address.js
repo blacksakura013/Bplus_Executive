@@ -169,13 +169,23 @@ const AR_GoodsBooking = ({ route }) => {
                 }
 
 
-           setLoading(false)
+                setLoading(false)
             })
             .catch((error) => {
                 if (ser_die) {
                     ser_die = false
                     regisMacAdd()
                 } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
                     setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
@@ -189,7 +199,7 @@ const AR_GoodsBooking = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
-            <StatusBar hidden={true} />
+                <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity

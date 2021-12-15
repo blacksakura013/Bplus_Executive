@@ -78,7 +78,9 @@ const ShowInCome = ({ route }) => {
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
-    const [radioIndex, setRadioIndex] = useState(6);
+    const [radioIndex1, setRadioIndex1] = useState(6);
+    const [radioIndex2, setRadioIndex2] = useState(6);
+    const [radioIndex3, setRadioIndex3] = useState(6);
     const radio_props = [
         { label: 'ปีก่อน', value: 'lastyear' },
         { label: 'ปีนี้', value: 'nowyear' },
@@ -165,6 +167,16 @@ const ShowInCome = ({ route }) => {
                     ser_die = false
                     regisMacAdd()
                 } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
                     setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
@@ -175,13 +187,35 @@ const ShowInCome = ({ route }) => {
 
     }
 
-    const setRadio_menu = (index, val) => {
+    const setRadio_menu1 = (index, val) => {
         const Radio_Obj = safe_Format.Radio_menu(index, val)
-        setRadioIndex(Radio_Obj.index)
+        setRadioIndex1(Radio_Obj.index)
         if (val != null) {
             setS_date(new Date(Radio_Obj.sdate))
             setE_date(new Date(Radio_Obj.edate))
         }
+        setRadioIndex2(2)
+        setRadioIndex3(2)
+    }
+    const setRadio_menu2 = (index, val) => {
+        const Radio_Obj = safe_Format.Radio_menu(index, val)
+        setRadioIndex2(Radio_Obj.index)
+        if (val != null) {
+            setS_date(new Date(Radio_Obj.sdate))
+            setE_date(new Date(Radio_Obj.edate))
+        }
+        setRadioIndex1(2)
+        setRadioIndex3(2)
+    }
+    const setRadio_menu3 = (index, val) => {
+        const Radio_Obj = safe_Format.Radio_menu(index, val)
+        setRadioIndex3(Radio_Obj.index)
+        if (val != null) {
+            setS_date(new Date(Radio_Obj.sdate))
+            setE_date(new Date(Radio_Obj.edate))
+        }
+        setRadioIndex1(2)
+        setRadioIndex2(2)
     }
 
 
@@ -253,7 +287,6 @@ const ShowInCome = ({ route }) => {
                     </DataTable>
                 </View>
                 <View style={styles.centeredView}>
-
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -266,45 +299,60 @@ const ShowInCome = ({ route }) => {
                             style={styles.centeredView}>
                             <View>
                                 <View style={styles.modalView}>
-                                    <View style={{ alignItems: 'flex-end' }}>
-                                        <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                                    <View style={{
+                                        justifyContent: 'space-between',
+                                        flexDirection: 'row'
+                                    }}>
+                                        <View width={20}></View>
+                                        <Text style={styles.modalText}>เลือกการค้นหา</Text>
+                                        <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
                                             <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
                                         </Pressable>
                                     </View>
-
-                                    <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                     <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginBottom: 10,
-
-                                        }}>
+                                        <View style={{ paddingBottom: 10 }}>
                                             <RadioGroup
-
-                                                selectedIndex={radioIndex}
-                                                onSelect={(index, value) => setRadio_menu(index, value)}
-                                            >
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    paddingLeft: 10
+                                                }}
+                                                selectedIndex={radioIndex1}
+                                                onSelect={(index, value) => setRadio_menu1(index, value)}>
                                                 <RadioButton value={radio_props[0].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
+                                                    <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
                                                 </RadioButton>
                                                 <RadioButton value={radio_props[1].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
                                                 </RadioButton>
+                                            </RadioGroup>
+                                            <RadioGroup
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    paddingLeft: 10
+                                                }}
+                                                selectedIndex={radioIndex2}
+                                                onSelect={(index, value) => setRadio_menu2(index, value)}>
                                                 <RadioButton value={radio_props[2].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
+                                                    <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
                                                 </RadioButton>
 
                                                 <RadioButton value={radio_props[3].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                 </RadioButton>
+                                            </RadioGroup>
+                                            <RadioGroup
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    paddingLeft: 10
+                                                }}
+                                                selectedIndex={radioIndex3}
+                                                onSelect={(index, value) => setRadio_menu3(index, value)}>
                                                 <RadioButton value={radio_props[4].value} >
-                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
+                                                    <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[4].label}</Text>
                                                 </RadioButton>
                                                 <RadioButton value={radio_props[5].value} >
                                                     <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[5].label}</Text>
                                                 </RadioButton>
-
                                             </RadioGroup>
                                         </View>
                                         <View style={{
@@ -316,13 +364,11 @@ const ShowInCome = ({ route }) => {
                                                 style={{ width: 250, }}
                                                 date={start_date} //start date
                                                 mode="date"
-
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
-
                                                     dateIcon: {
                                                         left: 0,
                                                         top: 4,
@@ -330,18 +376,17 @@ const ShowInCome = ({ route }) => {
 
                                                     },
                                                     dateInput: {
-
-
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
                                                 onDateChange={(date) => {
                                                     setS_date(date)
-                                                    setRadio_menu(6, null)
+                                                    setRadio_menu1(2, null)
+                                                    setRadio_menu2(2, null)
+                                                    setRadio_menu3(2, null)
                                                 }}
                                             />
                                         </View>
-
                                         <View style={{
                                             flexDirection: 'row', justifyContent: 'space-between',
                                             alignItems: 'center', marginBottom: 10
@@ -353,7 +398,6 @@ const ShowInCome = ({ route }) => {
                                                 mode="date"
                                                 placeholder="select date"
                                                 format="DD-MM-YYYY"
-
                                                 confirmBtnText="Confirm"
                                                 cancelBtnText="Cancel"
                                                 customStyles={{
@@ -363,23 +407,22 @@ const ShowInCome = ({ route }) => {
                                                         marginLeft: 0
                                                     },
                                                     dateInput: {
-
                                                     }
                                                     // ... You can check the source to find the other keys.
                                                 }}
                                                 onDateChange={(date) => {
                                                     setE_date(date)
-                                                    setRadio_menu(6, null)
+                                                    setRadio_menu1(2, null)
+                                                    setRadio_menu2(2, null)
+                                                    setRadio_menu3(2, null)
                                                 }}
                                             />
                                         </View>
                                         <Pressable
                                             style={[styles.button, styles.buttonClose]}
-                                            onPress={() => InCome()}
-                                        >
+                                            onPress={() => InCome()}>
                                             <Text style={styles.textStyle}>ตกลง</Text>
                                         </Pressable>
-
                                     </View>
                                 </View>
                             </View>

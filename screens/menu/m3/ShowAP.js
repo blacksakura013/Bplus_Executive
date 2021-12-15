@@ -82,7 +82,7 @@ const ShowAP = ({ route }) => {
 
     var ser_die = true
     useEffect(() => {
-         
+
     }, [])
     const regisMacAdd = async () => {
         let tempGuid = await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)
@@ -135,6 +135,16 @@ const ShowAP = ({ route }) => {
                     ser_die = false
                     regisMacAdd()
                 } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
                     setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
@@ -148,7 +158,7 @@ const ShowAP = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
-            <StatusBar hidden={true} />
+                <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
@@ -165,7 +175,7 @@ const ShowAP = ({ route }) => {
                 </View>
                 <View style={tabbar} >
                     <View style={{
-                        backgroundColor: '#fff',   alignSelf: 'center',
+                        backgroundColor: '#fff', alignSelf: 'center',
                         justifyContent: 'center', borderRadius: 20, flexDirection: 'row', marginBottom: 10
                     }}>
 
@@ -188,7 +198,7 @@ const ShowAP = ({ route }) => {
                                 setSearch(val)
                             }} />
 
-                        <TouchableOpacity style={{padding: 10,}} onPress={() => InSearch()}>
+                        <TouchableOpacity style={{ padding: 10, }} onPress={() => InSearch()}>
                             <FontAwesome name="search" color={'black'} size={30} />
                         </TouchableOpacity>
 

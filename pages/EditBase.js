@@ -79,7 +79,7 @@ const EditBase = ({ route }) => {
   };
 
   useEffect(() => {
-  
+
 
     console.log('/n/n/nipAddress :', loginReducer.ipAddress)
 
@@ -142,19 +142,19 @@ const EditBase = ({ route }) => {
 
 
       for (let i in loginReducer.ipAddress) {
-        if (
-          loginReducer.ipAddress[i].urlser == newurl || loginReducer.ipAddress[i].nameser == basename
-        ) {
+        if (i != updateindex) {
 
-          Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          check = true;
-
-          break;
+          if (
+            loginReducer.ipAddress[i].urlser == newurl || loginReducer.ipAddress[i].nameser == basename
+          ) {
+            console.log(loginReducer.ipAddress[i].urlser, ' == ', newurl, ' || ', loginReducer.ipAddress[i].nameser, ' == ', basename)
+            Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            check = true;
+            break;
+          }
         }
       }
       if (!check) {
-
-
         if (checkIPAddress() == false) {
           Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
           setShowDialog(false);
@@ -166,9 +166,7 @@ const EditBase = ({ route }) => {
               'BPAPUS-LOGIN-GUID': '',
               'BPAPUS-FUNCTION': 'Login',
               'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "' +
-                registerReducer.machineNum +
-                '","BPAPUS-USERID": "' +
+                '{"BPAPUS-MACHINE": "11111122","BPAPUS-USERID": "' +
                 username +
                 '","BPAPUS-PASSWORD": "' +
                 password +
@@ -177,21 +175,8 @@ const EditBase = ({ route }) => {
           })
             .then((response) => response.json())
             .then((json) => {
-              if (json && json.ResponseCode == '635') {
-                Alert.alert(
-                  Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                console.log('NOT FOUND MEMBER');
-              } else if (json && json.ResponseCode == '629') {
-                Alert.alert(
-                  Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-                console.log('Function Parameter Required');
-              } else if (json && json.ResponseCode == '609') {
-                Alert.alert(
-                  Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-              } else if (json && json.ResponseCode == '200') {
+
+              if (json && json.ResponseCode == '200') {
                 dispatch(loginActions.ipAddress([]))
                 let newObj = {
                   nameser: basename,
@@ -209,15 +194,16 @@ const EditBase = ({ route }) => {
                 }
                 dispatch(loginActions.ipAddress(temp))
                 dispatch(databaseActions.setData(newObj))
-                setTimeout(() => {
-                  navigation.dispatch(
-                    navigation.replace('Login')
-                  )
-                }, 1000);
+                navigation.dispatch(
+                  navigation.goBack()
+                )
               } else {
+                console.log('Function Parameter Required');
+                let temp_error = 'error_ser.' + json.ResponseCode;
+                console.log('>> ', temp_error)
                 Alert.alert(
                   Language.t('alert.errorTitle'),
-                  Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+                  Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
               }
             })
             .catch((error) => {
@@ -270,26 +256,24 @@ const EditBase = ({ route }) => {
       setLoading(false)
     }, 3000);
   }
- 
+
 
 
 
   const checkIPAddress = async () => {
     console.log('baseurl : ', baseurl)
-    console.log('serviceID : ', serviceID)
+    console.log('serviceID : ', loginReducer.serviceID)
     console.log('registerReducer.machineNum : ', registerReducer.machineNum)
     console.log('username : ', username)
     let result = true;
-    fetch(baseurl + '/DevUsers', {
+    await fetch(baseurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
-        'BPAPUS-BPAPSV': serviceID,
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
         'BPAPUS-LOGIN-GUID': '',
         'BPAPUS-FUNCTION': 'Register',
         'BPAPUS-PARAM':
-          '{"BPAPUS-MACHINE":"' +
-          registerReducer.machineNum +
-          '","BPAPUS-CNTRY-CODE": "66","BPAPUS-MOBILE": "0828845662"}',
+          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}'
       }),
     })
       .then((response) => response.json())
@@ -297,11 +281,12 @@ const EditBase = ({ route }) => {
         if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
           return true;
         } else {
+          console.log('Function Parameter Required');
+          let temp_error = 'error_ser.' + json.ResponseCode;
+          console.log('>> ', temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          console.log('checkIPAddress FAILED');
-          result = false;
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
       })
       .catch((error) => {
@@ -327,7 +312,7 @@ const EditBase = ({ route }) => {
               marginLeft: 12,
               fontSize: FontSize.medium,
               color: Colors.backgroundLoginColor,
-            }}> แก้ไขฐานข้อมูล {updateindex}</Text>
+            }}> แก้ไขฐานข้อมูล </Text>
         </View>
         <View>
 

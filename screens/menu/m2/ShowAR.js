@@ -137,6 +137,16 @@ const showAR = ({ route }) => {
                     ser_die = false
                     regisMacAdd()
                 } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
                     setLoading(false)
                 }
                 console.error('ERROR at fetchContent >> ' + error)
@@ -150,7 +160,7 @@ const showAR = ({ route }) => {
     return (
         <>
             <SafeAreaView style={container}>
-            <StatusBar hidden={true} />
+                <StatusBar hidden={true} />
                 <View style={tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
@@ -170,7 +180,7 @@ const showAR = ({ route }) => {
                 </View>
                 <View style={tabbar} >
                     <View style={{
-                        backgroundColor: '#fff',  alignSelf: 'center',
+                        backgroundColor: '#fff', alignSelf: 'center',
                         justifyContent: 'center', borderRadius: 20, flexDirection: 'row', marginBottom: 10
                     }}>
 
@@ -193,7 +203,7 @@ const showAR = ({ route }) => {
                                 setSearch(val)
                             }} />
 
-                        <TouchableOpacity style={{padding: 10,}} onPress={() => InSearch()}>
+                        <TouchableOpacity style={{ padding: 10, }} onPress={() => InSearch()}>
                             <FontAwesome name="search" color={'black'} size={30} />
                         </TouchableOpacity>
 
