@@ -154,12 +154,68 @@ const EditBase = ({ route }) => {
           }
         }
       }
+      console.log(check)
       if (!check) {
-        if (checkIPAddress() == false) {
-          Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          setShowDialog(false);
-        } else {
-          await fetch(newurl + '/DevUsers', {
+        checkIPAddress()
+      }else{
+        setLoading(false)
+      }
+
+     
+    }
+  }
+  const _onPressDelete = async () => {
+    setLoading(true)
+   
+
+    if (baseurl == databaseReducer.Data.urlser) {
+      Alert.alert('', Language.t('selectBase.cannotDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+    } else {
+      if (temp.length == 1) {
+        Alert.alert('', Language.t('selectBase.cannotDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+      } else {
+        for (let i in loginReducer.ipAddress) {
+          if (loginReducer.ipAddress[i].urlser == baseurl) {
+            temp.splice(i, 1);
+            Alert.alert('', Language.t('selectBase.questionDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            setTimeout(() => {
+              setLoading(false)
+              navigation.goBack();
+            }, 3000);
+            break;
+          }
+        }
+      }
+    }
+
+    dispatch(loginActions.ipAddress(temp));
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
+  }
+
+
+
+
+  const checkIPAddress = async () => {
+  
+    let temp = loginReducer.ipAddress;
+    let tempurl = baseurl.split('.dll')
+    let newurl = tempurl[0] + '.dll'
+    await fetch(baseurl + '/DevUsers', {
+      method: 'POST',
+      body: JSON.stringify({
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
+        'BPAPUS-LOGIN-GUID': '',
+        'BPAPUS-FUNCTION': 'Register',
+        'BPAPUS-PARAM':
+          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}'
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
+          fetch(newurl + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
               'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -212,74 +268,6 @@ const EditBase = ({ route }) => {
                 Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
               console.error('_fetchGuidLogin ' + error);
             });
-
-        }
-
-      } else {
-        Alert.alert(
-          Language.t('alert.errorTitle'),
-          Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-      }
-    }
-    setLoading(false)
-  }
-  const _onPressDelete = async () => {
-    setLoading(true)
-    let temp = loginReducer.ipAddress;
-
-    if (baseurl == databaseReducer.Data.urlser) {
-      Alert.alert('', Language.t('selectBase.cannotDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-    } else {
-      if (temp.length == 1) {
-        Alert.alert('', Language.t('selectBase.cannotDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-      } else {
-
-        for (let i in loginReducer.ipAddress) {
-          if (loginReducer.ipAddress[i].urlser == baseurl) {
-            temp.splice(i, 1);
-            Alert.alert('', Language.t('selectBase.questionDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-
-            setTimeout(() => {
-              setLoading(false)
-              navigation.goBack();
-
-            }, 3000);
-            break;
-
-          }
-        }
-      }
-    }
-
-    dispatch(loginActions.ipAddress(temp));
-    setTimeout(() => {
-      setLoading(false)
-    }, 3000);
-  }
-
-
-
-
-  const checkIPAddress = async () => {
-    console.log('baseurl : ', baseurl)
-    console.log('serviceID : ', loginReducer.serviceID)
-    console.log('registerReducer.machineNum : ', registerReducer.machineNum)
-    console.log('username : ', username)
-    let result = true;
-    await fetch(baseurl + '/DevUsers', {
-      method: 'POST',
-      body: JSON.stringify({
-        'BPAPUS-BPAPSV': loginReducer.serviceID,
-        'BPAPUS-LOGIN-GUID': '',
-        'BPAPUS-FUNCTION': 'Register',
-        'BPAPUS-PARAM':
-          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}'
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-          return true;
         } else {
           console.log('Function Parameter Required');
           let temp_error = 'error_ser.' + json.ResponseCode;
@@ -290,13 +278,12 @@ const EditBase = ({ route }) => {
         }
       })
       .catch((error) => {
-        result = false;
         Alert.alert(
           Language.t('alert.errorTitle'),
           Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         console.log('checkIPAddress');
       });
-    return result;
+      setLoading(false)
   };
 
   return (

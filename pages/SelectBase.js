@@ -133,10 +133,11 @@ const SelectBase = ({ route }) => {
   const _onPressAddbase = async () => {
     let tempurl = baseurl.split('.dll')
     let newurl = tempurl[0] + '.dll'
+    let temp = []
+    let check = false;
     setLoading(true)
     if (checkValue() == true) {
-      let temp = []
-      let check = false;
+
 
       temp = loginReducer.ipAddress;
       for (let i in loginReducer.ipAddress) {
@@ -159,13 +160,42 @@ const SelectBase = ({ route }) => {
         }
       }
       if (!check) {
+        checkIPAddress()
+      } else {
+        setLoading(false)
+      }
+
+    } else {
+      Alert.alert(
+        Language.t('alert.errorTitle'),
+        Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+      setLoading(false)
+    }
+
+  }
 
 
-        if (checkIPAddress() == false) {
-          Alert.alert('', Language.t('selectBase.UnableConnec'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-          console.log(false)
-        } else {
-          await fetch(newurl + '/DevUsers', {
+
+  const checkIPAddress = async () => {
+    let tempurl = baseurl.split('.dll')
+    let newurl = tempurl[0] + '.dll'
+    let temp = []
+
+
+    await fetch(baseurl + '/DevUsers', {
+      method: 'POST',
+      body: JSON.stringify({
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
+        'BPAPUS-LOGIN-GUID': '',
+        'BPAPUS-FUNCTION': 'Register',
+        'BPAPUS-PARAM':
+          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}',
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
+          fetch(newurl + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
               'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -181,7 +211,7 @@ const SelectBase = ({ route }) => {
           })
             .then((response) => response.json())
             .then((json) => {
-               if (json && json.ResponseCode == '200') {
+              if (json && json.ResponseCode == '200') {
 
                 let newObj = {
                   nameser: basename,
@@ -200,8 +230,8 @@ const SelectBase = ({ route }) => {
                 }, 1000);
               } else {
                 console.log('Function Parameter Required');
-                let temp_error='error_ser.'+json.ResponseCode;
-                console.log('>> ',temp_error)
+                let temp_error = 'error_ser.' + json.ResponseCode;
+                console.log('>> ', temp_error)
                 Alert.alert(
                   Language.t('alert.errorTitle'),
                   Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
@@ -213,42 +243,10 @@ const SelectBase = ({ route }) => {
                 Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
               console.error('_fetchGuidLogin ' + error);
             });
-
-        }
-      }
-
-    } else {
-      Alert.alert(
-        Language.t('alert.errorTitle'),
-        Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-    }
-    setLoading(false)
-  }
-
-
-
-  const checkIPAddress = async () => {
-    console.log(registerReducer.machineNum)
-    console.log(loginReducer.serviceID)
-    let result = true;
-    await fetch(baseurl + '/DevUsers', {
-      method: 'POST',
-      body: JSON.stringify({
-        'BPAPUS-BPAPSV': loginReducer.serviceID,
-        'BPAPUS-LOGIN-GUID': '',
-        'BPAPUS-FUNCTION': 'Register',
-        'BPAPUS-PARAM':
-          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "0828845662"}',
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-          result = true;
         } else {
           console.log('Function Parameter Required');
-          let temp_error='error_ser.'+json.ResponseCode;
-          console.log('>> ',temp_error)
+          let temp_error = 'error_ser.' + json.ResponseCode;
+          console.log('>> ', temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
             Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
@@ -261,8 +259,8 @@ const SelectBase = ({ route }) => {
           Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         console.log('checkIPAddress');
       });
+    setLoading(false)
 
-    return result;
   };
 
   return (

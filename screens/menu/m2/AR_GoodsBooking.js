@@ -306,20 +306,22 @@ const AR_GoodsBooking = ({ route }) => {
                             visible={modalVisible}
                             onRequestClose={() => {
                                 setModalVisible(!modalVisible);
-                            }}
-                        >
+                            }}>
                             < TouchableOpacity
                                 onPress={() => setModalVisible(!modalVisible)}
                                 style={styles.centeredView}>
                                 <View>
                                     <View style={styles.modalView}>
-                                        <View style={{ alignItems: 'flex-end' }}>
-                                            <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                                        <View style={{
+                                            justifyContent: 'space-between',
+                                            flexDirection: 'row'
+                                        }}>
+                                            <View width={20}></View>
+                                            <Text style={styles.modalText}>เลือกการค้นหา</Text>
+                                            <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
                                                 <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
                                             </Pressable>
                                         </View>
-
-                                        <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                         <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
                                             <View style={{ paddingBottom: 10 }}>
                                                 <RadioGroup
@@ -331,7 +333,7 @@ const AR_GoodsBooking = ({ route }) => {
                                                     onSelect={(index, value) => setRadio_menu1(index, value)}
                                                 >
                                                     <RadioButton value={radio_props[0].value} >
-                                                        <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
+                                                        <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
                                                     </RadioButton>
                                                     <RadioButton value={radio_props[1].value} >
                                                         <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
@@ -346,20 +348,18 @@ const AR_GoodsBooking = ({ route }) => {
                                                     onSelect={(index, value) => setRadio_menu2(index, value)}
                                                 >
                                                     <RadioButton value={radio_props[2].value} >
-                                                        <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
+                                                        <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
                                                     </RadioButton>
                                                     <RadioButton value={radio_props[3].value} >
                                                         <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-
-
                                             <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10
                                             }}>
-                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>ถึง</Text>
+                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>ถึง </Text>
                                                 <DatePicker
                                                     style={{ width: 250, }}
                                                     date={end_date} //start date

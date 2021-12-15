@@ -126,9 +126,8 @@ const AP_Address = ({ route }) => {
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ap000130',
-                'BPAPUS-PARAM': '{"AP_KEY": ' +
-                    route.params.Obj + '}',
-                'BPAPUS-FILTER': '',
+                'BPAPUS-PARAM': '',
+                'BPAPUS-FILTER': 'AND (AP_KEY = '+route.params.Obj+')',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
