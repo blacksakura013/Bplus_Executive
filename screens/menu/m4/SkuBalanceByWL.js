@@ -292,7 +292,7 @@ const SkuBalanceByWL = ({ route }) => {
                                             }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
                                         </DataTable.Row>
                                     </View> : null}
-                          </DataTable>
+                            </DataTable>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -399,31 +399,31 @@ const SkuBalanceByWL = ({ route }) => {
             </SafeAreaView>
 
             {loading && (
-                    <View
+                <View
+                    style={{
+                        width: deviceWidth,
+                        height: deviceHeight,
+                        opacity: 0.5,
+                        backgroundColor: 'black',
+                        alignSelf: 'center',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        position: 'absolute',
+                    }}>
+                    <ActivityIndicator
                         style={{
-                            width: deviceWidth,
-                            height: deviceHeight,
-                            opacity: 0.5,
-                            backgroundColor: 'black',
+                            borderRadius: 15,
+                            backgroundColor: null,
+                            width: 100,
+                            height: 100,
                             alignSelf: 'center',
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            position: 'absolute',
-                        }}>
-                        <ActivityIndicator
-                            style={{
-                                borderRadius: 15,
-                                backgroundColor: null,
-                                width: 100,
-                                height: 100,
-                                alignSelf: 'center',
-                            }}
-                            animating={loading}
-                            size="large"
-                            color={Colors.lightPrimiryColor}
-                        />
-                    </View>
-                )}
+                        }}
+                        animating={loading}
+                        size="large"
+                        color={Colors.lightPrimiryColor}
+                    />
+                </View>
+            )}
         </>
     );
 };

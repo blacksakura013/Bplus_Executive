@@ -210,59 +210,59 @@ const ShowSlmn = ({ route }) => {
                 </View>
                 <View style={{ flex: 1 }}>
                     <View  >
-                    <ScrollView horizontal={true}>
-                        <DataTable style={styles.table}>
-                            <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2, width: '60%'
-                                }}>ชื่อพนักงาน</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}>รหัส</Text></DataTable.Title>
+                        <ScrollView horizontal={true}>
+                            <DataTable style={styles.table}>
+                                <DataTable.Header style={styles.tableHeader}>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2, width: '60%'
+                                    }}>ชื่อพนักงาน</Text></DataTable.Title>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>รหัส</Text></DataTable.Title>
 
-                            </DataTable.Header>
-                            <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                    <TouchableNativeFeedback>
-                                        <View >
-                                            {arrayObj.map((item) => {
-                                                return (
-                                                    <>
-                                                        <View>
-                                                            <TouchableOpacity
-                                                                onPress={() => navigation.navigate(route.params.route.routeName, {
-                                                                    route: route.params.route, Obj: item.key
-                                                                })}>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell>{item.name}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.code ? item.code : 'ไม่มีข้อมูล'}</DataTable.Cell>
-                                                                </DataTable.Row>
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </>
-                                                )
-                                            })}
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                </KeyboardAvoidingView>
-                            </ScrollView>
-                            {arrayObj.length > 0 ?
-                                <View >
-                                    <DataTable.Row style={styles.tabbuttomsum}>
-                                        <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }} >รวม</Text></DataTable.Cell>
-                                        <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
-                                        <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                    </DataTable.Row>
-                                </View> : null}
-                       </DataTable>
+                                </DataTable.Header>
+                                <ScrollView>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                        <TouchableNativeFeedback>
+                                            <View >
+                                                {arrayObj.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <View>
+                                                                <TouchableOpacity
+                                                                    onPress={() => navigation.navigate(route.params.route.routeName, {
+                                                                        route: route.params.route, Obj: item.key
+                                                                    })}>
+                                                                    <DataTable.Row>
+                                                                        <DataTable.Cell>{item.name}</DataTable.Cell>
+                                                                        <DataTable.Cell >{item.code ? item.code : 'ไม่มีข้อมูล'}</DataTable.Cell>
+                                                                    </DataTable.Row>
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                        </>
+                                                    )
+                                                })}
+                                            </View>
+                                        </TouchableNativeFeedback>
+                                    </KeyboardAvoidingView>
+                                </ScrollView>
+                                {arrayObj.length > 0 ?
+                                    <View >
+                                        <DataTable.Row style={styles.tabbuttomsum}>
+                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >รวม</Text></DataTable.Cell>
+                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
+                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
+                                        </DataTable.Row>
+                                    </View> : null}
+                            </DataTable>
                         </ScrollView>
                     </View>
 
@@ -307,7 +307,7 @@ const ShowSlmn = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth ,
+        width: deviceWidth,
     },
     container: {
         backgroundColor: '#fff',

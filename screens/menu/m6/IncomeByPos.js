@@ -239,59 +239,59 @@ const IncomeByPos = ({ route }) => {
                 </View>
                 <View style={{ flex: 1 }}>
                     <View  >
-                    <ScrollView horizontal={true}>
-                        <DataTable
-                            style={styles.table}>
-                            <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}>รหัส</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}>ชื่อเครื่อง</Text></DataTable.Title>
-                                <DataTable.Title numeric><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}> ยอดขาย </Text></DataTable.Title>
-                            </DataTable.Header>
-                            <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                    <TouchableNativeFeedback>
-                                        <View >
-                                            {arrayObj.map((item) => {
-                                                return (
-                                                    <>
-                                                        <View>
-                                                            <DataTable.Row>
-                                                                <DataTable.Cell>{item.code}</DataTable.Cell>
-                                                                <DataTable.Cell >{item.name}</DataTable.Cell>
-                                                                <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sellAmount)}</DataTable.Cell>
-                                                            </DataTable.Row>
-                                                        </View>
-                                                    </>
-                                                )
-                                            })}
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                </KeyboardAvoidingView>
-                            </ScrollView>
-                            {arrayObj.length > 0 ?
-                                <View >
-                                    <DataTable.Row style={styles.tabbuttomsum}>
-                                        <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }} >รวม</Text></DataTable.Cell>
-                                        <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
-                                        <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
-                                            fontSize: FontSize.medium,
-                                            color: Colors.fontColor2
-                                        }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                    </DataTable.Row>
-                                </View> : null}
-                       </DataTable>
+                        <ScrollView horizontal={true}>
+                            <DataTable
+                                style={styles.table}>
+                                <DataTable.Header style={styles.tableHeader}>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>รหัส</Text></DataTable.Title>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>ชื่อเครื่อง</Text></DataTable.Title>
+                                    <DataTable.Title numeric><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}> ยอดขาย </Text></DataTable.Title>
+                                </DataTable.Header>
+                                <ScrollView>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                        <TouchableNativeFeedback>
+                                            <View >
+                                                {arrayObj.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <View>
+                                                                <DataTable.Row>
+                                                                    <DataTable.Cell>{item.code}</DataTable.Cell>
+                                                                    <DataTable.Cell >{item.name}</DataTable.Cell>
+                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sellAmount)}</DataTable.Cell>
+                                                                </DataTable.Row>
+                                                            </View>
+                                                        </>
+                                                    )
+                                                })}
+                                            </View>
+                                        </TouchableNativeFeedback>
+                                    </KeyboardAvoidingView>
+                                </ScrollView>
+                                {arrayObj.length > 0 ?
+                                    <View >
+                                        <DataTable.Row style={styles.tabbuttomsum}>
+                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >รวม</Text></DataTable.Cell>
+                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
+                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
+                                        </DataTable.Row>
+                                    </View> : null}
+                            </DataTable>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -477,7 +477,7 @@ const IncomeByPos = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth ,
+        width: deviceWidth,
     },
     container: {
         backgroundColor: '#fff',

@@ -127,7 +127,7 @@ const AP_Address = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ap000130',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': 'AND (AP_KEY = '+route.params.Obj+')',
+                'BPAPUS-FILTER': 'AND (AP_KEY = ' + route.params.Obj + ')',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',

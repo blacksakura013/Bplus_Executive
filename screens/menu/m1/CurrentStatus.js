@@ -315,13 +315,13 @@ const ShowSellBook = ({ route }) => {
                                                 color: Colors.fontColor2
                                             }} >รวม</Text></DataTable.Cell>
                                             <DataTable.Cell     > </DataTable.Cell>
-                                            <DataTable.Cell   numeric ><Text style={{
+                                            <DataTable.Cell numeric ><Text style={{
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2
                                             }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
                                         </DataTable.Row>
                                     </View> : null}
-                          </DataTable>
+                            </DataTable>
                         </ScrollView>
                     </View>
 

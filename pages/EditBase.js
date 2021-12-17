@@ -184,8 +184,6 @@ const EditBase = ({ route }) => {
                 navigation.goBack();
               }
             }, { text: Language.t('alert.cancel'), onPress: () => console.log('cancel Pressed') }]);
-
-
             break;
           }
         }

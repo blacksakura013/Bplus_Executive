@@ -336,7 +336,7 @@ const AP_ShowArdetail = ({ route }) => {
                                         </DataTable.Row>
                                     </View>
                                     : null}
-                           </DataTable>
+                            </DataTable>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>

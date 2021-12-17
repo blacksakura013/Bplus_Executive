@@ -325,10 +325,10 @@ const ShowPayMentdeposit = ({ route }) => {
                                             }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
                                         </DataTable.Row>
                                     </View> : null}
-                           </DataTable>
+                            </DataTable>
                         </ScrollView>
 
-                      
+
                     </View>
                     <View style={styles.centeredView}>
 

@@ -343,7 +343,7 @@ const ShowSellBook = ({ route }) => {
                                         </DataTable.Row>
                                     </View>
                                     : null}
-                          </DataTable>
+                            </DataTable>
                         </ScrollView>
 
                     </View>

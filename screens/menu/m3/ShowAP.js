@@ -78,7 +78,7 @@ const ShowAP = ({ route }) => {
     const [end_date, setE_date] = useState(new Date())
     const [sum, setSum] = useState(0)
     const [textsearch, setSearch] = useState('')
- 
+
 
     var ser_die = true
     useEffect(() => {
@@ -206,45 +206,45 @@ const ShowAP = ({ route }) => {
                 </View>
                 <View style={{ flex: 1 }}>
                     <View  >
-                    <ScrollView horizontal={true}>
-                        <DataTable style={styles.table}>
-                            <DataTable.Header style={styles.tableHeader}>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2, width: '60%'
-                                }}>ชื่อเจ้าหนี้</Text></DataTable.Title>
-                                <DataTable.Title ><Text style={{
-                                    fontSize: FontSize.medium,
-                                    color: Colors.fontColor2
-                                }}>เบอร์โทร</Text></DataTable.Title>
+                        <ScrollView horizontal={true}>
+                            <DataTable style={styles.table}>
+                                <DataTable.Header style={styles.tableHeader}>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2, width: '60%'
+                                    }}>ชื่อเจ้าหนี้</Text></DataTable.Title>
+                                    <DataTable.Title ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2
+                                    }}>เบอร์โทร</Text></DataTable.Title>
 
-                            </DataTable.Header>
-                            <ScrollView>
-                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                    <TouchableNativeFeedback>
-                                        <View  >
-                                            {arrayObj.map((item) => {
-                                                return (
-                                                    <>
-                                                        <View>
-                                                            <TouchableOpacity
-                                                                onPress={() => navigation.navigate(route.params.route.routeName, {
-                                                                    route: route.params.route, Obj: item.key
-                                                                })}>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell>{item.name}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.phone ? item.phone : 'ไม่มีข้อมูล'}</DataTable.Cell>
-                                                                </DataTable.Row>
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </>
-                                                )
-                                            })}
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                </KeyboardAvoidingView>
-                            </ScrollView>
-                       </DataTable>
+                                </DataTable.Header>
+                                <ScrollView>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                        <TouchableNativeFeedback>
+                                            <View  >
+                                                {arrayObj.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <View>
+                                                                <TouchableOpacity
+                                                                    onPress={() => navigation.navigate(route.params.route.routeName, {
+                                                                        route: route.params.route, Obj: item.key
+                                                                    })}>
+                                                                    <DataTable.Row>
+                                                                        <DataTable.Cell>{item.name}</DataTable.Cell>
+                                                                        <DataTable.Cell >{item.phone ? item.phone : 'ไม่มีข้อมูล'}</DataTable.Cell>
+                                                                    </DataTable.Row>
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                        </>
+                                                    )
+                                                })}
+                                            </View>
+                                        </TouchableNativeFeedback>
+                                    </KeyboardAvoidingView>
+                                </ScrollView>
+                            </DataTable>
                         </ScrollView>
 
                     </View>
@@ -290,7 +290,7 @@ const ShowAP = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth ,
+        width: deviceWidth,
     },
     container: {
         backgroundColor: '#fff',

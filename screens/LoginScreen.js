@@ -129,8 +129,8 @@ const LoginScreen = () => {
         console.log('\nmachine(wifi) > > ' + macwifi)
         if (macwifi.length > 0) dispatch(registerActions.machine(macwifi + ':' + a));
         else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a));
-      }).catch((e) => console.log(e));
-    }).catch((e) => console.log(e));
+      }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a)));
+    }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a)));
   }
 
   useEffect(() => {
