@@ -148,26 +148,27 @@ const EditBase = ({ route }) => {
             loginReducer.ipAddress[i].urlser == newurl || loginReducer.ipAddress[i].nameser == basename
           ) {
             console.log(loginReducer.ipAddress[i].urlser, ' == ', newurl, ' || ', loginReducer.ipAddress[i].nameser, ' == ', basename)
-            Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Alert.alert('', Language.t('selectBase.Alert'), [{ text: Language.t('alert.ok'), onPress: () => setLoading(false) }]);
             check = true;
+
             break;
           }
         }
       }
       console.log(check)
       if (!check) {
-        checkIPAddress()
-      }else{
-        setLoading(false)
-      }
+       await checkIPAddress()
+      }  
+       
 
-     
     }
   }
   const _onPressDelete = async () => {
     setLoading(true)
-   
 
+    let temp = loginReducer.ipAddress;
+    let tempurl = baseurl.split('.dll')
+    let newurl = tempurl[0] + '.dll'
     if (baseurl == databaseReducer.Data.urlser) {
       Alert.alert('', Language.t('selectBase.cannotDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
     } else {
@@ -176,12 +177,15 @@ const EditBase = ({ route }) => {
       } else {
         for (let i in loginReducer.ipAddress) {
           if (loginReducer.ipAddress[i].urlser == baseurl) {
-            temp.splice(i, 1);
-            Alert.alert('', Language.t('selectBase.questionDelete'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-            setTimeout(() => {
-              setLoading(false)
-              navigation.goBack();
-            }, 3000);
+            Alert.alert('', Language.t('selectBase.questionDelete'), [{
+              text: Language.t('alert.ok'), onPress: () => {
+                temp.splice(i, 1);
+                setLoading(false)
+                navigation.goBack();
+              }
+            }, { text: Language.t('alert.cancel'), onPress: () => console.log('cancel Pressed') }]);
+
+
             break;
           }
         }
@@ -189,17 +193,17 @@ const EditBase = ({ route }) => {
     }
 
     dispatch(loginActions.ipAddress(temp));
-    setTimeout(() => {
-      setLoading(false)
-    }, 3000);
+
+    setLoading(false)
+
   }
 
 
 
 
   const checkIPAddress = async () => {
-  
-    let temp = loginReducer.ipAddress;
+
+    let temp = [];
     let tempurl = baseurl.split('.dll')
     let newurl = tempurl[0] + '.dll'
     await fetch(baseurl + '/DevUsers', {
@@ -250,6 +254,7 @@ const EditBase = ({ route }) => {
                 }
                 dispatch(loginActions.ipAddress(temp))
                 dispatch(databaseActions.setData(newObj))
+                
                 navigation.dispatch(
                   navigation.goBack()
                 )
@@ -261,6 +266,7 @@ const EditBase = ({ route }) => {
                   Language.t('alert.errorTitle'),
                   Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
               }
+              
             })
             .catch((error) => {
               Alert.alert(
@@ -282,8 +288,9 @@ const EditBase = ({ route }) => {
           Language.t('alert.errorTitle'),
           Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         console.log('checkIPAddress');
+        setLoading(false)
       });
-      setLoading(false)
+   
   };
 
   return (
@@ -292,7 +299,7 @@ const EditBase = ({ route }) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}>
-            <FontAwesome name="arrow-left" size={20} />
+            <FontAwesome name="arrow-left" size={FontSize.large} />
           </TouchableOpacity>
           <Text
             style={{

@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { fontSize } from 'styled-system';
-
+import * as safe_Format from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -164,7 +164,7 @@ const ShowSlmn = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -208,8 +208,9 @@ const ShowSlmn = ({ route }) => {
 
                     </View>
                 </View>
-                <View>
+                <View style={{ flex: 1 }}>
                     <View  >
+                    <ScrollView horizontal={true}>
                         <DataTable style={styles.table}>
                             <DataTable.Header style={styles.tableHeader}>
                                 <DataTable.Title ><Text style={{
@@ -225,7 +226,7 @@ const ShowSlmn = ({ route }) => {
                             <ScrollView>
                                 <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                     <TouchableNativeFeedback>
-                                        <View  >
+                                        <View >
                                             {arrayObj.map((item) => {
                                                 return (
                                                     <>
@@ -247,8 +248,22 @@ const ShowSlmn = ({ route }) => {
                                     </TouchableNativeFeedback>
                                 </KeyboardAvoidingView>
                             </ScrollView>
-                        </DataTable>
-
+                            {arrayObj.length > 0 ?
+                                <View >
+                                    <DataTable.Row style={styles.tabbuttomsum}>
+                                        <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2
+                                        }} >รวม</Text></DataTable.Cell>
+                                        <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
+                                        <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2
+                                        }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
+                                    </DataTable.Row>
+                                </View> : null}
+                       </DataTable>
+                        </ScrollView>
                     </View>
 
 
@@ -292,7 +307,7 @@ const ShowSlmn = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-
+        width: deviceWidth ,
     },
     container: {
         backgroundColor: '#fff',
@@ -337,6 +352,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
+    },
+    tabbuttomsum: {
+        backgroundColor: Colors.backgroundLoginColor,
+        color: Colors.fontColor2
     },
     textTitle2: {
         alignSelf: 'center',

@@ -245,7 +245,7 @@ const ShowSellBook = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -256,7 +256,7 @@ const ShowSellBook = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={FontSize.large} />
                         </TouchableOpacity>
                     </View>
 
@@ -284,7 +284,6 @@ const ShowSellBook = ({ route }) => {
                                         color: Colors.fontColor2
                                     }}> ปีนี้ </Text></DataTable.Title>
                                 </DataTable.Header>
-
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -303,6 +302,7 @@ const ShowSellBook = ({ route }) => {
                                                         </>
                                                     )
                                                 })}
+
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
@@ -310,30 +310,18 @@ const ShowSellBook = ({ route }) => {
                                 {arrayObj.length > 0 ?
                                     <View >
                                         <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{}} ><Text style={{
+                                            <DataTable.Cell   ><Text style={{
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2
-                                            }} >รวม </Text> </DataTable.Cell>
-
-
-                                            <DataTable.Cell numeric>   <Text style={{
+                                            }} >รวม</Text></DataTable.Cell>
+                                            <DataTable.Cell     > </DataTable.Cell>
+                                            <DataTable.Cell   numeric ><Text style={{
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_last_month))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_this_year))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>
-                                                <Text style={{
-                                                    fontSize: FontSize.medium,
-                                                    color: Colors.fontColor2
-                                                }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_last_year))}</Text></DataTable.Cell>
-
+                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
                                         </DataTable.Row>
-                                    </View>
-                                    : null}
-                            </DataTable>
+                                    </View> : null}
+                          </DataTable>
                         </ScrollView>
                     </View>
 
@@ -357,7 +345,7 @@ const ShowSellBook = ({ route }) => {
                                             <View width={20}></View>
                                             <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                             <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
-                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
+                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={FontSize.large} />
                                             </Pressable>
                                         </View>
                                         <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
@@ -431,18 +419,13 @@ const ShowSellBook = ({ route }) => {
                                             >
                                                 <Text style={styles.textStyle}>ตกลง</Text>
                                             </Pressable>
-
                                         </View>
                                     </View>
                                 </View>
                             </TouchableOpacity>
                         </Modal>
                     </View>
-
                 </View>
-
-
-
             </SafeAreaView>
 
             {loading && (

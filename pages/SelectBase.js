@@ -98,8 +98,9 @@ const SelectBase = ({ route }) => {
       if (loginReducer.ipAddress[i].nameser == selectbaseValue) {
         dispatch(databaseActions.setData(loginReducer.ipAddress[i]));
         setTimeout(() => {
+
           navigation.dispatch(
-            navigation.replace('Login')
+            navigation.replace('LoginStackScreen')
           )
         }, 1000);
       }
@@ -181,7 +182,6 @@ const SelectBase = ({ route }) => {
     let newurl = tempurl[0] + '.dll'
     let temp = []
 
-
     await fetch(baseurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -219,13 +219,17 @@ const SelectBase = ({ route }) => {
                   usernameser: username,
                   passwordser: password
                 }
-
+                if (loginReducer.ipAddress.length > 0) {
+                  for (let i in loginReducer.ipAddress) {
+                    temp.push(loginReducer.ipAddress[i])
+                  }
+                }
                 temp.push(newObj)
                 dispatch(loginActions.ipAddress(temp))
                 dispatch(databaseActions.setData(newObj))
                 setTimeout(() => {
                   navigation.dispatch(
-                    navigation.replace('Login')
+                    navigation.replace('LoginStackScreen')
                   )
                 }, 1000);
               } else {
@@ -253,7 +257,6 @@ const SelectBase = ({ route }) => {
         }
       })
       .catch((error) => {
-        result = false;
         Alert.alert(
           Language.t('alert.errorTitle'),
           Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
@@ -269,7 +272,7 @@ const SelectBase = ({ route }) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}>
-            <FontAwesome name="arrow-left" style={{ color: 'black', }} size={20} />
+            <FontAwesome name="arrow-left" style={{ color: 'black', }} size={FontSize.large} />
           </TouchableOpacity>
           <Text
             style={{

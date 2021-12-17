@@ -49,7 +49,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import { fontSize } from 'styled-system';
-
+import * as safe_Format from '../safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -165,7 +165,7 @@ const showAR = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -209,8 +209,9 @@ const showAR = ({ route }) => {
 
                     </View>
                 </View>
-                <View>
+                <View style={{ flex: 1 }}>
                     <View  >
+                    <ScrollView horizontal={true}>
                         <DataTable style={styles.table}>
                             <DataTable.Header style={styles.tableHeader}>
                                 <DataTable.Title ><Text style={{
@@ -248,7 +249,8 @@ const showAR = ({ route }) => {
                                     </TouchableNativeFeedback>
                                 </KeyboardAvoidingView>
                             </ScrollView>
-                        </DataTable>
+                       </DataTable>
+                        </ScrollView>
 
                     </View>
 
@@ -293,7 +295,7 @@ const showAR = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-
+        width: deviceWidth ,
     },
     container: {
         backgroundColor: '#fff',
@@ -338,6 +340,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
+    },
+    tabbuttomsum: {
+        backgroundColor: Colors.backgroundLoginColor,
+        color: Colors.fontColor2
     },
     textTitle2: {
         alignSelf: 'center',

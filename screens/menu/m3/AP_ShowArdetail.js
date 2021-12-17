@@ -163,7 +163,7 @@ const AP_ShowArdetail = ({ route }) => {
                             date: responseData.SHOWAPBALANCEBYAPKEY[i].DI_DATE,
                             id_ref: responseData.SHOWAPBALANCEBYAPKEY[i].DI_REF,
                             apd_A_mt: responseData.SHOWAPBALANCEBYAPKEY[i].APD_A_AMT,
-                            sumpayment: responseData.SHOWAPBALANCEBYAPKEY[i].SUMPAYMENT,
+                            sumpayment: responseData.SHOWAPBALANCEBYAPKEY[i].SHOWSUMPAYMENT,
                         };
                         sum_apd_A_mt.push(jsonObj.apd_A_mt)
                         sum_sumpayment.push(jsonObj.sumpayment)
@@ -238,7 +238,7 @@ const AP_ShowArdetail = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -249,7 +249,7 @@ const AP_ShowArdetail = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={FontSize.large} />
                         </TouchableOpacity>
                     </View>
 
@@ -336,8 +336,7 @@ const AP_ShowArdetail = ({ route }) => {
                                         </DataTable.Row>
                                     </View>
                                     : null}
-                            </DataTable>
-
+                           </DataTable>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -360,7 +359,7 @@ const AP_ShowArdetail = ({ route }) => {
                                             <View width={20}></View>
                                             <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                             <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
-                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
+                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={FontSize.large} />
                                             </Pressable>
                                         </View>
                                         <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>

@@ -130,15 +130,10 @@ const LoginScreen = () => {
         if (macwifi.length > 0) dispatch(registerActions.machine(macwifi + ':' + a));
         else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a));
       }).catch((e) => console.log(e));
-
-
     }).catch((e) => console.log(e));
-
   }
 
   useEffect(() => {
-
-
   }, [])
 
 
@@ -206,7 +201,6 @@ const LoginScreen = () => {
           username +
           '","BPAPUS-PASSWORD": "' +
           password +
-
           '"}',
       }),
     })
@@ -414,7 +408,7 @@ const LoginScreen = () => {
                   alignSelf: 'center',
                   fontSize: FontSize.medium,
                   fontWeight: 'bold',
-                }}>{'15/12'}</Text>
+                }}>{'17/12'}</Text>
               </View>
 
             </View>

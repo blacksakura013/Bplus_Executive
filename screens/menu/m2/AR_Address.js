@@ -48,7 +48,8 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
-import * as safe_Format from '../safe_Format'; const deviceWidth = Dimensions.get('window').width;
+import * as safe_Format from '../safe_Format'; 
+const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const AR_GoodsBooking = ({ route }) => {
@@ -118,7 +119,7 @@ const AR_GoodsBooking = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Ar000130',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': 'AND (AR_KEY = '+route.params.Obj+')',
+                'BPAPUS-FILTER': 'AND (AR_KEY = ' + route.params.Obj + ')',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
@@ -203,7 +204,7 @@ const AR_GoodsBooking = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -328,6 +329,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
+    },
+    tabbuttomsum: {
+        backgroundColor: Colors.backgroundLoginColor,
+        color: Colors.fontColor2
     },
     textTitle2: {
         alignSelf: 'center',

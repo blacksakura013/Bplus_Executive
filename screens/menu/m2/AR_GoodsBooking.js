@@ -227,7 +227,7 @@ const AR_GoodsBooking = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={20} />
+                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -238,7 +238,7 @@ const AR_GoodsBooking = ({ route }) => {
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="calendar" color={Colors.fontColor2} size={20} />
+                            <FontAwesome name="calendar" color={Colors.fontColor2} size={FontSize.large} />
                         </TouchableOpacity>
                     </View>
 
@@ -274,9 +274,9 @@ const AR_GoodsBooking = ({ route }) => {
 
                                 </DataTable.Header>
                                 <ScrollView>
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1}>
+                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
-                                            <View marginBottom={220}>
+                                            <View >
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
@@ -296,7 +296,21 @@ const AR_GoodsBooking = ({ route }) => {
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
                                 </ScrollView>
-                            </DataTable>
+                                {arrayObj.length > 0 ?
+                                    <View >
+                                        <DataTable.Row style={styles.tabbuttomsum}>
+                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >รวม</Text></DataTable.Cell>
+                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
+                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2
+                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
+                                        </DataTable.Row>
+                                    </View> : null}
+                          </DataTable>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -319,7 +333,7 @@ const AR_GoodsBooking = ({ route }) => {
                                             <View width={20}></View>
                                             <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                             <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
-                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={20} />
+                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={FontSize.large} />
                                             </Pressable>
                                         </View>
                                         <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
@@ -406,19 +420,7 @@ const AR_GoodsBooking = ({ route }) => {
 
 
             </SafeAreaView>
-            <View style={styles.tabbuttom}>
-                <Text style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.fontColor2
-                }} >ยอดรวม</Text>
-                <Text  > </Text>
-                <Text style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.fontColor2
-                }} >{safe_Format.currencyFormat(sum)}</Text>
-            </View>
+
             {loading && (
                 <View
                     style={{
@@ -497,6 +499,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
+    },
+    tabbuttomsum: {
+        backgroundColor: Colors.backgroundLoginColor,
+        color: Colors.fontColor2
     },
     textTitle2: {
         alignSelf: 'center',
