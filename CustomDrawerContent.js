@@ -24,8 +24,10 @@ function CustomDrawerContent(props) {
   const [mainDrawer, setMainDrawer] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useStateIfMounted(true);
+
   const registerReducer = useSelector(({ registerReducer }) => registerReducer);
   const loginReducer = useSelector(({ loginReducer }) => loginReducer);
+  const databaseReducer = useSelector(({ databaseReducer }) => databaseReducer);
   const toggleMainDrawer = () => {
     setMainDrawer(true);
     setFilteredItems([]);
@@ -48,8 +50,8 @@ function CustomDrawerContent(props) {
   };
 
   const logOut = async () => {
-    
-    await fetch(loginReducer.ipAddress[0].urlser + '/DevUsers', {
+    setLoading(true)
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,
@@ -59,9 +61,9 @@ function CustomDrawerContent(props) {
           '{"BPAPUS-MACHINE": "' +
           registerReducer.machineNum +
           '","BPAPUS-USERID": "' +
-          loginReducer.ipAddress[0].usernameser +
+          databaseReducer.Data.urlser.usernameser +
           '","BPAPUS-PASSWORD": "' +
-          loginReducer.ipAddress[0].passwordser +
+          databaseReducer.Data.urlser.passwordser +
           '","BPAPUS-CNTRY-CODE": "66","BPAPUS-MOBILE": "' +
           loginReducer.userName +
           '"}',
@@ -69,6 +71,7 @@ function CustomDrawerContent(props) {
     })
       .then((response) => response.json())
       .then((json) => {
+        setLoading(false)
         if (json && json.ResponseCode == '635') {
           Alert.alert(
             Language.t('alert.errorTitle'),
@@ -79,9 +82,10 @@ function CustomDrawerContent(props) {
             Language.t('alert.errorTitle'),
             'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         } else if (json && json.ResponseCode == '200') {
-            navigation.dispatch(
-              navigation.replace('LoginStackScreen')
-            )
+
+          navigation.dispatch(
+            navigation.replace('LoginStackScreen')
+          )
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),
@@ -90,7 +94,8 @@ function CustomDrawerContent(props) {
       })
       .catch((error) => {
         console.error('ERROR at _fetchGuidLogin' + error);
-        if (loginReducer.ipAddress[0].urlser == '') {
+        setLoading(false)
+        if (databaseReducer.Data.urlser == '') {
           Alert.alert(
             Language.t('alert.errorTitle'),
             Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
@@ -100,8 +105,8 @@ function CustomDrawerContent(props) {
             Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         }
       });
-  };
 
+  };
   function renderMainDrawer() {
     return (
       <View backgroundColor={Colors.borderColor}>

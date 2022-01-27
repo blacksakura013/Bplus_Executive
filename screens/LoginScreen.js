@@ -12,6 +12,7 @@ import {
   Platform,
   BackHandler,
   StatusBar,
+  
 } from 'react-native';
 
 import CheckBox from '@react-native-community/checkbox';
@@ -87,7 +88,8 @@ const LoginScreen = () => {
   });
 
   useEffect(() => {
-    getMac()
+    if (registerReducer.machineNum.length == 0)
+      getMac()
   }, []);
   useEffect(() => {
 
@@ -124,12 +126,16 @@ const LoginScreen = () => {
       var a = Math.floor(100000 + Math.random() * 900000);
       console.log(DeviceInfo.getDeviceName())
       console.log('\nmachine > > ' + mac + ':' + a)
+
+
       if (mac.length > 0) dispatch(registerActions.machine(mac + ':' + a));
       else NetworkInfo.getBSSID().then(macwifi => {
         console.log('\nmachine(wifi) > > ' + macwifi)
         if (macwifi.length > 0) dispatch(registerActions.machine(macwifi + ':' + a));
         else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a));
       }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a)));
+
+
     }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a)));
   }
 
